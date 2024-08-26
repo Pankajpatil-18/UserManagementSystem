@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UserDbManagement\\Backend\\Backend.csproj": {}
+    "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "D:\\UserDbManagement\\Backend\\Backend.csproj": {
+    "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UserDbManagement\\Backend\\Backend.csproj",
+        "projectUniqueName": "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "D:\\UserDbManagement\\Backend\\Backend.csproj",
+        "projectPath": "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
-        "outputPath": "D:\\UserDbManagement\\Backend\\obj\\",
+        "outputPath": "D:\\New folder\\UserManagementSystem\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ppatil\\AppData\\Roaming\\NuGet\\NuGet.Config",
