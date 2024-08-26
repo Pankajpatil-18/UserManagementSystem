@@ -1,0 +1,96 @@
+/* sign-up-container styling */
+.signup-container {
+  width: 100%;
+  max-width: 40rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: linear-gradient(180deg, #253c3c, #1d4949);
+  border-radius: 8px;
+  box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Form group styling */
+.form-group {
+  margin: 0.5rem 0;
+}
+
+/* Label styling */
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+  color: #9bafaf;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Input and select box styling */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  display: block;
+  width: 100%;
+  max-width: 15rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #758a8a;
+  background-color: #869999;
+  color: #142020;
+  margin-top: 0.2rem;
+}
+
+/* Radio button styling */
+.form-group input[type="radio"] {
+  display: inline-block;
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+/* Error message styling */
+.form-group div {
+  color: #ffca99;
+  height: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Button styling */
+button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #147b73;
+  color: #d9e2f1;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+button:disabled {
+  background-color: #6c9b8b;
+  cursor: not-allowed;
+}
+
+button:hover,
+button:focus {
+  background-color: #319890;
+}
+
+/* Radio button container styling */
+.radio-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Radio button styling */
+.radio-container input[type="radio"] {
+  margin: 0;
+}
+
+/* Radio label styling */
+.radio-container label {
+  margin: 0;
+  font-size: 1rem;
+  color: #9bafaf;
+}

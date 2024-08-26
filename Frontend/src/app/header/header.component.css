@@ -1,0 +1,23 @@
+header {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  
+  header img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid #758a8a;
+    filter: drop-shadow(0 0 4px rgba(31, 42, 42, 0.5));
+  }
+  
+  header h1 {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    margin: 1rem 0;
+    letter-spacing: 0.2rem;
+    color: #2f4444;
+  }
+  
