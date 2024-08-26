@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -9,14 +9,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  loginForm: FormGroup;
-
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
   @Output() signIn = new EventEmitter<void>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
-      loginType: ['user', Validators.required],
+      loginType: ['user', Validators.required], // Default value 'user'
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
@@ -24,12 +25,17 @@ export class LoginComponent {
 
   onLogin() {
     if (this.loginForm.valid) {
-      // Handle login logic here
-      this.signIn.emit(); // Emit event to parent component
+      const formValues = this.loginForm.value;
+      console.log('Login Type:', formValues.loginType);
+      console.log('Email:', formValues.email);
+      console.log('Password:', formValues.password);
+
+      // Perform your login logic here
     }
   }
 
+  
   onSignIn(){
-    this.signIn.emit();
+        this.signIn.emit();
   }
 }
