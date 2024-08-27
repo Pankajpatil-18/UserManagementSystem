@@ -5,6 +5,7 @@ import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 import { RequestsTableComponent } from "../Admin-Dashboard/requests-table/requests-table.component";
 import { NavbarComponent } from "../Admin-Dashboard/navbar/navbar.component";
 
@@ -12,7 +13,7 @@ import { NavbarComponent } from "../Admin-Dashboard/navbar/navbar.component";
   selector: 'app-root',
   standalone:true,
   templateUrl: './app.component.html',
-  imports: [LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, RequestsTableComponent, NavbarComponent],
+  imports: [LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, NavbarComponent, RequestsTableComponent]
 })
 export class AppComponent {
   isLogin: boolean = true; // Initially show login form
