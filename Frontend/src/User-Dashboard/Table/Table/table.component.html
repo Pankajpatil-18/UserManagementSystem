@@ -1,1 +1,48 @@
-<p>table works!</p>
+<!-- <div class="container">
+  <label for="tableSelect">Select Table:</label>
+  <select id="tableSelect" (change)="onTableSelect($event)">
+    <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+  </select>
+
+  <table *ngIf="selectedTable" class="styled-table">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns">{{ column }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableData[selectedTable]" (click)="onRowSelect(row)" class="table-row">
+        <td *ngFor="let column of columns">{{ row[column] }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="add-button" (click)="addNew()">Add New</button>
+</div> -->
+
+<!-- Update your table HTML to emit the selected row -->
+<div class="container">
+  <label for="tableSelect">Select Table:</label>
+  <select id="tableSelect" (change)="onTableSelect($event)">
+    <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+  </select>
+
+  <table *ngIf="selectedTable" class="styled-table">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns">{{ column }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableData[selectedTable]" (click)="onRowSelect(row)" class="table-row">
+        <td *ngFor="let column of columns">{{ row[column] }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="add-button" (click)="addNew()">Add New</button>
+
+  <!-- Add the component where you want to show the details -->
+  <app-tablecontent [selectedRow]="selectedRow" [columns]="columns" (save)="onSave($event)"(cancelEdit)="onCancelEdit()"(update)="onUpdateRow()"(delete)="onDeleteRow()"
+  ></app-tablecontent>
+</div>

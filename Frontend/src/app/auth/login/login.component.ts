@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   @Output() signIn = new EventEmitter<void>();
+  @Output() isLogged=new EventEmitter<void>();
 
   constructor(private fb: FormBuilder) {}
 
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
       console.log('Login Type:', formValues.loginType);
       console.log('Email:', formValues.email);
       console.log('Password:', formValues.password);
+      this.isLogged.emit();
 
       // Perform your login logic here
     }
