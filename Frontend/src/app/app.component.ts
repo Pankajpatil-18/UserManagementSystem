@@ -5,6 +5,7 @@ import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RequestsTableComponent } from "../Admin-Dashboard/requests-table/requests-table.component";
 
 @Component({
   selector: 'app-root',
