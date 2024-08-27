@@ -3,11 +3,9 @@
 // import { AppComponent } from './app/app.component';
 
 // bootstrapApplication(AppComponent).catch((err) => console.error(err));
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppRoutingModule } from './app/app-routing.module';
-import { LoginComponent } from './app/auth/login/login.component'; 
-import { SignupComponent } from './app/auth/signup/signup.component';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
 
-
-platformBrowserDynamic().bootstrapModule(AppRoutingModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));
