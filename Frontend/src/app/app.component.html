@@ -1,6 +1,11 @@
 <app-header *ngIf="isLogin or toSign"></app-header>
 
 
+<<<<<<< HEAD
+=======
+
+<!-- Main Content -->
+>>>>>>> 479ad48c67a0d713ea099c1d4b44cb92ee83733a
 <div class="container">
   <app-login *ngIf="isLogin" (signIn)="onSignIn()" (isLogged)="onLogin()"></app-login>
   <app-signup *ngIf="toSign" (back)="onBackToLogin()"></app-signup>
