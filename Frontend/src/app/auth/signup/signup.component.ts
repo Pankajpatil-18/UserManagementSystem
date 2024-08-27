@@ -90,6 +90,7 @@ export class SignupComponent implements OnInit {
       console.log('Email:', formValues.email);
       console.log('Password:', formValues.password);
       console.log('Confirm Password:', formValues.confirmPassword);
+      this.router.navigate(['/login']);
 
       // Perform your signup logic here
     }
