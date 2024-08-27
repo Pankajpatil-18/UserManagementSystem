@@ -43,6 +43,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -55,7 +56,7 @@ export class SignupComponent implements OnInit {
   signUpForm!: FormGroup;
   @Output() back = new EventEmitter<void>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,private router: Router) {}
 
   ngOnInit(): void {
     this.signUpForm = this.fb.group({
@@ -94,5 +95,6 @@ export class SignupComponent implements OnInit {
 
   onBack() {
     this.back.emit();
+    this.router.navigate(['/login']);
   }
 }
