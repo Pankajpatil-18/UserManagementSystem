@@ -1,7 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { RouterLink } from '@angular/router';
+=======
+import { Router } from '@angular/router';
+>>>>>>> f9db1ea18a1657bca7b0c5936df698c8096bcdaa
 
 @Component({
   selector: 'app-login',
@@ -15,7 +19,7 @@ export class LoginComponent implements OnInit {
   @Output() signIn = new EventEmitter<void>();
   @Output() isLogged=new EventEmitter<void>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -32,6 +36,7 @@ export class LoginComponent implements OnInit {
       console.log('Email:', formValues.email);
       console.log('Password:', formValues.password);
       this.isLogged.emit();
+      this.router.navigate(['/table'])
 
       // Perform your login logic here
     }
@@ -40,5 +45,7 @@ export class LoginComponent implements OnInit {
   
   onSignIn(){
         this.signIn.emit();
+        this.router.navigate(['/signup']);
+        
   }
 }
