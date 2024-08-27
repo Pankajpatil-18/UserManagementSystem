@@ -1,14 +1,15 @@
 <app-header *ngIf="isLogin or toSign"></app-header>
 
-<!-- Main Content -->
-<!-- <div class="container">
-  
+
+<div class="container">
   <app-login *ngIf="isLogin" (signIn)="onSignIn()" (isLogged)="onLogin()"></app-login>
   <app-signup *ngIf="toSign" (back)="onBackToLogin()"></app-signup>
-</div> -->
+</div> 
+
+ <app-table *ngIf="isLogged"></app-table> -
 
 
-<app-table ></app-table>
 <app-tablecontent></app-tablecontent>
 
-<app-footer></app-footer>
+<app-footer *ngIf="isLogin or toSign"></app-footer>
+<router-outlet></router-outlet>

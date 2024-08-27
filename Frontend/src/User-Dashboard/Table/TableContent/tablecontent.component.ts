@@ -10,14 +10,19 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class TableContentComponent {
-  @Input() selectedRow: any; // Add @Input() to receive data
-  @Input() columns: string[] = []; // Use this to get columns
-  isRowSelected: boolean = false;
-
+  @Input() selectedRow: any; // Receive selected row
+  @Input() columns: string[] = []; // Receive columns from parent
   @Output() save = new EventEmitter<any>();
   @Output() cancelEdit = new EventEmitter<void>();
   @Output() update = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
+
+  isRowSelected: boolean = false;
+
+  ngOnChanges() {
+    // Check if a row is selected
+    this.isRowSelected = !!this.selectedRow;
+  }
 
   onSave() {
     this.save.emit(this.selectedRow);
@@ -33,14 +38,5 @@ export class TableContentComponent {
 
   onDelete() {
     this.delete.emit();
-  }
-
-  // Method to detect row selection
-  ngOnChanges() {
-    if (this.selectedRow) {
-      this.isRowSelected = true;
-    } else {
-      this.isRowSelected = false;
-    }
   }
 }

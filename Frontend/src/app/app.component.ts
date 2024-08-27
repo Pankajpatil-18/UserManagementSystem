@@ -7,12 +7,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from "../User-Dashboard/Table/Table/table.component";
 import { TableContentComponent } from "../User-Dashboard/Table/TableContent/tablecontent.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone:true,
   templateUrl: './app.component.html',
-  imports: [LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, TableComponent, TableContentComponent],
+  imports: [RouterOutlet,LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, TableComponent, TableContentComponent],
 })
 export class AppComponent {
   isLogin: boolean = true; // Initially show login form

@@ -5,7 +5,7 @@
       <label [for]="column">{{ column }}</label>
       <input [id]="column" [(ngModel)]="selectedRow[column]" name="{{ column }}" />
     </div>
-
+    
     <div class="buttons">
       <button type="button" (click)="onUpdate()">Update</button>
       <button type="button" (click)="onDelete()">Delete</button>
