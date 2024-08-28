@@ -1,29 +1,44 @@
 <div class="request-box">
-    <table class="request-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>User</th>
-          <th>Request Type</th>
-          <th>Status</th>
-          <th>Actions</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of requests">
-          <td>{{ request.id }}</td>
-          <td>{{ request.user }}</td>
-          <td>{{ request.requestType }}</td>
-          <td>{{ request.status }}</td>
-          <td>
-            <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request.id)">Approve</button>
-            <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request.id)">Deny</button>
-            <button *ngIf="request.status !== 'Pending'" class="btn view" (click)="viewRequest(request.id)">View</button>
-          </td>
-          <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Dropdown for selecting table -->
+  <div class="table-selector">
+    <label for="tableSelect">Select Table:</label>
+    <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange()">
+      <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+    </select>
   </div>
-  
+
+  <!-- Table displaying requests -->
+  <table class="request-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Permissions</th>
+        <th>Request Type</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of filteredRequests">
+        <td>{{ request.id }}</td>
+        <td>{{ request.user }}</td>
+        <td>
+          <span [ngClass]="request.permissions.read ? 'icon-right' : 'icon-wrong'">Read</span>
+          <span [ngClass]="request.permissions.update ? 'icon-right' : 'icon-wrong'">Update</span>
+          <span [ngClass]="request.permissions.delete ? 'icon-right' : 'icon-wrong'">Delete</span>
+          <span [ngClass]="request.permissions.write ? 'icon-right' : 'icon-wrong'">Write</span>
+        </td>
+        <td>{{ request.requestType }}</td>
+        <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ request.status }}</td>
+        <td>
+          <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request)">Approve</button>
+          <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request)">Deny</button>
+          <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequest(request.id)">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
