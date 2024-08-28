@@ -1,11 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD
-import { RouterLink } from '@angular/router';
-=======
-import { Router } from '@angular/router';
->>>>>>> f9db1ea18a1657bca7b0c5936df698c8096bcdaa
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
