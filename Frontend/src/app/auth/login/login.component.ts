@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, RadioControlValueAccessor, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { RouterLink } from '@angular/router';
@@ -35,8 +35,16 @@ export class LoginComponent implements OnInit {
       console.log('Login Type:', formValues.loginType);
       console.log('Email:', formValues.email);
       console.log('Password:', formValues.password);
-      this.isLogged.emit();
-      this.router.navigate(['/table'])
+      
+
+      if(formValues.loginType==="user"){
+        this.isLogged.emit();
+        this.router.navigate(['/table']);
+      }
+      if(formValues.loginType==='admin'){
+        this.isLogged.emit();
+        //this.router.navigate(['/'])
+      }
 
       // Perform your login logic here
     }
