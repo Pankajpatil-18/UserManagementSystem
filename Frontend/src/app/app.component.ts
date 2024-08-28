@@ -10,12 +10,13 @@ import { TableContentComponent } from "../User-Dashboard/Table/TableContent/tabl
 import { RouterOutlet } from '@angular/router';
 import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-status/request-status.component';
 import { HomeComponent } from "../User-Dashboard/Home/home/home.component";
+import { RequestComponent } from 'src/User-Dashboard/RequestBox/request/request.component';
 
 @Component({
   selector: 'app-root',
   standalone:true,
   templateUrl: './app.component.html',
-  imports: [RouterOutlet, LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, TableComponent, TableContentComponent, RequestStatusComponent, HomeComponent],
+  imports: [RequestComponent,RouterOutlet, LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, TableComponent, TableContentComponent, RequestStatusComponent, HomeComponent],
 })
 export class AppComponent {
   isLogin: boolean = true; // Initially show login form
