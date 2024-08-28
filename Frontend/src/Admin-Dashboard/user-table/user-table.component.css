@@ -1,0 +1,68 @@
+.user-table-container {
+  padding: 20px;
+  background-color: #f0f5f0;
+  border: 1px solid #c3e6c3;
+  border-radius: 8px;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+#table-select {
+  margin-bottom: 20px; /* Add space below the dropdown */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:disabled {
+  background-color: #c3e6c3;
+  cursor: not-allowed;
+}
+
+.actions {
+  text-align: right;
+}
+
+.actions button {
+  margin-left: 10px;
+}
+
+.alert {
+  display: none;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+}
+
+.alert.show {
+  display: block;
+}

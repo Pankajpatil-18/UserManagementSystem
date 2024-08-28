@@ -1,10 +1,19 @@
-<app-header></app-header>
+
 
 <!-- Main Content -->
-<div class="container">
-  <!-- Conditionally render Login or Signup component -->
-  <app-login *ngIf="isLogin" (signIn)="onSignIn()"></app-login>
-  <app-signup *ngIf="isLogged" (back)="onBackToLogin()"></app-signup>
-</div>
 
-<app-footer></app-footer>
+<!-- 
+<div class="container">
+  <app-login *ngIf="isLogin" (signIn)="onSignIn()" (isLogged)="onLogin()"></app-login>
+  <app-signup *ngIf="toSign" (back)="onBackToLogin()"></app-signup>
+</div> 
+
+<app-table *ngIf="isLogged"></app-table> -
+
+
+<app-tablecontent></app-tablecontent> -->
+
+
+
+<router-outlet ></router-outlet>
+

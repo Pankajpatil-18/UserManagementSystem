@@ -9,11 +9,19 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Backend
 build_property.RootNamespace = Backend
+<<<<<<< HEAD
 build_property.ProjectDir = D:\Aditi\UserManagementSystem\Backend\
+=======
+build_property.ProjectDir = C:\Users\sgite\Desktop\Angular+.net Demo Project\UserManagementSystem\Backend\
+>>>>>>> ad0082564e0299f6ec8cc0dfe9bb211c5e5d8bc0
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = D:\Aditi\UserManagementSystem\Backend
+=======
+build_property.MSBuildProjectDirectory = C:\Users\sgite\Desktop\Angular+.net Demo Project\UserManagementSystem\Backend
+>>>>>>> ad0082564e0299f6ec8cc0dfe9bb211c5e5d8bc0
 build_property._RazorSourceGeneratorDebug = 

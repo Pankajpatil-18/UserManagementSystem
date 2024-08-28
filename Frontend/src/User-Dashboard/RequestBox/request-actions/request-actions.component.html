@@ -1,0 +1,27 @@
+<div class="request-actions">
+  <h2>Submit Request</h2>
+  <form (ngSubmit)="submitRequest()">
+    <label for="table">Select Table:</label>
+    <select id="table" [(ngModel)]="newRequest.tableName" name="table" required>
+      <option value="">Select a table</option>
+      <option value="Users">Users</option>
+      <option value="Orders">Orders</option>
+      <option value="Products">Products</option>
+      <option value="Categories">Categories</option>
+    </select>
+
+    <label for="action">Select Action:</label>
+    <select id="action" [(ngModel)]="newRequest.requestType" name="action" required>
+      <option value="">Select an action</option>
+      <option value="Add">Add</option>
+      <option value="Edit">Edit</option>
+      <option value="Delete">Delete</option>
+      <option value="Read">Read</option>
+    </select>
+
+    <label for="message">Message:</label>
+    <textarea id="message" [(ngModel)]="newRequest.message" name="message" rows="4" required></textarea>
+
+    <button type="submit" class="btn submit">Submit Request</button>
+  </form>
+</div>
