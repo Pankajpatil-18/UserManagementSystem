@@ -1,0 +1,115 @@
+.container {
+    max-width: 100%; /* Full width of the parent */
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .back-button {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: inline-block; /* Default button size */
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .back-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  .request-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width */
+    border: none; /* Remove border */
+  }
+  
+  .request-box h2, 
+  .request-box h3 {
+    margin-bottom: 15px;
+    color: #4CAF50; /* Green color for headings */
+  }
+  
+  .request-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .request-box select,
+  .request-box textarea,
+  .request-box input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .request-box .btn.submit {
+    background-color: #4CAF50; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .request-box .btn.submit:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  .request-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .request-table th, .request-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .request-table th {
+    background-color: #4CAF50; /* Green header */
+    color: white;
+  }
+  
+  .request-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternating row color */
+  }
+  
+  .request-table tr:hover {
+    background-color: #ddd; /* Highlight row on hover */
+  }
+  
+  @media (max-width: 600px) {
+    .request-box {
+      padding: 15px;
+    }
+  
+    .request-box select,
+    .request-box textarea,
+    .request-box input[type="text"] {
+      font-size: 12px;
+    }
+  
+    .back-button {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+  

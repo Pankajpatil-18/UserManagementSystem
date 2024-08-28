@@ -1,5 +1,9 @@
-<div class="request-box">
+<div class="container">
+  <button class="back-button" (click)="goBack()">Back</button>
+  <div class="request-box">
     <app-request-actions (requestSubmitted)="handleRequestSubmitted($event)"></app-request-actions>
     <app-request-status [userRequests]="userRequests"></app-request-status>
   </div>
+</div>
+
   
