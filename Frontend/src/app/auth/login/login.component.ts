@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 
       if(formValues.loginType==="user"){
         this.isLogged.emit();
-        this.router.navigate(['/table']);
+        this.router.navigate(['/home']);
       }
       if(formValues.loginType==='admin'){
         this.isLogged.emit();

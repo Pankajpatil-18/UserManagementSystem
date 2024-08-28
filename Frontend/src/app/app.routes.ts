@@ -11,6 +11,7 @@ import { RequestsTableComponent } from 'src/Admin-Dashboard/requests-table/reque
 import { UserTableComponent } from 'src/Admin-Dashboard/user-table/user-table.component';
 import { NavbarComponent } from 'src/Admin-Dashboard/navbar/navbar.component';
 import { NgModule } from '@angular/core';
+import { HomeComponent } from 'src/User-Dashboard/Home/home/home.component';
 
 
 export const routes: Routes = [
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'request-management', component: RequestsTableComponent },
   { path: 'tableAd', component: TableComponentAd },
   { path: 'navbar' ,component:NavbarComponent},
-  { path: '**', redirectTo: 'login' } // Wildcard route for 404
+  { path: 'home' ,component:HomeComponent},
+  { path: '**', redirectTo: 'login' } 
 ];

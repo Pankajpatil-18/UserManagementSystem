@@ -46,6 +46,7 @@ import { TableComponentAd } from "../Admin-Dashboard/table/table.component";
 import { RouterOutlet } from '@angular/router';
 import { TableContentComponent } from 'src/User-Dashboard/Table/TableContent/tablecontent.component';
 import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-status/request-status.component';
+import { HomeComponent } from "../User-Dashboard/Home/home/home.component";
 
 @Component({
   selector: 'app-root',

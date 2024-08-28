@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RequestStatusComponent } from "../request-status/request-status.component";
 
 @Component({
   selector: 'app-request-actions',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, RequestStatusComponent],
   templateUrl: './request-actions.component.html',
   styleUrls: ['./request-actions.component.css']
 })
