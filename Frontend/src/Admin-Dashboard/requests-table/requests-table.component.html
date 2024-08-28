@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<div class="request-box">
+    <table class="request-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Request Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of requests">
+          <td>{{ request.id }}</td>
+          <td>{{ request.user }}</td>
+          <td>{{ request.requestType }}</td>
+          <td>{{ request.status }}</td>
+          <td>
+            <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request.id)">Approve</button>
+            <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request.id)">Deny</button>
+            <button *ngIf="request.status !== 'Pending'" class="btn view" (click)="viewRequest(request.id)">View</button>
+          </td>
+          <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
