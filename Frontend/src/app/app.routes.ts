@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'requeststatuslist',component:RequestStatusComponent},
   { path:'user-management' ,component:UserTableComponent},
   { path:'request-management' ,component:RequestsTableComponent},
-  { path:'tables-content' ,component:TableComponentAd},
+  { path:'tableAd' ,component:TableComponentAd},
   { path: '**', redirectTo: 'login' } // Wildcard route for 404
 ];
 

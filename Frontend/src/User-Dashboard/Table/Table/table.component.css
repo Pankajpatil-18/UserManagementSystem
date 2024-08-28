@@ -1,166 +1,114 @@
-/* General styling for the container */
+/* Container */
 .container {
+  max-width: 1500px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f0f4f0; /* Light greenish background for the container */
+  background-color: #f0f8f5; /* Light green background */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
 }
 
-/* Styling for the dropdown */
-select#tableSelect {
-  padding: 8px 12px;
-  margin-bottom: 20px;
-  border: 1px solid #4caf50;
-  border-radius: 4px;
-  background-color: #ffffff;
-  color: #333;
-  font-size: 16px;
-}
-
-/* Styling for the table */
+/* Table Styles */
 .styled-table {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  font-size: 16px;
-  text-align: left;
+  font-size: 1em;
+  background-color: #ffffff; /* White background for table */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .styled-table thead tr {
-  background-color: #4caf50; /* Green header background */
-  color: #ffffff;
+  background-color: #4CAF50; /* Dark green background for header */
+  color: #ffffff; /* White text color */
   text-align: left;
 }
 
-.styled-table th, .styled-table td {
+.styled-table th,
+.styled-table td {
   padding: 12px 15px;
-  border-bottom: 1px solid #dddddd;
 }
 
 .styled-table tbody tr {
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-}
-
-.styled-table tbody tr:hover {
-  background-color: #e8f5e9; /* Light green for hover */
-}
-
-.styled-table tbody tr.selected {
-  background-color: #c8e6c9; /* Slightly darker green for selected row */
-}
-
-/* Styling for the add button */
-.add-button {
-  padding: 10px 20px;
-  margin: 10px 0;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
+  border-bottom: 1px solid #dddddd;
   transition: background-color 0.3s ease;
 }
 
-.add-button:hover {
-  background-color: #388e3c; /* Darker green for hover */
+.styled-table tbody tr:hover {
+  background-color: #d4edda; /* Light green for hover */
 }
 
-/* Styling for the edit form */
+.table-row {
+  cursor: pointer;
+}
+
+/* Form Styles */
 .edit-form {
   margin-top: 20px;
   padding: 20px;
-  border: 1px solid #4caf50;
-  background-color: #e8f5e9; /* Light green form background */
+  background-color: #ffffff; /* White background for form */
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .edit-form h3 {
-  margin-bottom: 20px;
-  color: #388e3c;
+  margin-bottom: 15px;
+  color: #2e7d32; /* Darker green for form heading */
 }
 
 .edit-form label {
   display: block;
-  margin-bottom: 5px;
-  color: #388e3c; /* Dark green labels */
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #2e7d32; /* Dark green for labels */
 }
 
-/* Styling for input text boxes */
-.edit-form input[type="text"] {
-  width: calc(100% - 20px);
+.edit-form input[type="text"],
+.edit-form input[type="number"],
+.edit-form input[type="date"] {
+  width: calc(100% - 22px);
   padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #4caf50;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: #ffffff;
-  font-size: 16px;
-  color: #333;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
 }
 
-.edit-form input[type="text"]:focus {
-  border-color: #388e3c;
-  box-shadow: 0 0 5px rgba(0, 128, 0, 0.2); /* Green glow for focus */
+.edit-form input:focus {
+  border-color: #4CAF50; /* Dark green on focus */
+  outline: none;
 }
 
-/* Styling for form buttons */
-.edit-form .buttons {
+/* Button Styles */
+.buttons {
   display: flex;
   justify-content: space-between;
-}
-
-.edit-form button {
-  padding: 10px 15px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.edit-form button:hover {
-  background-color: #388e3c;
-}
-
-/* Cancel button style */
-.edit-form button[type="button"].cancel-button {
-  background-color: #f44336; /* Red background for cancel button */
-}
-
-.edit-form button[type="button"].cancel-button:hover {
-  background-color: #d32f2f; /* Darker red for hover */
-}
-/* Error message styling */
-.error-message {
-  color: #f44336; /* Red color for error message */
   margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
 }
 
-.button-container {
-  display: flex;
-  justify-content: flex-end; /* Aligns the button to the right */
-}
-
-.request-button {
+button {
   padding: 10px 20px;
-  margin: 10px 0;
-  background-color: #4caf50;
-  color: white;
+  font-size: 1em;
+  color: #ffffff; /* White text color for buttons */
+  background-color: #4CAF50; /* Dark green background for buttons */
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
   transition: background-color 0.3s ease;
-  float: right;
 }
 
-.request-button:hover {
-  background-color: #388e3c; /* Darker green for hover */
+button:hover {
+  background-color: #388e3c; /* Slightly darker green on hover */
+}
+
+.add-button {
+  background-color: #2e7d32; /* Different shade for 'Add New' button */
+}
+
+.add-button:hover {
+  background-color: #1b5e20; /* Darker shade on hover */
 }
