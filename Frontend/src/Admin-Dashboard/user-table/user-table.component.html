@@ -1,1 +1,55 @@
-<p>user-table works!</p>
+<div class="user-table-container">
+  <h2>User Permissions</h2>
+  
+  <label for="table-select">Select Table:</label>
+  <select id="table-select" [(ngModel)]="selectedTable">
+    <option value="Student">Student</option>
+    <option value="Employee">Employee</option>
+  </select>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Insert</th>
+        <th>Update</th>
+        <th>Delete</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of currentTableData">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canInsert')">
+            {{ user.canInsert ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canUpdate')">
+            {{ user.canUpdate ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canDelete')">
+            {{ user.canDelete ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button (click)="onEdit()">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="actions" *ngIf="isEditing">
+    <button (click)="onSaveChanges()">Save Changes</button>
+    <button (click)="onCancelEdit()">Cancel</button>
+  </div>
+
+  <div class="alert">Your changes are saved!</div>
+</div>
