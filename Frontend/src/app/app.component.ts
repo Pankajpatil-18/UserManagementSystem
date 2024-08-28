@@ -40,6 +40,9 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { UserTableComponent } from '../Admin-Dashboard/user-table/user-table.component';
 
+import { RequestsTableComponent } from "../Admin-Dashboard/requests-table/requests-table.component";
+import { NavbarComponent } from "../Admin-Dashboard/navbar/navbar.component";
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -53,7 +56,7 @@ import { UserTableComponent } from '../Admin-Dashboard/user-table/user-table.com
     FooterComponent,
     HeaderComponent,
     UserTableComponent
-  ],
+  ]
 })
 export class AppComponent {
   isLogin: boolean = true; // Initially show login form
