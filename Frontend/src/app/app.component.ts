@@ -42,7 +42,11 @@ import { UserTableComponent } from '../Admin-Dashboard/user-table/user-table.com
 
 import { RequestsTableComponent } from "../Admin-Dashboard/requests-table/requests-table.component";
 import { NavbarComponent } from "../Admin-Dashboard/navbar/navbar.component";
+<<<<<<< HEAD
 import { TableComponent } from "../Admin-Dashboard/table/table.component";
+=======
+import { RequestComponent } from "../User-Dashboard/RequestBox/request.component";
+>>>>>>> 387b6a23970ee1288e54c6b20431ad221489345d
 
 @Component({
   selector: 'app-root',
@@ -57,8 +61,13 @@ import { TableComponent } from "../Admin-Dashboard/table/table.component";
     FooterComponent,
     HeaderComponent,
     UserTableComponent,
+<<<<<<< HEAD
     RequestsTableComponent,
     TableComponent
+=======
+    RequestComponent,
+    RequestsTableComponent
+>>>>>>> 387b6a23970ee1288e54c6b20431ad221489345d
 ]
 })
 export class AppComponent {
