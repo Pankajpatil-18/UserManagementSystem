@@ -26,8 +26,7 @@
 
 /* Input and select box styling */
 .form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="radio"] {
+.form-group input[type="password"] {
   display: block;
   width: 100%;
   max-width: 15rem;
@@ -40,11 +39,33 @@
   margin-top: 0.2rem;
 }
 
-/* Radio button styling */
-.form-group input[type="radio"] {
-  display: inline-block;
-  width: auto;
-  margin-right: 0.5rem;
+/* Radio button container styling */
+.radio-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Styled radio buttons */
+.radio-container input[type="radio"] {
+  margin: 0 0.5rem 0 0;
+  cursor: pointer;
+  appearance: none; /* Remove default styling */
+  width: 1rem;
+  height: 1rem;
+  background-color: #869999;
+  border: 2px solid #758a8a;
+  border-radius: 50%;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.radio-container input[type="radio"]:checked {
+  background-color: #147b73; /* Color when checked */
+  border-color: #147b73;
+}
+
+.radio-container input[type="radio"]:hover {
+  border-color: #319890; /* Border color on hover */
 }
 
 /* Error message styling */
@@ -56,7 +77,7 @@
 
 /* Button styling */
 button {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border-radius: 4px;
   border: none;
@@ -76,21 +97,11 @@ button:focus {
   background-color: #319890;
 }
 
-/* Radio button container styling */
-.radio-container {
+/* Form actions container for button alignment */
+.form-actions {
   display: flex;
+  justify-content: start; /* Align buttons to the start */
+  gap: 0.5rem; /* Small gap between buttons, ensuring max 1cm separation */
   align-items: center;
-  gap: 1rem;
-}
-
-/* Radio button styling */
-.radio-container input[type="radio"] {
-  margin: 0;
-}
-
-/* Radio label styling */
-.radio-container label {
-  margin: 0;
-  font-size: 1rem;
-  color: #9bafaf;
+  margin-top: 1.5rem; /* Ensure spacing above the button group */
 }
