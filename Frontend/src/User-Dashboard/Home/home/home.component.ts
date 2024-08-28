@@ -22,6 +22,7 @@ export class HomeComponent {
 
   logout() {
     console.log('Logout clicked');
+    this.router.navigate(['/login']);
   }
 
   onTableChange(event: Event): void {
