@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RequestActionsComponent } from "../request-actions/request-actions.component";
 import { RequestStatusComponent } from "../request-status/request-status.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request',
@@ -14,9 +15,10 @@ import { RequestStatusComponent } from "../request-status/request-status.compone
 export class RequestComponent {
   userRequests: any[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     // Static data for demonstration purposes
     this.userRequests = [];
+    
   }
 
   handleRequestSubmitted(newRequest: any) {
@@ -39,4 +41,13 @@ export class RequestComponent {
   //     console.error('Failed to submit request', error);
   //   });
   // }
+
+  goBack() {
+    // Implement navigation logic here (e.g., navigate to the previous page)
+    // For example, using Angular's Router:
+    // this.router.navigate(['/previous-route']);
+    console.log('Back button clicked');
+    this.router.navigate(['/home']);
+  }
+
 }
