@@ -18,6 +18,7 @@
 
 .menu {
   display: flex;
+  align-items: center;
 }
 
 .menu-item {
@@ -48,4 +49,21 @@
 
 .menu-item:hover::after {
   width: 100%;
+}
+
+.logout-button {
+  background-color: red;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: darkred;
+  transform: scale(1.1);
 }
