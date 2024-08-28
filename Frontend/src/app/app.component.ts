@@ -47,6 +47,7 @@ import { RouterOutlet } from '@angular/router';
 import { TableContentComponent } from 'src/User-Dashboard/Table/TableContent/tablecontent.component';
 import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-status/request-status.component';
 import { HomeComponent } from "../User-Dashboard/Home/home/home.component";
+import { RequestComponent } from 'src/User-Dashboard/RequestBox/request/request.component';
 
 @Component({
   selector: 'app-root',
