@@ -1,0 +1,132 @@
+/* Full-page styling */
+:host {
+    display: block;
+    height: 100%;
+    margin: 0;
+  }
+  
+  /* Navbar styling */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    background-color: #2e7d32; /* Dark green background */
+    color: white;
+    font-size: 18px;
+  }
+  
+  .logout-button {
+    background-color: #d32f2f; /* Red color for logout */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .logout-button:hover {
+    background-color: #c62828; /* Darker red on hover */
+  }
+  
+  /* Content styling */
+  .content {
+    padding: 20px;
+    background-color: #e8f5e9; /* Light green background */
+    height: calc(100vh - 40px); /* Full height minus navbar height */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align items at the start (top) */
+  }
+  
+  /* Container styling */
+  .container {
+    width: 100%;
+    max-width: 600px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px; /* Move content closer to the navbar */
+  }
+  
+  /* Dropdown styling */
+  .dropdown-container {
+    margin-bottom: 20px;
+    font-size: 18px; /* Increased font size */
+  }
+  
+  select {
+    padding: 8px;
+    font-size: 18px; /* Increased font size */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Privileges box styling */
+  .privileges-box {
+    padding: 20px;
+    background-color: #ffffff; /* White background for the box */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  /* Privileges grid styling */
+  .privileges-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two items per row */
+    gap: 20px; /* Spacing between items */
+  }
+  
+  .privilege-item {
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Increased font size */
+  }
+  
+  .privilege-item span {
+    flex: 1;
+  }
+  
+  /* Icons */
+  .icon {
+    margin-left: 10px;
+    font-size: 24px; /* Larger size for icons */
+  }
+  
+  .check-icon {
+    color: green; /* Green color for check icon */
+  }
+  
+  .cross-icon {
+    color: red; /* Red color for cross icon */
+  }
+  
+  /* Center buttons styling */
+  .center-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .btn-center {
+    background-color: #388e3c; /* Green button color */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px; /* Increased font size */
+    flex: 1;
+  }
+  
+  .btn-center:hover {
+    background-color: #2e7d32; /* Darker green on hover */
+  }
+  
