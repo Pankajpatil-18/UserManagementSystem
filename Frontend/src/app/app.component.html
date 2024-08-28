@@ -1,14 +1,12 @@
 <app-header></app-header>
 
-<app-requests-table></app-requests-table>
-
 <!-- Main Content -->
 <div class="container">
   <!-- Conditionally render Login or Signup component -->
   <app-login *ngIf="isLogin" (signIn)="onSignIn()"></app-login>
   <app-signup *ngIf="isLogged" (back)="onBackToLogin()"></app-signup>
 </div>
-<app-user-table></app-user-table>
+
 <app-footer></app-footer> 
 
 
