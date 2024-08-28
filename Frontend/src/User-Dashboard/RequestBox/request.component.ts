@@ -14,7 +14,29 @@ import { RequestStatusComponent } from "../request-status/request-status.compone
 export class RequestComponent {
   userRequests: any[] = [];
 
+  constructor() {
+    // Static data for demonstration purposes
+    this.userRequests = [];
+  }
+
   handleRequestSubmitted(newRequest: any) {
     this.userRequests.push(newRequest);
   }
+
+  // // Uncomment this section and remove the static data in the constructor once the backend is ready
+  // ngOnInit() {
+  //   this.apiService.getUserRequests().subscribe(response => {
+  //     this.userRequests = response;
+  //   }, error => {
+  //     console.error('Failed to load user requests', error);
+  //   });
+  // }
+
+  // handleRequestSubmitted(newRequest: any) {
+  //   this.apiService.submitRequest(newRequest).subscribe(response => {
+  //     this.userRequests.push(response);
+  //   }, error => {
+  //     console.error('Failed to submit request', error);
+  //   });
+  // }
 }
