@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-user-table',
   standalone: true,
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NavbarComponent],
 })
 export class UserTableComponent {
   selectedTable: string = 'Student'; // Default to 'Student' table
