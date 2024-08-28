@@ -1,5 +1,5 @@
 
-import {Routes } from '@angular/router';
+import {RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { TableComponent } from 'src/User-Dashboard/Table/Table/table.component';
@@ -9,6 +9,8 @@ import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-st
 import { TableComponentAd } from 'src/Admin-Dashboard/table/table.component';
 import { RequestsTableComponent } from 'src/Admin-Dashboard/requests-table/requests-table.component';
 import { UserTableComponent } from 'src/Admin-Dashboard/user-table/user-table.component';
+import { NavbarComponent } from 'src/Admin-Dashboard/navbar/navbar.component';
+import { NgModule } from '@angular/core';
 
 
 export const routes: Routes = [
@@ -19,9 +21,9 @@ export const routes: Routes = [
   { path: 'table-content', component: TableContentComponent },
   { path: 'requestbox' ,component:RequestActionsComponent},
   { path: 'requeststatuslist',component:RequestStatusComponent},
-  { path:'user-management' ,component:UserTableComponent},
-  { path:'request-management' ,component:RequestsTableComponent},
-  { path:'tableAd' ,component:TableComponentAd},
+  { path: 'user-management', component: UserTableComponent },
+  { path: 'request-management', component: RequestsTableComponent },
+  { path: 'tableAd', component: TableComponentAd },
+  { path: 'navbar' ,component:NavbarComponent},
   { path: '**', redirectTo: 'login' } // Wildcard route for 404
 ];
-

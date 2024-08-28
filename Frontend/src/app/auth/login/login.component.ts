@@ -44,6 +44,9 @@ export class LoginComponent implements OnInit {
       if(formValues.loginType==='admin'){
         this.isLogged.emit();
         this.router.navigate(['/user-management']);
+    
+
+        
       }
 
       // Perform your login logic here
