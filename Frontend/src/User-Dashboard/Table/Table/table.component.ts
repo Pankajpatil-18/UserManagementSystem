@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -17,6 +18,7 @@ export class TableComponent {
   isRowSelected: boolean = false; // To track if a row is selected
   errorMessage: string = ''; // New property for error messages
 
+  constructor(private router: Router) {}
 
   tableData: any = {
     Students: [{ id: 1, name: 'John Doe', age: 20 }, { id: 2, name: 'Jane Doe', age: 22 }],
@@ -100,5 +102,13 @@ export class TableComponent {
     this.selectedRow = null;
     this.isRowSelected = false;
     this.errorMessage = '';
+  }
+  onRequestBox(){
+    this.router.navigate(['requestbox']);
+  }
+
+  onRequestStatus(){
+    this.router.navigate(['requeststatuslist']);
+    
   }
 }

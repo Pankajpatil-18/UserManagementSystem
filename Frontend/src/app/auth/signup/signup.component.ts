@@ -44,11 +44,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HeaderComponent } from "../../header/header.component";
+import { FooterComponent } from "../../footer/footer.component";
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports:[CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, FooterComponent],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
@@ -88,6 +90,7 @@ export class SignupComponent implements OnInit {
       console.log('Email:', formValues.email);
       console.log('Password:', formValues.password);
       console.log('Confirm Password:', formValues.confirmPassword);
+      this.router.navigate(['/login']);
 
       // Perform your signup logic here
     }
