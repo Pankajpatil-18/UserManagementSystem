@@ -42,7 +42,7 @@ import { UserTableComponent } from '../Admin-Dashboard/user-table/user-table.com
 
 import { RequestsTableComponent } from "../Admin-Dashboard/requests-table/requests-table.component";
 import { NavbarComponent } from "../Admin-Dashboard/navbar/navbar.component";
-import { TableComponent } from "../Admin-Dashboard/table/table.component";
+import { TableComponentAd } from "../Admin-Dashboard/table/table.component";
 import { RouterOutlet } from '@angular/router';
 import { TableContentComponent } from 'src/User-Dashboard/Table/TableContent/tablecontent.component';
 import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-status/request-status.component';
@@ -50,7 +50,7 @@ import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-st
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, TableComponent, TableContentComponent, RequestStatusComponent],
+  imports: [RouterOutlet, LoginComponent, SignupComponent, FooterComponent, HeaderComponent, ReactiveFormsModule, CommonModule, TableComponentAd, TableContentComponent, RequestStatusComponent, NavbarComponent, RequestsTableComponent, UserTableComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
