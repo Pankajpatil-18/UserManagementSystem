@@ -45,7 +45,7 @@ export class HomeComponent {
 
   manageRequests() {
     console.log('Request Management clicked');
-    this.router.navigate(['/requestbox'])
+    this.router.navigate(['/request'])
   }
 
   // TODO: Uncomment and implement these methods when backend integration is ready

@@ -12,6 +12,7 @@ import { UserTableComponent } from 'src/Admin-Dashboard/user-table/user-table.co
 import { NavbarComponent } from 'src/Admin-Dashboard/navbar/navbar.component';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from 'src/User-Dashboard/Home/home/home.component';
+import { RequestComponent } from 'src/User-Dashboard/RequestBox/request/request.component';
 
 
 export const routes: Routes = [
@@ -27,5 +28,6 @@ export const routes: Routes = [
   { path: 'tableAd', component: TableComponentAd },
   { path: 'navbar' ,component:NavbarComponent},
   { path: 'home' ,component:HomeComponent},
+  { path: 'request' ,component:RequestComponent},
   { path: '**', redirectTo: 'login' } 
 ];
