@@ -1,52 +1,127 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Request Box */
 .request-box {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .request-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .request-table th, .request-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .request-table th {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .request-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-right: 5px;
-  }
-  
-  .btn.approve {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .btn.deny {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .btn.view {
-    background-color: #17a2b8;
-    color: white;
-  }
-  
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* Table Selector */
+.table-selector {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.table-selector label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.table-selector select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fafafa;
+  transition: border-color 0.3s ease;
+}
+
+.table-selector select:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Table Styles */
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.request-table th,
+.request-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.request-table th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.request-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.request-table td {
+  vertical-align: middle;
+}
+
+.request-table th[colspan="5"] {
+  text-align: center;
+}
+
+/* Permissions Icons in Headers */
+.request-table th i {
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.icon-right::before {
+  content: '\2714'; /* Unicode for check mark */
+  color: green;
+}
+
+.icon-wrong::before {
+  content: '\2716'; /* Unicode for cross mark */
+  color: red;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px; /* Space between buttons */
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.approve {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.deny {
+  background-color: #f44336;
+  color: white;
+}
+
+.remove {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.remove:hover {
+  background-color: #c8c8c8;
+}

@@ -105,7 +105,7 @@
 //   }
   
 // }
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 // Import HttpClient if you're planning to use backend logic
@@ -129,6 +129,7 @@ export class TableComponent implements OnInit {
   columns: ColumnMetadata[] = [];
   tableData: any[] = [];
   selectedRow: any = {};
+
 
   constructor(
     // private http: HttpClient // Uncomment this when using backend
@@ -237,8 +238,26 @@ export class TableComponent implements OnInit {
     });
     */
 
-    // Static update logic
-    console.log('Update:', this.selectedRow);
+    // Static update logic(TO DELETE)
+    if (this.selectedRow && 'id' in this.selectedRow) {
+      const index = this.tableData.findIndex(row => row.id === this.selectedRow.id);
+  
+      if (index !== -1) {
+        // Update the row with the new data
+        this.tableData[index] = { ...this.selectedRow };
+        console.log('Updated:', this.selectedRow);
+      } else {
+        console.log('Row not found for update.');
+      }
+    } else {
+      console.log('Selected row does not have a unique identifier.');
+    }
+  }
+
+  //(TO DELETE)
+  isEqual(row1: any, row2: any): boolean {
+    // Adjust the comparison logic based on your unique key(s)
+    return JSON.stringify(row1) === JSON.stringify(row2);
   }
 
   onDelete(): void {
@@ -250,8 +269,18 @@ export class TableComponent implements OnInit {
     });
     */
 
-    // Static delete logic
+    // Static delete logic(To DELETE)
     console.log('Delete:', this.selectedRow);
+    const index = this.tableData.findIndex(row => this.isEqual(row, this.selectedRow));
+
+    if (index !== -1) {
+      // Remove the row from the table data
+      this.tableData.splice(index, 1);
+      console.log('Deleted:', this.selectedRow);
+      this.initializeEmptyRow(); // Clear the form after deletion
+    } else {
+      console.log('Row not found for deletion.');
+    }
   }
 
   addNew(): void {
