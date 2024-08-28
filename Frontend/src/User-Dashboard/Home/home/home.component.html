@@ -7,7 +7,7 @@
     <div class="container">
       <div class="dropdown-container">
         <label for="tableSelect">Select Table:</label>
-        <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange(selectedTable)">
+        <select id="tableSelect" (change)="onTableChange($event)">
           <option *ngFor="let table of ['Student', 'Employee']" [value]="table">{{ table }}</option>
         </select>
       </div>

@@ -10,15 +10,6 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-togglePrivilege(_t22: string) {
-throw new Error('Method not implemented.');
-}
-oneMoreAction() {
-throw new Error('Method not implemented.');
-}
-anotherAction() {
-throw new Error('Method not implemented.');
-}
   userName = 'Gayatri';
   selectedTable: keyof typeof this.userPrivileges = 'Student'; 
   userPrivileges = {
@@ -30,9 +21,13 @@ throw new Error('Method not implemented.');
     console.log('Logout clicked');
   }
 
-  onTableChange(selectedTable: keyof typeof this.userPrivileges) {
-    this.selectedTable = selectedTable;
-    console.log('Selected table:', selectedTable);
+  onTableChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedTable = target.value as keyof typeof this.userPrivileges;
+    console.log('Selected table:', this.selectedTable);
+    // TODO: Fetch privileges for the selected table from the backend
+    // Uncomment the following line when backend integration is ready:
+    // this.fetchPrivileges();
   }
 
   hasPrivilege(privilege: string): boolean {
@@ -46,4 +41,11 @@ throw new Error('Method not implemented.');
   manageRequests() {
     console.log('Request Management clicked');
   }
+
+  // TODO: Uncomment and implement these methods when backend integration is ready
+  // private fetchPrivileges(): void {
+  //   this.privilegeService.getPrivileges(this.selectedTable).subscribe(privileges => {
+  //     this.userPrivileges[this.selectedTable] = privileges;
+  //   });
+  // }
 }
