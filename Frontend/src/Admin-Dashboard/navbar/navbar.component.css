@@ -5,11 +5,13 @@
   padding: 0 20px;
   height: 60px;
   color: white;
+  font-family: 'Arial', sans-serif; /* Added font-family */
 }
 
 .title {
   font-weight: bold;
   font-size: 20px;
+  font-family: 'Arial', sans-serif; /* Added font-family */
 }
 
 .spacer {
@@ -19,6 +21,7 @@
 .menu {
   display: flex;
   align-items: center;
+  font-family: 'Arial', sans-serif; /* Added font-family */
 }
 
 .menu-item {
@@ -29,6 +32,7 @@
   position: relative;
   transition: color 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+  font-family: 'Arial', sans-serif; /* Added font-family */
 }
 
 .menu-item::after {
@@ -61,6 +65,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  font-family: 'Arial', sans-serif; /* Added font-family */
 }
 
 .logout-button:hover {

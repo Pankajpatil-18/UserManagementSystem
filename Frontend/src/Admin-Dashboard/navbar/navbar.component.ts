@@ -21,7 +21,8 @@ export class NavbarComponent {
   }
   onLogout() {
     // Add your logout logic here (e.g., clearing session, tokens)
-    console.log('User logged out');
+    this.router.navigate(['/login']);
+    // console.log('User logged out');
   }
   
 }

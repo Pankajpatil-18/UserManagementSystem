@@ -17,17 +17,20 @@
   }
   
   .logout-button {
-    background-color: #d32f2f; /* Red color for logout */
+    background-color: red; /* Red color for logout */
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 20px;
+    font-size: 16px;
   }
   
   .logout-button:hover {
-    background-color: #c62828; /* Darker red on hover */
-  }
+    background-color:  darkred; /* Darker red on hover */
+    transform: scale(1.1);
+  }  
   
   /* Content styling */
   .content {
