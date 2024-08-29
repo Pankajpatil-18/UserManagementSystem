@@ -112,3 +112,12 @@ button:hover {
 .add-button:hover {
   background-color: #1b5e20; /* Darker shade on hover */
 }
+/* Styles for the selected table label */
+.selected-table-label {
+  font-weight: bold; /* Makes the label text bold */
+  font-size: 18px; /* Adjusts the font size to be larger */
+  color: #2c3e50; /* Sets the text color to a dark blue-gray */
+  margin-bottom: 10px; /* Adds some space below the label */
+  display: inline-block; /* Ensures the label behaves like an inline element but allows margin */
+}
+
