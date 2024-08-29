@@ -17,7 +17,7 @@ label {
 
 /* Dropdown Select */
 #table-select {
-  margin-bottom: 20px; /* Add space below the dropdown */
+  margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -86,11 +86,12 @@ button:hover:not(:disabled) {
 
 /* Action Button Styles */
 .actions {
-  text-align: right;
+  text-align: right; /* Aligns actions to the right */
+  margin-top: 10px; /* Adds some space above */
 }
 
-.actions button {
-  margin-left: 10px;
+.actions .cancel-button {
+  margin-left: 10px; /* Adds space between buttons */
 }
 
 /* Alert Styles */
