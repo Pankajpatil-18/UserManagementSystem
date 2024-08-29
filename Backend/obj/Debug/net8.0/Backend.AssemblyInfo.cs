@@ -13,11 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad0082564e0299f6ec8cc0dfe9bb211c5e5d8bc0")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c66fc06cec70150e0add1176f11393e1553730a")]
->>>>>>> Aditi_d
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+382e456ce80d78f341a5b3111b1df58d81035435")]
 [assembly: System.Reflection.AssemblyProductAttribute("Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
