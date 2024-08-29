@@ -45,3 +45,4 @@ export class HomeComponent {
         return this.userPrivileges[this.selectedTable].includes(privilege);
     }
 }
+

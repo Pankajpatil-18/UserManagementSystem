@@ -9,11 +9,19 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Backend
 build_property.RootNamespace = Backend
+<<<<<<< HEAD
 build_property.ProjectDir = D:\UserManagementSystem\backend\
+=======
+build_property.ProjectDir = D:\Project\UserManagementSystem\Backend\
+>>>>>>> Gayatri_d
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = D:\UserManagementSystem\backend
+=======
+build_property.MSBuildProjectDirectory = D:\Project\UserManagementSystem\Backend
+>>>>>>> Gayatri_d
 build_property._RazorSourceGeneratorDebug = 

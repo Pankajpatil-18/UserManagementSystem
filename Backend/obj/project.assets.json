@@ -4315,19 +4315,37 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\ppatil\\.nuget\\packages\\": {}
+=======
+    "C:\\Users\\ggutte\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+>>>>>>> Gayatri_d
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\UserManagementSystem\\backend\\Backend.csproj",
       "projectName": "Backend",
       "projectPath": "D:\\UserManagementSystem\\backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
       "outputPath": "D:\\UserManagementSystem\\backend\\obj\\",
+=======
+      "projectUniqueName": "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj",
+      "projectName": "Backend",
+      "projectPath": "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\ggutte\\.nuget\\packages\\",
+      "outputPath": "D:\\Project\\UserManagementSystem\\Backend\\obj\\",
+>>>>>>> Gayatri_d
       "projectStyle": "PackageReference",
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\ppatil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "C:\\Users\\ggutte\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+>>>>>>> Gayatri_d
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

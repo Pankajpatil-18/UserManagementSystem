@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "D:\\UserManagementSystem\\backend\\Backend.csproj": {}
   },
   "projects": {
@@ -12,9 +13,27 @@
         "projectPath": "D:\\UserManagementSystem\\backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
         "outputPath": "D:\\UserManagementSystem\\backend\\obj\\",
+=======
+    "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj": {}
+  },
+  "projects": {
+    "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj",
+        "projectName": "Backend",
+        "projectPath": "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\ggutte\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\UserManagementSystem\\Backend\\obj\\",
+>>>>>>> Gayatri_d
         "projectStyle": "PackageReference",
         "configFilePaths": [
+<<<<<<< HEAD
           "C:\\Users\\ppatil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+          "C:\\Users\\ggutte\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+>>>>>>> Gayatri_d
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
