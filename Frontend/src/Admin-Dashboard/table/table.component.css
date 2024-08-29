@@ -120,5 +120,26 @@
     margin-bottom: 10px; /* Adds some space below the label */
     display: inline-block; /* Ensures the label behaves like an inline element but allows margin */
   }
+  #tableSelect {
+    margin-bottom: 20px; /* Add space below the dropdown */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(100% - 22px);
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+  }
+  
+  #tableSelect:focus {
+    border-color: #4CAF50; /* Dark green on focus */
+    outline: none;
+  }
+  #label{
+    display: inline-block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #2e7d32;
+  }
+  
   
   

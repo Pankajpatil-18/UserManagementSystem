@@ -19,7 +19,7 @@ interface ColumnMetadata {
 })
 export class TableComponentAd implements OnInit {
   tables: string[] = ['users', 'products', 'orders'];
-  selectedTable: string = '';
+  selectedTable: string = 'user';
   columns: ColumnMetadata[] = [];
   tableData: any[] = [];
   selectedRow: any = {};
@@ -31,9 +31,9 @@ export class TableComponentAd implements OnInit {
   ) {}
   ngOnInit(): void {
     // Select the first table by default
-    
-    console.log("From Table "+this.selectedTable);
+    this.selectedTable=this.tables[0];
     this.fetchTableData(this.selectedTable);
+    
   }
 
   fetchTableData(tableName: string): void {
