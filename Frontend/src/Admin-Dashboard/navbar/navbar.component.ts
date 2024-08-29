@@ -19,4 +19,10 @@ export class NavbarComponent {
   onTab(){
     this.router.navigate(['/tableAd']);
   }
+  onLogout() {
+    // Add your logout logic here (e.g., clearing session, tokens)
+    this.router.navigate(['/login']);
+    // console.log('User logged out');
+  }
+  
 }

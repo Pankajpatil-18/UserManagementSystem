@@ -2,7 +2,9 @@
 <div class="request-box">
   <!-- Dropdown for selecting table -->
   <div class="table-selector">
-    <label for="tableSelect">Select Table:</label>
+    <div>
+    <label id="label" for="tableSelect">Select Table:</label>
+    </div>
     <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange()">
       <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
     </select>
