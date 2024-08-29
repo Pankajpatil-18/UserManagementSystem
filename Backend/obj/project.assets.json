@@ -2716,23 +2716,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ABangal\\.nuget\\packages\\": {},
+    "C:\\Users\\ggutte\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Aditi\\UserManagementSystem\\Backend\\Backend.csproj",
+      "projectUniqueName": "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "D:\\Aditi\\UserManagementSystem\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\ABangal\\.nuget\\packages\\",
-      "outputPath": "D:\\Aditi\\UserManagementSystem\\Backend\\obj\\",
+      "projectPath": "D:\\Project\\UserManagementSystem\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\ggutte\\.nuget\\packages\\",
+      "outputPath": "D:\\Project\\UserManagementSystem\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ABangal\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ggutte\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
