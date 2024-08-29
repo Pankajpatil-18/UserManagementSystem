@@ -1,49 +1,6 @@
-<!-- <div class="container">
-  <label for="tableSelect">Select Table:</label>
-  <select id="tableSelect" (change)="onTableSelect($event)">
-    <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
-  </select>
-
-
-  <table *ngIf="selectedTable" class="styled-table">
-    <thead>
-      <tr>
-        <th *ngFor="let column of columns">{{ column }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of tableData[selectedTable]" (click)="onRowSelect(row)" class="table-row">
-        <td *ngFor="let column of columns">{{ row[column] }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  
- 
-
-
-  
-  <div  class="edit-form">
-    <h3>Edit Row</h3>
-    <form (ngSubmit)="onSave()">
-      <div *ngFor="let column of columns">
-        <label [for]="column">{{ column }}</label>
-        <input [id]="column" [(ngModel)]="selectedRow[column]" name="{{ column }}" />
-      </div>
-      <div class="buttons">
-        <button type="button" (click)="onUpdate()">Update</button>
-        <button type="button" (click)="onDelete()">Delete</button>
-        <button class="add-button" (click)="addNew()">Add New</button>
-        <button type="button" (click)="onCancel()">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div> -->
 <div class="container">
-  <label for="tableSelect">Select Table:</label>
-  <select id="tableSelect" (change)="onTableSelect($event)">
-    <option *ngFor="let table of tables" [value]="table" [selected]="table === selectedTable">{{ table }}</option>
-  </select>
+  <label class="selected-table-label" for="tableSelect">Selected Table: {{selectedTable}}</label>
+ 
 
   <!-- Table display -->
   <table *ngIf="selectedTable" class="styled-table">

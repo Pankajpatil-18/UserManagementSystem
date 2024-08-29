@@ -112,18 +112,12 @@ button:hover {
 .add-button:hover {
   background-color: #1b5e20; /* Darker shade on hover */
 }
-#tableSelect{
-  margin-bottom: 20px; /* Add space below the dropdown */
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: calc(100% - 22px);
-  font-size: 1em;
-  transition: border-color 0.3s ease;
-}
-
-#tableSelect:focus {
-  border-color: #4CAF50; /* Dark green on focus */
-  outline: none;
+/* Styles for the selected table label */
+.selected-table-label {
+  font-weight: bold; /* Makes the label text bold */
+  font-size: 18px; /* Adjusts the font size to be larger */
+  color: #2c3e50; /* Sets the text color to a dark blue-gray */
+  margin-bottom: 10px; /* Adds some space below the label */
+  display: inline-block; /* Ensures the label behaves like an inline element but allows margin */
 }
 

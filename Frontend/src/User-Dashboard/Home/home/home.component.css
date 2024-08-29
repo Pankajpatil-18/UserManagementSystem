@@ -1,134 +1,134 @@
-/* Full-page styling */
-:host {
-    display: block;
-    height: 100%;
-    margin: 0;
-  }
-  
-  /* Navbar styling */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 20px;
-    background-color: #2e7d32; /* Dark green background */
-    color: white;
-    font-size: 18px;
-  }
-  
-  .logout-button {
-    background-color: red; /* Red color for logout */
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 20px;
-    font-size: 16px;
-  }
-  
-  .logout-button:hover {
-    background-color:  darkred; /* Darker red on hover */
-    transform: scale(1.1);
-  }  
-  
-  /* Content styling */
-  .content {
-    padding: 20px;
-    background-color: #e8f5e9; /* Light green background */
-    height: calc(100vh - 40px); /* Full height minus navbar height */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Container styling */
-  .container {
-    width: 100%;
-    max-width: 600px; /* Adjust as needed */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Dropdown styling */
-  .dropdown-container {
-    margin-bottom: 20px;
-    font-size: 18px; /* Increased font size */
-  }
-  
-  select {
-    padding: 8px;
-    font-size: 18px; /* Increased font size */
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  /* Privileges box styling */
-  .privileges-box {
-    padding: 20px;
-    background-color: #ffffff; /* White background for the box */
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    width: 100%;
-  }
-  
-  /* Privileges grid styling */
-  .privileges-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two items per row */
-    gap: 20px; /* Spacing between items */
-  }
-  
-  .privilege-item {
-    display: flex;
-    align-items: center;
-    font-size: 18px; /* Increased font size */
-  }
-  
-  .privilege-item span {
-    flex: 1;
-  }
-  
-  /* Icons */
-  .icon {
-    margin-left: 10px;
-    font-size: 24px; /* Larger size for icons */
-  }
-  
-  .check-icon {
-    color: green; /* Green color for check icon */
-  }
-  
-  .cross-icon {
-    color: red; /* Red color for cross icon */
-  }
-  
-  /* Center buttons styling */
-  .center-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .btn-center {
-    background-color: #388e3c; /* Green button color */
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px; /* Increased font size */
-    flex: 1;
-  }
-  
-  .btn-center:hover {
-    background-color: #2e7d32; /* Darker green on hover */
-  }
-  
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 15px; /* Reduced padding */
+  background-color: #2e7d32; /* Dark green background */
+  color: white;
+  height: 50px; /* Slightly increased height for better spacing */
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+/* Greeting styling */
+.navbar h1 {
+  font-size: 18px; /* Balanced font size for the greeting */
+  margin: 0; /* Remove default margin for h1 */
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+/* Logout button styling */
+.logout-button {
+  background-color: #d32f2f; /* Red color for logout */
+  color: white;
+  border: none;
+  padding: 6px 12px; /* Slightly increased padding */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px; /* Adjusted font size for better consistency */
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+.logout-button:hover {
+  background-color: #c62828; /* Darker red on hover */
+}
+
+/* Content styling */
+.content {
+  padding: 20px;
+  background-color: #e8f5e9; /* Light green background */
+  height: calc(100vh - 50px); /* Full height minus navbar height */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+/* Container styling */
+.container {
+  width: 100%;
+  max-width: 600px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dropdown styling */
+.dropdown-container {
+  margin-bottom: 20px;
+  font-size: 18px; /* Increased font size */
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+select {
+  padding: 8px;
+  font-size: 18px; /* Increased font size */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #ffffff; /* White background for the select */
+  color: #333; /* Dark text color for contrast */
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+/* Privileges box styling */
+.privileges-box {
+  padding: 20px;
+  background-color: #ffffff; /* White background for the box */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+/* Privileges grid styling */
+.privileges-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two items per row */
+  gap: 20px; /* Spacing between items */
+}
+
+.privilege-item {
+  display: flex;
+  align-items: center;
+  font-size: 18px; /* Increased font size */
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+.privilege-item span {
+  flex: 1;
+}
+
+/* Icons */
+.icon {
+  margin-left: 10px;
+  font-size: 24px; /* Larger size for icons */
+}
+
+/* Center buttons styling */
+.center-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-center {
+  background-color: #388e3c; /* Green button color */
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px; /* Increased font size */
+  flex: 1;
+  font-family: 'Arial', sans-serif; /* Ensure Arial font is used */
+}
+
+.btn-center:hover {
+  background-color: #2e7d32; /* Darker green on hover */
+}

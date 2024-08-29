@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],  // Include CommonModule here
+  imports: [RouterModule, CommonModule], // Include RouterModule and CommonModule as imports
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   userName = 'Gayatri';
-  selectedTable: keyof typeof this.userPrivileges = 'Student'; 
-  userPrivileges = {
-    Student: ['Read', 'Write'],
-    Employee: ['Read'],
-  };
+  selectedTable: string = 'users'; // Default selection
+  userPrivileges :any= {
+        users: ['Read', 'Write'],
+        products: ['Read'],
+        orders:['Read']
+      };
 
   constructor(private router: Router) {}
 
@@ -27,31 +27,21 @@ export class HomeComponent {
 
   onTableChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    this.selectedTable = target.value as keyof typeof this.userPrivileges;
+    this.selectedTable = target.value;
     console.log('Selected table:', this.selectedTable);
-    // TODO: Fetch privileges for the selected table from the backend
-    // Uncomment the following line when backend integration is ready:
-    // this.fetchPrivileges();
-  }
-
-  hasPrivilege(privilege: string): boolean {
-    return this.userPrivileges[this.selectedTable].includes(privilege);
   }
 
   manageRecords() {
     console.log('Record Management clicked');
-    this.router.navigate(['/table']);
+    // Navigate to TableComponent with selectedTable as a query parameter
+    this.router.navigate(['/table'], { queryParams: { selectedTable: this.selectedTable } });
   }
 
   manageRequests() {
     console.log('Request Management clicked');
-    this.router.navigate(['/request'])
+    this.router.navigate(['/request']);
   }
-
-  // TODO: Uncomment and implement these methods when backend integration is ready
-  // private fetchPrivileges(): void {
-  //   this.privilegeService.getPrivileges(this.selectedTable).subscribe(privileges => {
-  //     this.userPrivileges[this.selectedTable] = privileges;
-  //   });
-  // }
+  hasPrivilege(privilege: string): boolean {
+        return this.userPrivileges[this.selectedTable].includes(privilege);
+    }
 }
