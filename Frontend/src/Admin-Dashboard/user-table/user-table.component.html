@@ -53,11 +53,13 @@
   </div>
 
   <div class="alert">Your changes are saved!</div>
-</div> -->
-<app-navbar></app-navbar>
+</div>  -->
+
+
+<!-- <app-navbar></app-navbar>
 <div class="user-table-container">
   <h2>User Permissions</h2>
-
+  
   <label for="table-select">Select Table:</label>
   <select id="table-select" [(ngModel)]="selectedTable">
     <option value="Student">Student</option>
@@ -97,16 +99,74 @@
           </button>
         </td>
         <td>
-          <button *ngIf="!isEditing" (click)="onEdit()">Edit</button>
-          <button *ngIf="isEditing" (click)="onSave()">Save</button>
+          Display Save button if in editing mode, otherwise show Edit button -->
+          <!-- <button (click)="isEditing ? onSaveChanges() : onEdit()">
+            {{ isEditing ? 'Save Changes' : 'Edit' }}
+          </button>
+          Display Cancel button if in editing mode -->
+          <!-- <button (click)="onCancelEdit()" *ngIf="isEditing">Cancel</button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Single Cancel button, aligned to the right -->
-  <div class="actions" *ngIf="isEditing">
-    <button class="cancel-button" (click)="onCancel()">Cancel</button>
+  <div class="alert">Your changes are saved!</div>
+</div> -->
+
+<app-navbar></app-navbar>
+<div class="user-table-container">
+  <h2>User Permissions</h2>
+  
+  <label for="table-select">Select Table:</label>
+  <select id="table-select" [(ngModel)]="selectedTable">
+    <option value="Student">Student</option>
+    <option value="Employee">Employee</option>
+  </select>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Insert</th>
+        <th>Update</th>
+        <th>Delete</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of currentTableData">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canInsert')">
+            {{ user.canInsert ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canUpdate')">
+            {{ user.canUpdate ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canDelete')">
+            {{ user.canDelete ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <!-- Display the "Save" button if in editing mode, otherwise display "Edit" -->
+          <button *ngIf="isEditing" (click)="onSaveChanges()">Save</button>
+          <button *ngIf="!isEditing" (click)="onEdit()">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Single Cancel button at the bottom right -->
+  <div class="actions">
+    <button *ngIf="isEditing" (click)="onCancelEdit()">Cancel</button>
   </div>
 
   <div class="alert">Your changes are saved!</div>
