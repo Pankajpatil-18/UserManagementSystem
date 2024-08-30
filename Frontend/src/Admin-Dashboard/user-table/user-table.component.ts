@@ -281,6 +281,7 @@
 //     }
 //   }
 // }
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -296,6 +297,7 @@ import { NavbarComponent } from "../navbar/navbar.component";
 export class UserTableComponent {
   selectedTable: string = 'Student'; // Default to 'Student' table
   isEditing: boolean = false;
+  backupTableData: any[] = []; // To store a backup copy of the current data
 
   // Sample data
   tables = {
@@ -315,6 +317,8 @@ export class UserTableComponent {
 
   onEdit() {
     this.isEditing = true;
+    // Make a deep copy of the current table data for backup
+    this.backupTableData = JSON.parse(JSON.stringify(this.currentTableData));
   }
 
   onSaveChanges() {
@@ -324,6 +328,8 @@ export class UserTableComponent {
 
   onCancelEdit() {
     this.isEditing = false;
+    // Restore the backup data
+    this.tables[this.selectedTable as keyof typeof this.tables] = JSON.parse(JSON.stringify(this.backupTableData));
     // Hide the alert box if it's shown
     const alertBox = document.querySelector('.alert');
     if (alertBox) {
