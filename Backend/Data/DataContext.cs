@@ -1,12 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Threading.Tasks;
-using Backend.Models;
 using System.Data;
-
-
+using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 public class DataContext : DbContext
 {
     private readonly IConfiguration _config;
@@ -22,7 +16,7 @@ public class DataContext : DbContext
     public virtual DbSet<Student> Students { get; set; }
     public virtual DbSet<Employee> Employees { get; set; }
     public DbSet<Product> Products {get; set;}
-    //public DbSet<Dictionary<string, object>> TableData { get; set; }
+    public DbSet<Dictionary<string, object>> TableData { get; set; }
 
     
 
@@ -60,21 +54,21 @@ public class DataContext : DbContext
    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<User>()
                 .ToTable("User")
                 .HasKey(u => u.UserId);
-               
+                
         modelBuilder.Entity<Student>()
             .ToTable("Student")
             .HasKey(u => u.StudentId);
- 
+
         modelBuilder.Entity<Employee>()
             .ToTable("Employee")
             .HasKey(u => u.EmployeeId);
- 
+
         modelBuilder.Entity<Product>()
             .ToTable("Product")
             .HasKey(u => u.ProductId);
     }
+    
 }
