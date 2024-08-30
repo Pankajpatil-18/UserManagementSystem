@@ -23,7 +23,7 @@ namespace Backend.Controllers
         [HttpGet("GetCurrentTime")]
         public async Task<IActionResult> GetCurrentTime()
         {
-            string currentTime;
+            string? currentTime;
 
             using (var connection = new SqlConnection(Dbcontext.Database.GetConnectionString()))
             {
