@@ -24,8 +24,6 @@ export class TableComponentAd implements OnInit {
   tableData: any[] = [];
   selectedRow: any = {};
   
-
-
   constructor(
     // private http: HttpClient // Uncomment this when using backend
   ) {}
@@ -33,7 +31,6 @@ export class TableComponentAd implements OnInit {
     // Select the first table by default
     this.selectedTable=this.tables[0];
     this.fetchTableData(this.selectedTable);
-    
   }
 
   fetchTableData(tableName: string): void {

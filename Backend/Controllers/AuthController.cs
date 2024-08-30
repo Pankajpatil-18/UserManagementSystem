@@ -4,56 +4,47 @@ using Backend.Data;
 using Backend.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
-namespace UserAuthAPI.Controllers
+
+namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DataContext Dbcontext;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(DataContext context)
         {
-            _context = context;
+            Dbcontext = context;
         }
 
-        [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] User user)
+        [HttpGet("GetCurrentTime")]
+        public async Task<IActionResult> GetCurrentTime()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            string currentTime;
 
-            // Check if the email already exists
-            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
-                return BadRequest("Email is already in use.");
+            using (var connection = new SqlConnection(Dbcontext.Database.GetConnectionString()))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    using (var command = new SqlCommand("SELECT GETDATE()", connection))
+                    {
+                        var result = await command.ExecuteScalarAsync();
+                        currentTime = result?.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal server error: {ex.Message}");
+                }
+            }
 
-            // Save the new user
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return Ok("User registered successfully.");
+            return Ok(new { Time = currentTime });
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel login)
-        {
-            // Check if a user with the provided email exists
-            var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == login.Email);
-
-            if (existingUser == null)
-                return Unauthorized("Invalid email or password.");
-
-            // Check if the provided password matches the stored password
-            if (existingUser.Password != login.Password)
-                return Unauthorized("Invalid email or password.");
-
-            return Ok(new 
-            { 
-                Message = "Login successful",
-                LoginType = existingUser.LoginType 
-            });
-        }
+        
     }
 }
