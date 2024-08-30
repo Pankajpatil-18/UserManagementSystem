@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
-using Backend.Models;
+
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;

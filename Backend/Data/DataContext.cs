@@ -1,4 +1,4 @@
-using Backend.Models;  // Adjust the namespace to match your actual model location
+ // Adjust the namespace to match your actual model location
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data  // Adjust the namespace to match your actual data context location
