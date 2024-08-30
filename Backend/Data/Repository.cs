@@ -1,24 +1,18 @@
-
 using Backend.Data;
-
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data
 {
-    public class Repository :IRepository{
-        
-        private readonly DataContext dataContextEf;
-        private readonly IConfiguration _config;
+    public class Repository
+    {
+        private readonly DataContext _dataContext;
 
-        
-        public Repository(IConfiguration config){
-            dataContextEf=new DataContext(config);
-            _config=config;
-
+        // Constructor injection
+        public Repository(DataContext dataContext)
+        {
+            _dataContext = dataContext;
         }
 
-        
+        // Your methods that use _dataContext
     }
-
-    
 }

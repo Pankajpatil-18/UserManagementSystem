@@ -1,26 +1,19 @@
-
+using Microsoft.AspNetCore.Mvc;
+using Backend.Data;
 
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RequestController : ControllerBase
     {
-        IUserRepository userRepo;
-        DataContext dataContextEf;
-        private readonly IDbConnection  dbConnection ;
+        private readonly DataContext _dataContext;
 
-
-        IConfiguration _config;
-        public UserCompleteController(IUserRepository iuser,IConfiguration config){
-            userRepo=iuser;
-            dataContextEf=new DataContext(config);
-            _config=config;
-           
+        public RequestController(DataContext dataContext)
+        {
+            _dataContext = dataContext;
         }
 
-        
-
-
+        // Controller actions
     }
 }
