@@ -2,7 +2,6 @@
   <label class="selected-table-label" for="tableSelect">Selected Table: {{selectedTable}}</label>
  
 
-  <!-- Table display -->
   <table *ngIf="selectedTable" class="styled-table">
     <thead>
       <tr>
@@ -16,7 +15,6 @@
     </tbody>
   </table>
 
-  <!-- Row Edit Form -->
   <div class="edit-form" *ngIf="columns.length > 0">
     <h3>Edit Row</h3>
     <form (ngSubmit)="onSave()">

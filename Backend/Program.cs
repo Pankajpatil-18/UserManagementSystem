@@ -18,6 +18,7 @@ builder.Services.AddDbContext<DataContext>((serviceProvider, options) =>
 
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IRepository, Repository>();
 
 var app = builder.Build();
 

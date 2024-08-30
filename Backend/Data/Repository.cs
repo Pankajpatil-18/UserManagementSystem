@@ -4,7 +4,7 @@ using Backend.Models;
 
 namespace Backend.Data
 {
-    public class Repository
+    public class Repository :IRepository
     {
         private readonly DataContext _dataContext;
 
@@ -49,6 +49,27 @@ namespace Backend.Data
         public bool SaveChanges()
         {
             return _dataContext.SaveChanges() > 0;
+        }
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _dataContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
+ 
+        public async Task<User?> GetUserByIdAsync(int userId)
+        {
+            return await _dataContext.Users.FindAsync(userId);
+        }
+ 
+        public async Task AddUserAsync(User user)
+        {
+            await _dataContext.Users.AddAsync(user);
+            await _dataContext.SaveChangesAsync();
+        }
+ 
+        public async Task UpdateUserAsync(User user)
+        {
+            _dataContext.Users.Update(user);
+            await _dataContext.SaveChangesAsync();
         }
 
 

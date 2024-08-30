@@ -1,24 +1,41 @@
-import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { MyService } from 'src/User-Dashboard/my-service.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, CommonModule], // Include RouterModule and CommonModule as imports
+  imports: [RouterModule, HttpClientModule, CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   userName = 'Gayatri';
   selectedTable: string = 'users'; // Default selection
-  userPrivileges :any= {
-        users: ['Read', 'Write'],
-        products: ['Read'],
-        orders:['Read']
-      };
+  tables: any = []; // Tables to be fetched from API
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private myService: MyService) {}
+
+  ngOnInit(): void {
+    this.myService.getTableNames().subscribe({
+      next: (tables: string[]) => {
+        console.log('Received table names:', tables); // Log received tables
+        this.tables = tables;
+      },
+      error: (error) => {
+        console.error('Error fetching table names:', error); // Log full error object
+        // Additional handling, if needed
+      },
+      complete: () => {
+        console.log('Completed fetching table names.');
+      }
+    });
+  }
+  
+  
 
   logout() {
     console.log('Logout clicked');
@@ -33,7 +50,6 @@ export class HomeComponent {
 
   manageRecords() {
     console.log('Record Management clicked');
-    // Navigate to TableComponent with selectedTable as a query parameter
     this.router.navigate(['/table'], { queryParams: { selectedTable: this.selectedTable } });
   }
 
@@ -41,8 +57,9 @@ export class HomeComponent {
     console.log('Request Management clicked');
     this.router.navigate(['/request']);
   }
-  hasPrivilege(privilege: string): boolean {
-        return this.userPrivileges[this.selectedTable].includes(privilege);
-    }
+  // hasPrivilege(privilege: string): boolean {
+  //   return this.userPrivileges[this.selectedTable]?.includes(privilege) ?? false;
+  // }
 }
+
 
