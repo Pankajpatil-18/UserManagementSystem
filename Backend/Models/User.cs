@@ -14,15 +14,3 @@ namespace Backend.Models
         public Boolean CanDelete{get; set; }
     }
 }
-// CREATE TABLE [User](
-//     UserId INT IDENTITY(1,1) PRIMARY KEY,      
-//     FirstName NVARCHAR(50) NOT NULL,          
-//     LastName NVARCHAR(50) NOT NULL,                          
-//     Email NVARCHAR(100) NOT NULL UNIQUE,       
-//     Password NVARCHAR(100) NOT NULL,           
-//     Role NVARCHAR(10) NOT NULL CHECK (Role IN ('User', 'Admin')),  
-//     CanRead BIT NOT NULL,                      
-//     CanWrite BIT NOT NULL,                     
-//     CanUpdate BIT NOT NULL,                    
-//     CanDelete BIT NOT NULL                 
-// );
