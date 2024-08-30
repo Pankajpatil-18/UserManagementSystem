@@ -10,7 +10,7 @@
         "projectUniqueName": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
         "projectName": "Backend",
         "projectPath": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\ABangal\\.nuget\\packages\\",
         "outputPath": "D:\\UserManagementSystem\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -45,6 +45,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.7, )"
@@ -80,6 +84,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "System.Data.Common": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [
