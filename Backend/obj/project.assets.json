@@ -4321,11 +4321,19 @@
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\Aditi\\UserManagementSystem\\Backend\\Backend.csproj",
       "projectName": "Backend",
       "projectPath": "D:\\Aditi\\UserManagementSystem\\Backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\ABangal\\.nuget\\packages\\",
       "outputPath": "D:\\Aditi\\UserManagementSystem\\Backend\\obj\\",
+=======
+      "projectUniqueName": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
+      "projectName": "Backend",
+      "projectPath": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
+      "outputPath": "D:\\UserManagementSystem\\Backend\\obj\\",
+>>>>>>> 9c32bc68dbf03ef7c40eb66f0a0aca05c77656a9
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4423,5 +4431,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\UserManagementSystem\\Backend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

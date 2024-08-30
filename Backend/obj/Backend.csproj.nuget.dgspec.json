@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "D:\\Aditi\\UserManagementSystem\\Backend\\Backend.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "D:\\Aditi\\UserManagementSystem\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\ABangal\\.nuget\\packages\\",
         "outputPath": "D:\\Aditi\\UserManagementSystem\\Backend\\obj\\",
+=======
+    "D:\\UserManagementSystem\\Backend\\Backend.csproj": {}
+  },
+  "projects": {
+    "D:\\UserManagementSystem\\Backend\\Backend.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
+        "projectName": "Backend",
+        "projectPath": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
+        "outputPath": "D:\\UserManagementSystem\\Backend\\obj\\",
+>>>>>>> 9c32bc68dbf03ef7c40eb66f0a0aca05c77656a9
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

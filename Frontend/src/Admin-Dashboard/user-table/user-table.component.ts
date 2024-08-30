@@ -1,3 +1,5 @@
+
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +15,7 @@ import { NavbarComponent } from "../navbar/navbar.component";
 export class UserTableComponent {
   selectedTable: string = 'Student'; // Default to 'Student' table
   isEditing: boolean = false;
+  backupTableData: any[] = []; // To store a backup copy of the current data
 
   // Sample data
   tables = {
@@ -32,27 +35,40 @@ export class UserTableComponent {
 
   onEdit() {
     this.isEditing = true;
+    // Make a deep copy of the current table data for backup
+    this.backupTableData = JSON.parse(JSON.stringify(this.currentTableData));
   }
 
   onSaveChanges() {
     this.isEditing = false;
-    const alertBox = document.querySelector('.alert');
-    if (alertBox) {
-      alertBox.classList.add('show');
-      setTimeout(() => {
-        alertBox.classList.remove('show');
-      }, 2000); // Hide after 2 seconds
-    }
+    this.showAlert('Your changes are saved!');
   }
 
   onCancelEdit() {
     this.isEditing = false;
-    alert('Edit canceled!');
+    // Restore the backup data
+    this.tables[this.selectedTable as keyof typeof this.tables] = JSON.parse(JSON.stringify(this.backupTableData));
+    // Hide the alert box if it's shown
+    const alertBox = document.querySelector('.alert');
+    if (alertBox) {
+      alertBox.classList.remove('show');
+    }
   }
 
   togglePermission(row: any, permission: keyof typeof row) {
     if (this.isEditing) {
       row[permission] = !row[permission];
+    }
+  }
+
+  private showAlert(message: string) {
+    const alertBox = document.querySelector('.alert');
+    if (alertBox) {
+      alertBox.textContent = message;
+      alertBox.classList.add('show');
+      setTimeout(() => {
+        alertBox.classList.remove('show');
+      }, 2000); // Hide after 2 seconds
     }
   }
 }
