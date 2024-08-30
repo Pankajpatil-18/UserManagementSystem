@@ -32,7 +32,7 @@ namespace Backend.Controllers
 
         }
         [HttpPut("EditUser")]
-        public IActionResult EditUser(int UserId, string FirstName,string LastName,string Email, bool CanRead, bool CanUpdate, bool Canwrite, bool CanDelete)
+        public IActionResult EditUser(int UserId, string FirstName,string LastName,string Email, bool CanRead, bool CanUpdate, bool CanWrite, bool CanDelete)
         {
             User? userDb = _repository.GetSingleUser(UserId);// to retrieve the first element from collection that matches a specified condition or return a default value if no such element is found
                 
@@ -45,7 +45,7 @@ namespace Backend.Controllers
                 userDb.Email = Email;
                 userDb.CanRead = CanRead;
                 userDb.CanUpdate = CanUpdate;
-                userDb.Canwrite = Canwrite;
+                userDb.CanWrite = CanWrite;
                 userDb.CanDelete = CanDelete;
                 
                 if(_repository.SaveChanges())
