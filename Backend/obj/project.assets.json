@@ -10891,7 +10891,7 @@
       "projectUniqueName": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
       "projectName": "Backend",
       "projectPath": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\ABangal\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
       "outputPath": "D:\\UserManagementSystem\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
@@ -10997,5 +10997,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\UserManagementSystem\\Backend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
