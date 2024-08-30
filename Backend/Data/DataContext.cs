@@ -5,9 +5,16 @@ namespace Backend.Data  // Adjust the namespace to match your actual data contex
 {
     public class DataContext : DbContext
     {
+        private IConfiguration config;
+
         // Constructor
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+        }
+
+        public DataContext(IConfiguration config)
+        {
+            this.config = config;
         }
 
         // DbSet properties for each entity you have
