@@ -88,10 +88,9 @@ export class SignupComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+      confirmPassword: ['', [Validators.required]],
+      role: ['User']
+    }, { validators: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(formGroup: FormGroup): { [key: string]: boolean } | null {
@@ -106,28 +105,32 @@ export class SignupComponent implements OnInit {
 
   onSignUpSubmit() {
     if (this.signUpForm.valid) {
-      const formValues = this.signUpForm.value;
+        const formValues = this.signUpForm.value;
 
-      // API call to backend
-      this.http.post('http://localhost:5245/api/Auth/signup', {
-        firstName: formValues.firstName,
-        lastName: formValues.lastName,
-        email: formValues.email,
-        password: formValues.password,
-        confirmPassword: formValues.confirmPassword
-      }).subscribe(
-        response => {
-          console.log('Signup successful', response);
-          alert('Signup successful');
-          this.router.navigate(['/login']);
-        },
-        error => {
-          console.error('Signup failed', error);
-          alert('Signup failed: ' + error.error.message);
-        }
-      );
+        // API call to backend
+        this.http.post('http://localhost:5245/api/Auth/signup', {
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
+            email: formValues.email,
+            password: formValues.password,
+            confirmPassword: formValues.confirmPassword,
+            role: formValues.role
+            
+        }).subscribe({
+            next: (response) => {
+                console.log('Signup successful', response);
+                alert('Signup successful');
+                this.router.navigate(['/login']);
+            },
+            error: (error) => {
+                console.error('Signup failed', error);
+                alert('Signup failed: ' + error.error.message);
+            }
+        });
     }
   }
+
+
 
   onBack() {
     this.back.emit();

@@ -10,6 +10,7 @@ import { FooterComponent } from "../../footer/footer.component";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { emailValidator } from './email-validator';
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
   @Output() isLogged=new EventEmitter<void>();
   isLoading = false; // Loading state
 
-  constructor(private fb: FormBuilder,private router: Router,private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -49,6 +50,10 @@ export class LoginComponent implements OnInit {
         response => {
           this.isLoading = false;
           console.log('Login successful', response);
+          console.log("Hello");
+          console.log("Here is the"+response.userName);
+          this.authService.setUserId(response.userId);
+          this.authService.setUserName(response.userName);
 
           // Check if the backend role matches the selected login type
           if (response.role === formValues.loginType.charAt(0).toUpperCase() + formValues.loginType.slice(1)) {

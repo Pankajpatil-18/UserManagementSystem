@@ -1,10 +1,13 @@
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Backend.Data
 {
-    public class Repository :IRepository
+    public class Repository : IRepository
     {
         private readonly DataContext _dataContext;
 
@@ -14,64 +17,62 @@ namespace Backend.Data
             _dataContext = dataContext;
         }
 
-        public User GetSingleUser(int userId)
+        public async Task<User?> GetUserByIdAsync(int userId)
         {
-            return _dataContext.Users.FirstOrDefault(u => u.UserId == userId);
+            return await _dataContext.Users
+                .SingleOrDefaultAsync(u => u.UserId == userId);
         }
-        public IEnumerable<User> GetUsers()
+
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            IEnumerable<User> users = _dataContext.Users.ToList();
-            return users;
+            return await _dataContext.Users.ToListAsync();
         }
-        public bool UpdateUser(User user)
+
+        public async Task<bool> UpdateUserAsync(User user)
         {
             _dataContext.Users.Update(user);
-            return SaveChanges();
+            return await SaveChangesAsync();
         }
 
-        public bool InsertUser(User user)
+        public async Task<bool> InsertUserAsync(User user)
         {
-            _dataContext.Users.Add(user);
-            return SaveChanges();
+            await _dataContext.Users.AddAsync(user);
+            return await SaveChangesAsync();
         }
 
-        public bool DeleteUser(int userId)
+        public async Task<bool> DeleteUserAsync(int userId)
         {
-            var user = _dataContext.Users.Find(userId);
+            var user = await _dataContext.Users.FindAsync(userId);
             if (user != null)
             {
                 _dataContext.Users.Remove(user);
-                return SaveChanges();
+                return await SaveChangesAsync();
             }
             return false;
         }
 
-        public bool SaveChanges()
+        public async Task<bool> SaveChangesAsync()
         {
-            return _dataContext.SaveChanges() > 0;
-        }
-        public async Task<User?> GetUserByEmailAsync(string email)
-        {
-            return await _dataContext.Users.SingleOrDefaultAsync(u => u.Email == email);
-        }
- 
-        public async Task<User?> GetUserByIdAsync(int userId)
-        {
-            return await _dataContext.Users.FindAsync(userId);
-        }
- 
-        public async Task AddUserAsync(User user)
-        {
-            await _dataContext.Users.AddAsync(user);
-            await _dataContext.SaveChangesAsync();
-        }
- 
-        public async Task UpdateUserAsync(User user)
-        {
-            _dataContext.Users.Update(user);
-            await _dataContext.SaveChangesAsync();
+            return await _dataContext.SaveChangesAsync() > 0;
         }
 
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _dataContext.Users
+                .SingleOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<UserPermission?> GetUserPermissionAsync(int userId, string tableName)
+        {
+            return await _dataContext.UserPermissions
+                .SingleOrDefaultAsync(up => up.UserId == userId && up.TableName == tableName);
+        }
+
+        public async Task AddUserPermissionAsync(UserPermission userPermission)
+        {
+            await _dataContext.UserPermissions.AddAsync(userPermission);
+            await _dataContext.SaveChangesAsync();
+        }
 
     }
 }

@@ -16,6 +16,8 @@ public class DataContext : DbContext
     public virtual DbSet<Student> Students { get; set; }
     public virtual DbSet<Employee> Employees { get; set; }
     public DbSet<Product> Products {get; set;}
+
+    public DbSet<UserPermission> UserPermissions {get; set;}
     public DbSet<Dictionary<string, object>> TableData { get; set; }
 
     
@@ -69,6 +71,15 @@ public class DataContext : DbContext
         modelBuilder.Entity<Product>()
             .ToTable("Product")
             .HasKey(u => u.ProductId);
+
+        modelBuilder.Entity<UserPermission>()
+            .HasKey(up => up.PermissionId);
+
+        modelBuilder.Entity<UserPermission>()
+            .HasOne<User>()
+            .WithMany(u => u.UserPermissions) // Assuming User does not have a navigation property for UserPermissions
+            .HasForeignKey(up => up.UserId);
+            
     }
     
 }

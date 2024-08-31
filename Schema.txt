@@ -1,0 +1,35 @@
+
+CREATE TABLE [User] (
+    UserId INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50),
+    LastName NVARCHAR(50),
+    Email NVARCHAR(100) UNIQUE,
+    Password NVARCHAR(100),
+    Role NVARCHAR(20)
+);
+
+CREATE TABLE Requests (
+    RequestId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT,
+    UserName NVARCHAR(100),
+    TableName NVARCHAR(50),
+    RequestType NVARCHAR(20),
+    Message NVARCHAR(255),
+    Status NVARCHAR(20),
+    Date DATETIME,
+    FOREIGN KEY (UserId) REFERENCES [User](UserId)
+);
+
+CREATE TABLE UserPermissions (
+    PermissionId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT,
+    TableName NVARCHAR(50),
+    CanRead BIT,
+    CanWrite BIT,
+    CanUpdate BIT,
+    CanDelete BIT,
+    FOREIGN KEY (UserId) REFERENCES [User](UserId)
+);
+
+
+

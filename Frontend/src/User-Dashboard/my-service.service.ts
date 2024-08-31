@@ -6,7 +6,7 @@ import { catchError, Observable, of, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class MyService {
-  private apiUrl = 'http://localhost:5000/api'; // Update with your API URL
+  private apiUrl = 'http://localhost:5245/api'; // Update with your API URL
 
   constructor(private http: HttpClient) {}
 
@@ -27,16 +27,10 @@ export class MyService {
     });
   }
 
-  getTablePrivileges(tableName: string): Observable<{ [key: string]: boolean }> {
-    return this.http.get<{ [key: string]: boolean }>(`${this.apiUrl}/Table/table-privileges`, {
-      params: { tableName }
-    }).pipe(
-      tap((privileges) => console.log('Fetched table privileges:', privileges)),
-      catchError((error) => {
-        console.error('Error fetching table privileges:', error);
-        return of({ Read: false, Write: false, Update: false, Delete: false }); // Default to no privileges on error
-      })
-    );
+  
+  getTablePrivileges(userId: number, tableName: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/UserControllers/table-privileges?userId=${userId}&tableName=${tableName}`);
+    
   }
   
 }

@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
-
+using Backend.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
-using Backend.Models;
-
 
 namespace Backend.Controllers
 {
@@ -24,39 +22,58 @@ namespace Backend.Controllers
         }
 
         [HttpGet("GetUsers")]
-        public IEnumerable<User> GetUsers(){
-            
-            IEnumerable<User> users = _repository.GetUsers();
-            return users;
-            
-
-        }
-        [HttpPut("EditUser")]
-        public IActionResult EditUser(int UserId, string FirstName,string LastName,string Email, bool CanRead, bool CanUpdate, bool CanWrite, bool CanDelete)
+        public async Task<IActionResult> GetUsers()
         {
-            User? userDb = _repository.GetSingleUser(UserId);// to retrieve the first element from collection that matches a specified condition or return a default value if no such element is found
-                
-            if(userDb != null)
-            {
-                //UserDb is user from database
-                userDb.UserId=UserId;
-                userDb.FirstName = FirstName;
-                userDb.LastName = LastName;
-                userDb.Email = Email;
-                userDb.CanRead = CanRead;
-                userDb.CanUpdate = CanUpdate;
-                userDb.CanWrite = CanWrite;
-                userDb.CanDelete = CanDelete;
-                
-                if(_repository.SaveChanges())
-                {
-                    return Ok(userDb);
-                } 
-                throw new Exception("Failed to Update User");
-            }    
-            throw new Exception("Failed to Get User");
+            var users = await _repository.GetUsersAsync();
+            return Ok(users);
         }
 
-        
+        [HttpPut("EditUser")]
+        public async Task<IActionResult> EditUser(int userId, string firstName, string lastName, string email)
+        {
+            var user = await _repository.GetUserByIdAsync(userId);
+                
+            if (user != null)
+            {
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                user.Email = email;
+                
+                if (await _repository.SaveChangesAsync())
+                {
+                    return Ok(user);
+                } 
+                return StatusCode(500, "Failed to update user");
+            }
+            
+            return NotFound("User not found");
+        }
+
+        [HttpGet("table-privileges")]
+        public async Task<IActionResult> GetTablePrivileges([FromQuery] int userId, [FromQuery] string tableName)
+        {
+            if (userId <= 0 || string.IsNullOrEmpty(tableName))
+            {
+                return BadRequest("User ID and Table Name are required.");
+            }
+
+            var privilege = await Dbcontext.UserPermissions
+                .Where(p => p.UserId == userId && p.TableName == tableName)
+                .Select(p => new
+                {
+                    p.CanRead,
+                    p.CanWrite,
+                    p.CanUpdate,
+                    p.CanDelete
+                })
+                .FirstOrDefaultAsync();
+
+            if (privilege == null)
+            {
+                return NotFound("Privileges not found.");
+            }
+
+            return Ok(privilege);
+        }
     }
 }

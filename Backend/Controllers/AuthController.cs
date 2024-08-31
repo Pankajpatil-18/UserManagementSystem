@@ -27,31 +27,6 @@ namespace Backend.Controllers
             _Repository = Repository;
         }
 
-        [HttpGet("GetCurrentTime")]
-        public async Task<IActionResult> GetCurrentTime()
-        {
-            string? currentTime;
-
-            using (var connection = new SqlConnection(Dbcontext.Database.GetConnectionString()))
-            {
-                try
-                {
-                    await connection.OpenAsync();
-                    using (var command = new SqlCommand("SELECT GETDATE()", connection))
-                    {
-                        var result = await command.ExecuteScalarAsync();
-                        currentTime = result?.ToString();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal server error: {ex.Message}");
-                }
-            }
-
-            return Ok(new { Time = currentTime });
-        }
-
         [HttpPost("signup")]
         public async Task<IActionResult> Signup([FromBody] UserSignupDto signupDto)
         {
@@ -59,27 +34,34 @@ namespace Backend.Controllers
             {
                 return BadRequest("Passwords do not match.");
             }
- 
+
             var existingUser = await _Repository.GetUserByEmailAsync(signupDto.Email);
             if (existingUser != null)
             {
-                return Conflict("User already exists.");
+                return Conflict(new { Message = "User already exists." });
+                
             }
- 
+
             var user = new User
             {
                 FirstName = signupDto.FirstName,
                 LastName = signupDto.LastName,
                 Email = signupDto.Email,
                 Password = signupDto.Password, // Hashing should be implemented here
-                Role = signupDto.Role
+                Role = signupDto.Role // Include the role in the signup
             };
- 
-            await _Repository.AddUserAsync(user);
- 
-            return Ok("User registered successfully.");
+
+            await _Repository.InsertUserAsync(user);
+
+            var userId = user.UserId;
+
+            // Initialize user permissions
+            await InitializeUserPermissions(userId);
+
+            var response = new { Message = "User registered successfully." };
+            return Ok(response);
         }
- 
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
         {
@@ -88,15 +70,45 @@ namespace Backend.Controllers
             {
                 return Unauthorized(new { message = "Invalid credentials." });
             }
- 
+
             // Implement JWT or session-based authentication here
- 
+
             return Ok(new
             {
                 Message = "Login successful",
-                Role = user.Role
+                Role = user.Role, // Return the user's role
+                userName=user.FirstName+' '+user.LastName,
+                userId=user.UserId
             });
         }
+
+        //This method has to be put in auth helper 
+        private async Task InitializeUserPermissions(int userId)
+        {
+            var tables = new List<string> { "Student", "Employee", "Product" };
+
+            foreach (var table in tables)
+            {
+                // Check if permissions already exist
+                var existingPermission = await _Repository.GetUserPermissionAsync(userId, table);
+                if (existingPermission == null)
+                {
+                    // Create new permission entry with read-only access
+                    var userPermission = new UserPermission
+                    {
+                        UserId = userId,
+                        TableName = table,
+                        CanRead = true,
+                        CanWrite = false,
+                        CanUpdate = false,
+                        CanDelete = false
+                    };
+
+                    await _Repository.AddUserPermissionAsync(userPermission);
+                }
+            }
+}
+
 
         
     }

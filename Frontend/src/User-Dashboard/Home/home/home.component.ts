@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 import { MyService } from 'src/User-Dashboard/my-service.service';
 
 @Component({
@@ -13,14 +14,16 @@ import { MyService } from 'src/User-Dashboard/my-service.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  userName = 'Gayatri';
-  selectedTable: string = 'users'; // Default selection
+  userName: string | null = null; // User's name
+  selectedTable: string = 'Student'; // Default selection
   tables: any = []; // Tables to be fetched from API
   tablePrivileges!: { [key: string]: boolean; };
 
-  constructor(private router: Router, private myService: MyService) {}
+  constructor(private router: Router, private myService: MyService, private authService: AuthService) {}
 
   ngOnInit(): void {
+    // this.userName = this.authService.getUserName(); 
+    // console.log("The username is"+this.userName);
     this.myService.getTableNames().subscribe({
       next: (tables: string[]) => {
         console.log('Received table names:', tables); // Log received tables
@@ -34,6 +37,9 @@ export class HomeComponent implements OnInit {
         console.log('Completed fetching table names.');
       }
     });
+    //this.selectedTable=this.tables[0];
+    this.fetchTablePrivileges();
+    
   }
   onTableChange(event: any) {
     this.selectedTable = event.target.value;
@@ -44,19 +50,25 @@ export class HomeComponent implements OnInit {
   }
 
   fetchTablePrivileges() {
-    // Assuming the privileges are fetched from a service for the selected table
-    this.myService.getTablePrivileges(this.selectedTable).subscribe(
-      (privileges) => {
-        this.tablePrivileges = privileges;
-      },
-      (error) => console.error('Error fetching table privileges:', error)
-    );
+    const userId = this.authService.getUserId();
+    this.userName=this.authService.getUserName();
+    console.log("HI");
+    console.log(userId); // Replace with actual user ID if dynamic
+    if (userId) {
+      this.myService.getTablePrivileges(userId, this.selectedTable).subscribe({
+        next: (privileges) => {
+          this.tablePrivileges = privileges;
+        },
+        error: (error) => console.error('Error fetching table privileges:', error)
+      });
+    } else {
+      console.error('User ID not found.');
+    }
   }
 
   hasPrivilege(privilege: string): boolean {
-    return this.tablePrivileges[privilege];
+    return this.tablePrivileges[`can${privilege}`] ?? false;
   }
-  
   
 
   logout() {
