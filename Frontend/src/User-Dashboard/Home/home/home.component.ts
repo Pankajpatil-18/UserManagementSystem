@@ -22,8 +22,7 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private myService: MyService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    // this.userName = this.authService.getUserName(); 
-    // console.log("The username is"+this.userName);
+    this.userName=this.authService.getUserName();
     this.myService.getTableNames().subscribe({
       next: (tables: string[]) => {
         console.log('Received table names:', tables); // Log received tables
@@ -51,7 +50,7 @@ export class HomeComponent implements OnInit {
 
   fetchTablePrivileges() {
     const userId = this.authService.getUserId();
-    this.userName=this.authService.getUserName();
+    
     console.log("HI");
     console.log(userId); // Replace with actual user ID if dynamic
     if (userId) {
