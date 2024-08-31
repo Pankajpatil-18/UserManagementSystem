@@ -86,7 +86,7 @@ namespace Backend.Controllers
             var user = await _Repository.GetUserByEmailAsync(loginDto.Email);
             if (user == null || user.Password != loginDto.Password) // Password verification should be done properly
             {
-                return Unauthorized("Invalid credentials.");
+                return Unauthorized(new { message = "Invalid credentials." });
             }
  
             // Implement JWT or session-based authentication here

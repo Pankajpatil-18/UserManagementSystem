@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   userName = 'Gayatri';
   selectedTable: string = 'users'; // Default selection
   tables: any = []; // Tables to be fetched from API
+  tablePrivileges!: { [key: string]: boolean; };
 
   constructor(private router: Router, private myService: MyService) {}
 
@@ -34,6 +35,27 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  onTableChange(event: any) {
+    this.selectedTable = event.target.value;
+    this.fetchTablePrivileges();
+    const target = event.target as HTMLSelectElement;
+    this.selectedTable = target.value;
+    console.log('Selected table:', this.selectedTable);
+  }
+
+  fetchTablePrivileges() {
+    // Assuming the privileges are fetched from a service for the selected table
+    this.myService.getTablePrivileges(this.selectedTable).subscribe(
+      (privileges) => {
+        this.tablePrivileges = privileges;
+      },
+      (error) => console.error('Error fetching table privileges:', error)
+    );
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.tablePrivileges[privilege];
+  }
   
   
 
@@ -42,11 +64,6 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  onTableChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    this.selectedTable = target.value;
-    console.log('Selected table:', this.selectedTable);
-  }
 
   manageRecords() {
     console.log('Record Management clicked');

@@ -21,10 +21,22 @@ export class MyService {
     );
   }
   
-
   getTableData(tableName: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/table-data?tableName=${tableName}`, {
       params: { tableName }
     });
   }
+
+  getTablePrivileges(tableName: string): Observable<{ [key: string]: boolean }> {
+    return this.http.get<{ [key: string]: boolean }>(`${this.apiUrl}/Table/table-privileges`, {
+      params: { tableName }
+    }).pipe(
+      tap((privileges) => console.log('Fetched table privileges:', privileges)),
+      catchError((error) => {
+        console.error('Error fetching table privileges:', error);
+        return of({ Read: false, Write: false, Update: false, Delete: false }); // Default to no privileges on error
+      })
+    );
+  }
+  
 }
