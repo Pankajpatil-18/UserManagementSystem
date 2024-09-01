@@ -1,3 +1,26 @@
+CREATE TABLE Student (
+    StudentID INT IDENTITY(1,1) PRIMARY KEY,  
+    FirstName NVARCHAR(50) NOT NULL,        
+    LastName NVARCHAR(50) NOT NULL,           
+    Class NVARCHAR(20) NOT NULL,              
+    Department NVARCHAR(50) NOT NULL,         
+    DOB DATE NOT NULL,                        
+    CGPA DECIMAL(3, 2) NOT NULL         
+);
+CREATE TABLE Employee(
+    EmployeeId INT IDENTITY(1,1) PRIMARY KEY,  
+    FirstName NVARCHAR(50) NOT NULL,         
+    LastName NVARCHAR(50) NOT NULL,           
+    Email NVARCHAR(100) NOT NULL UNIQUE,     
+    DOJ DATE NOT NULL,                         
+    Salary DECIMAL(10, 2) NOT NULL           
+);
+CREATE TABLE Product (
+    ProductId INT IDENTITY(1,1) PRIMARY KEY,   
+    ProductName NVARCHAR(100) NOT NULL,        
+    Category NVARCHAR(50) NOT NULL,            
+    Price DECIMAL(10, 2) NOT NULL           
+);
 
 CREATE TABLE [User] (
     UserId INT PRIMARY KEY IDENTITY(1,1),
@@ -31,5 +54,54 @@ CREATE TABLE UserPermissions (
     FOREIGN KEY (UserId) REFERENCES [User](UserId)
 );
 
+-- Stored Procedure to Add a New Student
+CREATE PROCEDURE AddStudent
+    @FirstName NVARCHAR(50),
+    @LastName NVARCHAR(50),
+    @Class NVARCHAR(20),
+    @Department NVARCHAR(50),
+    @DOB DATE,
+    @CGPA DECIMAL(3, 2)
+AS
+BEGIN
+    INSERT INTO Student (FirstName, LastName, Class, Department, DOB, CGPA)
+    VALUES (@FirstName, @LastName, @Class, @Department, @DOB, @CGPA);
+END;
+GO
 
+-- Stored Procedure to Update a Student
+CREATE PROCEDURE AddTableData
+    @TableName NVARCHAR(100),
+    @Columns NVARCHAR(MAX),
+    @Values NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @Sql NVARCHAR(MAX)
+    SET @Sql = 'INSERT INTO ' + @TableName + ' (' + @Columns + ') VALUES (' + @Values + ')'
+    EXEC sp_executesql @Sql
+END
+
+
+CREATE PROCEDURE UpdateTableData
+    @TableName NVARCHAR(100),
+    @SetClause NVARCHAR(MAX),
+    @WhereClause NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @Sql NVARCHAR(MAX)
+    SET @Sql = 'UPDATE ' + @TableName + ' SET ' + @SetClause + ' WHERE ' + @WhereClause
+    EXEC sp_executesql @Sql
+END
+
+
+CREATE PROCEDURE DeleteTableData
+    @TableName NVARCHAR(100),
+    @PrimaryKeyColumn NVARCHAR(100),
+    @Id INT
+AS
+BEGIN
+    DECLARE @Sql NVARCHAR(MAX)
+    SET @Sql = 'DELETE FROM ' + @TableName + ' WHERE ' + @PrimaryKeyColumn + ' = @Id'
+    EXEC sp_executesql @Sql, N'@Id INT', @Id
+END
 

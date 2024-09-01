@@ -7,7 +7,7 @@
   <div class="container">
     <div class="dropdown-container">
       <label for="tableSelect">Select Table:</label>
-      <select id="tableSelect" (change)="onTableChange($event)">
+       <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange($event)"> <!--ngmodel is used for  selectbox to have the current selectedtabel even if we back form some other page strode in local storage -->
         <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
       </select>
     </div>

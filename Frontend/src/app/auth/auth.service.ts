@@ -6,21 +6,34 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private userId: number | null = null;
-  private userName: string | null = null;
+  private userId!: number ;
+  private userName!: string ;
+  private currentUserTable: string = localStorage.getItem('currentUserTable') || 'Student';
+
+  setCurTable(table: string): void {
+    this.currentUserTable = table;
+    localStorage.setItem('currentUserTable', table); // Save to local storage
+  }
+
+  getCurTable(): string {
+    return this.currentUserTable;
+  }
 
   setUserId(userId: number): void {
     this.userId = userId;
   }
-
-  getUserId(): number | null {
+ 
+  getUserId(): number  {
     return this.userId;
   }
   setUserName(userName: string): void {
     this.userName = userName;
   }
 
-  getUserName(): string | null {
+  getUserName(): string  {
     return this.userName;
   }
+ 
+ 
+  
 }
