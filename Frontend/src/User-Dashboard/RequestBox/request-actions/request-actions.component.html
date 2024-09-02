@@ -2,21 +2,12 @@
   <h2>Submit Request</h2>
   <form (ngSubmit)="submitRequest()">
     <label for="table">Select Table:</label>
-    <select id="table" [(ngModel)]="newRequest.tableName" name="table" required>
-      <option value="">Select a table</option>
-      <option value="Users">Users</option>
-      <option value="Orders">Orders</option>
-      <option value="Products">Products</option>
-      <option value="Categories">Categories</option>
-    </select>
-
-    <label for="action">Select Action:</label>
-    <select id="action" [(ngModel)]="newRequest.requestType" name="action" required>
-      <option value="">Select an action</option>
-      <option value="Add">Add</option>
-      <option value="Edit">Edit</option>
-      <option value="Delete">Delete</option>
-      <option value="Read">Read</option>
+       <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange($event)"> <!--ngmodel is used for  selectbox to have the current selectedtabel even if we back form some other page strode in local storage -->
+        <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+      </select>
+    <label for="action">Select Permissions:</label>
+    <select id="action" [(ngModel)]="selectedPermission" (change)="onPermissionChange($event)">
+      <option *ngFor="let permission of permissions" [value]="permission">{{ permission }}</option>
     </select>
 
     <label for="message">Message:</label>

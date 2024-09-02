@@ -10883,19 +10883,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ppatil\\.nuget\\packages\\": {}
+    "C:\\Users\\sgite\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "D:\\UserManagementSystem\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
-      "outputPath": "D:\\UserManagementSystem\\Backend\\obj\\",
+      "projectPath": "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\sgite\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ppatil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sgite\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -10997,13 +10997,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file D:\\UserManagementSystem\\Backend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

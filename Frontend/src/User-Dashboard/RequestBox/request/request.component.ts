@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RequestActionsComponent } from "../request-actions/request-actions.component";
 import { RequestStatusComponent } from "../request-status/request-status.component";
 import { Router } from '@angular/router';
+import { RequestService } from 'src/User-Dashboard/request.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-request',
@@ -15,39 +17,38 @@ import { Router } from '@angular/router';
 export class RequestComponent {
   userRequests: any[] = [];
 
-  constructor(private router: Router) {
-    // Static data for demonstration purposes
-    this.userRequests = [];
-    
+  constructor(private requestService: RequestService, private authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.loadUserRequests();
   }
 
-  handleRequestSubmitted(newRequest: any) {
-    this.userRequests.push(newRequest);
+  loadUserRequests() {
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.requestService.getUserRequests(userId).subscribe(requests => {
+        this.userRequests = requests;
+      }, error => {
+        console.error('Error loading user requests:', error);
+      });
+    } else {
+      console.error('User ID is not available.');
+    }
   }
 
-  // // Uncomment this section and remove the static data in the constructor once the backend is ready
-  // ngOnInit() {
-  //   this.apiService.getUserRequests().subscribe(response => {
-  //     this.userRequests = response;
-  //   }, error => {
-  //     console.error('Failed to load user requests', error);
-  //   });
-  // }
-
-  // handleRequestSubmitted(newRequest: any) {
-  //   this.apiService.submitRequest(newRequest).subscribe(response => {
-  //     this.userRequests.push(response);
-  //   }, error => {
-  //     console.error('Failed to submit request', error);
-  //   });
-  // }
+  handleRequestSubmitted(request: any) {
+    // Optionally, you can save the request data to the backend here
+    // For demonstration, we just add it to the local list
+    this.userRequests.push({
+      requestId: Math.random().toString(36).substr(2, 9), // Generate a mock ID
+      userId: this.authService.getUserId(), // Replace with actual user ID
+      ...request,
+      status: 'Pending',
+      date: new Date()
+    });
+  }
 
   goBack() {
-    // Implement navigation logic here (e.g., navigate to the previous page)
-    // For example, using Angular's Router:
-    // this.router.navigate(['/previous-route']);
-    console.log('Back button clicked');
-    this.router.navigate(['/home']);
+    this.router.navigate(['/previous-page']); // Adjust the path as needed
   }
-
 }

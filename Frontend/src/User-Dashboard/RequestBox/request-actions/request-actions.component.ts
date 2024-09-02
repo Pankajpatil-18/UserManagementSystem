@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RequestStatusComponent } from "../request-status/request-status.component";
+import { Router } from '@angular/router';
+import { MyService } from 'src/User-Dashboard/my-service.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-request-actions',
@@ -11,46 +13,78 @@ import { RequestStatusComponent } from "../request-status/request-status.compone
   styleUrls: ['./request-actions.component.css']
 })
 export class RequestActionsComponent {
+  selectedPermission: string = '';
+  tables: string[] = []; // Tables to be fetched from API
+  userName: string | null = null; // User's name
+  selectedTable: string = ''; // Default selection
+  tablePrivileges: { [key: string]: boolean } = {};
+  permissions: string[] = ['Read', 'Write', 'Update', 'Delete'];
+
+  newRequest = {
+    tableName: '',
+    requestType: '',
+    message: ''
+  };
 
   @Output() requestSubmitted = new EventEmitter<any>();
 
-  newRequest = {
-    id: 0,
-    user: 'Current User',
-    tableName: '',
-    requestType: '',
-    message: '',
-    status: 'Pending',
-    date: new Date()
-  };
+  constructor(private router: Router, private myService: MyService, private authService: AuthService) {}
 
-  submitRequest() {
-    if (this.newRequest.tableName && this.newRequest.requestType && this.newRequest.message) {
-      // Assign a random ID and current date for the static data
-      this.newRequest.id = Math.floor(Math.random() * 1000);
-      this.newRequest.date = new Date();
+  ngOnInit(): void {
+    this.userName = this.authService.getUserName();
+    this.myService.getTableNames().subscribe({
+      next: (tables: string[]) => {
+        console.log('Received table names:', tables);
+        this.tables = tables;
+        // Set default selection if tables are available
+        if (tables.length > 0) {
+          this.selectedTable = tables[0];
+          this.fetchTablePrivileges();
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching table names:', error);
+      }
+    });
+  }
 
-      // Emit the request to parent component
-      this.requestSubmitted.emit({ ...this.newRequest });
+  onTableChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedTable = target.value;
+    console.log('Selected table:', this.selectedTable);
+    this.fetchTablePrivileges();
+  }
 
-      // Reset the form fields
-      this.newRequest.tableName = '';
-      this.newRequest.requestType = '';
-      this.newRequest.message = '';
-      
-      // // Uncomment this section and remove the static data above once the backend is ready
-      // this.apiService.submitRequest(this.newRequest).subscribe(response => {
-      //   // Handle response from backend
-      //   this.requestSubmitted.emit(response);
-      //   // Reset form after successful submission
-      //   this.newRequest = { id: 0, user: 'Current User', tableName: '', requestType: '', message: '', status: 'Pending', date: new Date() };
-      // }, error => {
-      //   // Handle error
-      //   console.error('Request submission failed', error);
-      // });
-      
+  fetchTablePrivileges(): void {
+    const userId = this.authService.getUserId();
+    if (userId && this.selectedTable) {
+      this.myService.getTablePrivileges(userId, this.selectedTable).subscribe({
+        next: (privileges) => {
+          this.tablePrivileges = privileges;
+        },
+        error: (error) => console.error('Error fetching table privileges:', error)
+      });
     } else {
-      alert('Please fill out all fields.');
+      console.error('User ID or selected table not found.');
     }
+  }
+
+  onPermissionChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedPermission = target.value;
+    const privilegeKey = `can${target.value}`;
+
+    if (this.hasPrivilege(privilegeKey)) {
+      alert(`You already have ${target.value} permission`);
+    }
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.tablePrivileges[privilege] ?? false;
+  }
+
+  submitRequest(): void {
+    this.requestSubmitted.emit(this.newRequest);
+    this.newRequest = { tableName: '', requestType: '', message: '' }; // Reset form
   }
 }

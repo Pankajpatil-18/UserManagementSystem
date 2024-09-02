@@ -1,6 +1,7 @@
 using System.Data;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+
 public class DataContext : DbContext
 {
     private readonly IConfiguration _config;
@@ -15,12 +16,9 @@ public class DataContext : DbContext
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Student> Students { get; set; }
     public virtual DbSet<Employee> Employees { get; set; }
-    public DbSet<Product> Products {get; set;}
-
-    public DbSet<UserPermission> UserPermissions {get; set;}
-    public DbSet<Dictionary<string, object>> TableData { get; set; }
-
-    
+    public DbSet<Product> Products { get; set; }
+    public DbSet<UserPermission> UserPermissions { get; set; }
+    public DbSet<Requests> Requests { get; set; } // Add DbSet for Requests
 
     // Method to get table names
     public async Task<List<string>> GetTableNamesAsync()
@@ -52,14 +50,12 @@ public class DataContext : DbContext
         return tableNames;
     }
 
-
-   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
-                .ToTable("User")
-                .HasKey(u => u.UserId);
-                
+            .ToTable("User")
+            .HasKey(u => u.UserId);
+
         modelBuilder.Entity<Student>()
             .ToTable("Student")
             .HasKey(u => u.StudentId);
@@ -73,13 +69,21 @@ public class DataContext : DbContext
             .HasKey(u => u.ProductId);
 
         modelBuilder.Entity<UserPermission>()
+            .ToTable("UserPermission")
             .HasKey(up => up.PermissionId);
 
         modelBuilder.Entity<UserPermission>()
             .HasOne<User>()
-            .WithMany(u => u.UserPermissions) // Assuming User does not have a navigation property for UserPermissions
+            .WithMany(u => u.UserPermissions)
             .HasForeignKey(up => up.UserId);
-            
+
+        modelBuilder.Entity<Requests>()
+            .ToTable("Requests") // Specify the table name if different from the class name
+            .HasKey(r => r.RequestId);
+
+        modelBuilder.Entity<Requests>()
+            .HasOne(r => r.User)
+            .WithMany() // Assuming User does not have a navigation property for Requests
+            .HasForeignKey(r => r.UserId);
     }
-    
 }
