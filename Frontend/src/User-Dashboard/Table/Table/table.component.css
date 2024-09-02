@@ -121,3 +121,18 @@ button:hover {
   display: inline-block; /* Ensures the label behaves like an inline element but allows margin */
 }
 
+.btn-red {
+  background-color: red;
+  color: white;
+}
+
+.btn-green {
+  background-color: green;
+  color: white;
+}
+
+.buttons button {
+  margin: 5px;
+}
+
+

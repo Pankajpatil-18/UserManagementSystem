@@ -32,5 +32,19 @@ export class MyService {
     return this.http.get<any>(`${this.apiUrl}/UserControllers/table-privileges?userId=${userId}&tableName=${tableName}`);
     
   }
+
+  getIdFieldName(row: any): string | null {
+    // Define a pattern for identifying ID fields, e.g., ending with "Id"
+    const idFieldPattern = /Id$/;
+  
+    // Find the key in the object that matches the pattern
+    for (const key in row) {
+      if (idFieldPattern.test(key)) {
+        return key;
+      }
+    }
+    // Return null if no ID field is found
+    return null;
+  }
   
 }

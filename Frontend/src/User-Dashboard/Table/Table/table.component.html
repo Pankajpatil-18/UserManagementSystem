@@ -1,41 +1,3 @@
-<!-- <div class="container">
-  <label class="selected-table-label" for="tableSelect">Selected Table: {{selectedTable}}</label>
- 
-
-  <table *ngIf="selectedTable" class="styled-table">
-    <thead>
-      <tr>
-        <th *ngFor="let column of columns">{{ column.name }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of tableData" (click)="onRowSelect(row)" class="table-row">
-        <td *ngFor="let column of columns">{{ row[column.name] }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="edit-form" *ngIf="columns.length > 0">
-    <h3>Edit Row</h3>
-    <form (ngSubmit)="onSave()">
-      <div *ngFor="let column of columns">
-        <label [for]="column.name">{{ column.name }}</label>
-        <input 
-          [id]="column.name" 
-          [(ngModel)]="selectedRow[column.name]" 
-          [name]="column.name"
-          [type]="getInputType(column.type)"
-        />
-      </div>
-      <div class="buttons">
-        <button type="button" (click)="onUpdate()">Update</button>
-        <button type="button" (click)="onDelete()">Delete</button>
-        <button class="add-button" type="button" (click)="addNew()">Add New</button>
-        <button type="button" (click)="onCancel()">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div> -->
 <div class="container">
   <label class="selected-table-label" for="tableSelect">Selected Table: {{selectedTable}}</label>
   
@@ -67,31 +29,26 @@
       <div class="buttons">
         <button 
           type="button" 
-          (click)="onUpdate()" 
-          [disabled]="!hasPrivilege('canUpdate')">
+          [ngClass]="{'btn-red': !hasPrivilege('canUpdate'), 'btn-green': hasPrivilege('canUpdate')}"
+          (click)="onUpdate()">
           Update
         </button>
         <button 
           type="button" 
-          (click)="onDelete()" 
-          [disabled]="!hasPrivilege('canDelete')">
+          [ngClass]="{'btn-red': !hasPrivilege('canDelete'), 'btn-green': hasPrivilege('canDelete')}"
+          (click)="onDelete()">
           Delete
         </button>
         <button 
           class="add-button" 
           type="button" 
           (click)="addTableData()" 
-          [disabled]="!hasPrivilege('canWrite')">
+          [ngClass]="{'btn-red': !hasPrivilege('canWrite'), 'btn-green': hasPrivilege('canWrite')}"
+          (click)="addTableData()">
           Add New
         </button>
         <button type="button" (click)="onCancel()">Cancel</button>
       </div>
     </form>
-  </div>
-
-  <div *ngIf="!hasPrivilege('canUpdate') || !hasPrivilege('canDelete') || !hasPrivilege('canWrite')">
-    <p *ngIf="!hasPrivilege('canUpdate')">You don't have the privilege to update records.</p>
-    <p *ngIf="!hasPrivilege('canDelete')">You don't have the privilege to delete records.</p>
-    <p *ngIf="!hasPrivilege('canWrite')">You don't have the privilege to add new records.</p>
   </div>
 </div>

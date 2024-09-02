@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
       next: (tables: string[]) => {
         console.log('Received table names:', tables); // Log received tables
         this.tables = tables;
+        this.fetchTablePrivileges();
       },
       error: (error) => {
         console.error('Error fetching table names:', error); // Log full error object
@@ -39,7 +40,7 @@ export class HomeComponent implements OnInit {
       }
     });
     
-    this.fetchTablePrivileges();
+    
     
   }
   onTableChange(event: any) {
