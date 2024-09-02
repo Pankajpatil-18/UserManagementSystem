@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RequestService } from 'src/User-Dashboard/request.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-request-status',
@@ -10,23 +12,18 @@ import { AuthService } from 'src/app/auth/auth.service';
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent {
+export class RequestStatusComponent implements OnChanges {
   @Input() userRequests: any[] = [];
 
-  // constructor(private requestService: RequestService, private authService: AuthService) {}
+  constructor(private requestService: RequestService, private authService: AuthService,private http: HttpClient) {}
 
-  // ngOnInit(): void {
-  //   this.loadUserRequests();
-  // }
-
-  // handleRequestSubmitted(request: any) {
-  //   this.loadUserRequests(); // Refresh the list of requests after a new one is submitted
-  // }
-
-  // private loadUserRequests() {
-  //   const userId = this.authService.getUserId();
-  //   this.requestService.getUserRequests(userId).subscribe(requests => {
-  //     this.userRequests = requests;
-  //   });
-  // }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userRequests']) {
+      this.userRequests = changes['userRequests'].currentValue;
+    }
+  }
+  trackByRequestId(index: number, request: any): number {
+    return request.requestId;
+  }
+  
 }

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MyService } from 'src/User-Dashboard/my-service.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-request-actions',
@@ -12,31 +13,35 @@ import { AuthService } from 'src/app/auth/auth.service';
   templateUrl: './request-actions.component.html',
   styleUrls: ['./request-actions.component.css']
 })
-export class RequestActionsComponent {
+export class RequestActionsComponent implements OnInit {
   selectedPermission: string = '';
-  tables: string[] = []; // Tables to be fetched from API
-  userName: string | null = null; // User's name
-  selectedTable: string = ''; // Default selection
+  tables: string[] = [];
+  userName: string | null = null;
+  selectedTable: string = '';
   tablePrivileges: { [key: string]: boolean } = {};
   permissions: string[] = ['Read', 'Write', 'Update', 'Delete'];
 
   newRequest = {
     tableName: '',
     requestType: '',
-    message: ''
+    message: '',
+    
   };
 
   @Output() requestSubmitted = new EventEmitter<any>();
 
-  constructor(private router: Router, private myService: MyService, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private myService: MyService,
+    private authService: AuthService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    this.userName = this.authService.getUserName();
+    this.userName = this.authService.getUserName(); // Fetch the username
     this.myService.getTableNames().subscribe({
       next: (tables: string[]) => {
-        console.log('Received table names:', tables);
         this.tables = tables;
-        // Set default selection if tables are available
         if (tables.length > 0) {
           this.selectedTable = tables[0];
           this.fetchTablePrivileges();
@@ -54,7 +59,7 @@ export class RequestActionsComponent {
     console.log('Selected table:', this.selectedTable);
     this.fetchTablePrivileges();
   }
-
+  
   fetchTablePrivileges(): void {
     const userId = this.authService.getUserId();
     if (userId && this.selectedTable) {
@@ -84,7 +89,52 @@ export class RequestActionsComponent {
   }
 
   submitRequest(): void {
-    this.requestSubmitted.emit(this.newRequest);
-    this.newRequest = { tableName: '', requestType: '', message: '' }; // Reset form
+    if (this.selectedTable && this.selectedPermission && this.newRequest.message) {
+      this.newRequest.tableName = this.selectedTable;
+      this.newRequest.requestType = this.selectedPermission;
+       // Include username in the request
+
+      this.postRequestToServer();
+    } else {
+      alert('Please fill out all required fields.');
+    }
   }
+
+  postRequestToServer(): void {
+    const userId = this.authService.getUserId();
+    const userName = this.authService.getUserName(); // Make sure this returns a non-null value
+  
+    console.log(userName);
+    if (!userName) {
+      alert('User name is missing.');
+      return;
+    }
+  
+    const url = 'http://localhost:5245/api/Request/submit';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  
+    const requestBody = {
+      userId: userId,
+      tableName: this.newRequest.tableName,
+      requestType: this.newRequest.requestType,
+      message: this.newRequest.message,
+      userName: userName, // Ensure userName is included
+      status: 'Pending',
+      date: new Date().toISOString()
+    };
+  
+    this.http.post(url, requestBody, { headers }).subscribe({
+      next: (response) => {
+        console.log('Request submitted successfully:', response);
+        alert('Request submitted successfully.');
+        this.newRequest = { tableName: '', requestType: '', message: '' }; // Reset form
+        this.requestSubmitted.emit(requestBody);
+      },
+      error: (error) => {
+        console.error('Error submitting request:', error);
+        alert('Failed to submit request.');
+      }
+    });
+  }
+  
 }

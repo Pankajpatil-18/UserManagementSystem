@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RequestActionsComponent } from "../request-actions/request-actions.component";
@@ -16,7 +16,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class RequestComponent {
   userRequests: any[] = [];
-
+  
   constructor(private requestService: RequestService, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
@@ -37,15 +37,8 @@ export class RequestComponent {
   }
 
   handleRequestSubmitted(request: any) {
-    // Optionally, you can save the request data to the backend here
-    // For demonstration, we just add it to the local list
-    this.userRequests.push({
-      requestId: Math.random().toString(36).substr(2, 9), // Generate a mock ID
-      userId: this.authService.getUserId(), // Replace with actual user ID
-      ...request,
-      status: 'Pending',
-      date: new Date()
-    });
+    // Reload user requests after a new request is submitted
+    this.loadUserRequests();
   }
 
   goBack() {

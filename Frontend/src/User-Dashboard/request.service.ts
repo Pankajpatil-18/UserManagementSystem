@@ -16,7 +16,11 @@ export class RequestService {
     }
   
     getUserRequests(userId: number): Observable<any[]> {
-      return this.http.get<any[]>(`${this.apiUrl}/user-requests/${userId}`);
+      return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
     }
+    
+
+
+  
   
 }

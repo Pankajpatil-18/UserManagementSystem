@@ -19,6 +19,7 @@ public class DataContext : DbContext
 
     public DbSet<UserPermission> UserPermissions {get; set;}
     public DbSet<Dictionary<string, object>> TableData { get; set; }
+    public DbSet<Requests> Requests { get; set; }
 
     
 
@@ -79,7 +80,15 @@ public class DataContext : DbContext
             .HasOne<User>()
             .WithMany(u => u.UserPermissions) // Assuming User does not have a navigation property for UserPermissions
             .HasForeignKey(up => up.UserId);
-            
+        
+        modelBuilder.Entity<Requests>()
+            .ToTable("Requests") // Specify the table name if different from the class name
+            .HasKey(r => r.RequestId);
+ 
+        
+
+        
+
     }
     
 }
