@@ -83,7 +83,10 @@ namespace Backend.Controllers
         // Add Data
         // Add Data
         [HttpPost("add")]
-        public async Task<IActionResult> AddTableData([FromQuery] string tableName, [FromQuery] string columns, [FromBody] Dictionary<string, object> values)
+        public async Task<IActionResult> AddTableData(
+            [FromQuery] string tableName, 
+            [FromQuery] string columns, 
+            [FromBody] Dictionary<string, object> values)
         {
             if (string.IsNullOrEmpty(tableName) || values == null || values.Count == 0 || string.IsNullOrEmpty(columns))
             {
@@ -110,19 +113,20 @@ namespace Backend.Controllers
                     }
                 }
 
-                return Ok("Data added successfully.");
+                return Ok(new { message = "Data added successfully." });
             }
             catch (SqlException ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateTableData([FromQuery] string tableName, [FromQuery] string primaryKeyColumn, [FromBody] Dictionary<string, object> values, [FromQuery] int id)
         {
             if (string.IsNullOrEmpty(tableName) || values == null || values.Count == 0 || id <= 0 || string.IsNullOrEmpty(primaryKeyColumn))
             {
-                return BadRequest("Table name, values, ID, and primary key column are required.");
+                return BadRequest(new { message = "Table name, values, ID, and primary key column are required." });
             }
 
             // Construct SET clause
@@ -148,19 +152,20 @@ namespace Backend.Controllers
                     }
                 }
 
-                return Ok("Data updated successfully.");
+                return Ok(new { message = "Data updated successfully." });
             }
             catch (SqlException ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
-        [HttpDelete("delete")]
+
+                [HttpDelete("delete")]
         public async Task<IActionResult> DeleteTableData([FromQuery] string tableName, [FromQuery] string primaryKeyColumn, [FromQuery] int id)
         {
             if (string.IsNullOrEmpty(tableName) || id <= 0 || string.IsNullOrEmpty(primaryKeyColumn))
             {
-                return BadRequest("Table name, ID, and primary key column are required.");
+                return BadRequest(new { message = "Table name, ID, and primary key column are required." });
             }
 
             try
@@ -180,18 +185,12 @@ namespace Backend.Controllers
                     }
                 }
 
-                return Ok("Data deleted successfully.");
+                return Ok(new { message = "Data deleted successfully." });
             }
             catch (SqlException ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
-
-
-
-    }
-        
-
-    
+    }  
 }

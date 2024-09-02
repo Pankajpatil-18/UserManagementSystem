@@ -54,22 +54,8 @@ CREATE TABLE UserPermissions (
     FOREIGN KEY (UserId) REFERENCES [User](UserId)
 );
 
--- Stored Procedure to Add a New Student
-CREATE PROCEDURE AddStudent
-    @FirstName NVARCHAR(50),
-    @LastName NVARCHAR(50),
-    @Class NVARCHAR(20),
-    @Department NVARCHAR(50),
-    @DOB DATE,
-    @CGPA DECIMAL(3, 2)
-AS
-BEGIN
-    INSERT INTO Student (FirstName, LastName, Class, Department, DOB, CGPA)
-    VALUES (@FirstName, @LastName, @Class, @Department, @DOB, @CGPA);
-END;
-GO
 
--- Stored Procedure to Update a Student
+
 CREATE PROCEDURE AddTableData
     @TableName NVARCHAR(100),
     @Columns NVARCHAR(MAX),

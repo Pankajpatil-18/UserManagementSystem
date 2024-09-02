@@ -259,50 +259,95 @@ export class TableComponent implements OnInit {
   }
 
   onUpdate(): void {
-    if (this.tablePrivileges.canUpdate && this.selectedRow && 'id' in this.selectedRow) {
-      this.http.put(`${this.apiUrl}/table-data/${this.selectedRow.id}`, this.selectedRow).subscribe({
-        next: (response) => {
-          console.log('Updated:', response);
-          this.fetchTableData(this.selectedTable);
-        },
-        error: (error) => {
-          console.error('Error updating record:', error);
-          alert('Failed to update record. Please try again.');
-        }
-      });
+    if (this.tablePrivileges.canUpdate && this.selectedRow) {
+      // Determine the dynamic ID property
+      const idField = this.getIdFieldName(this.selectedRow);
+      if (idField && this.selectedRow[idField] !== undefined) {
+        // Construct the URL with query parameters
+        const url = `${this.apiUrl}/update?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
+        
+        // Prepare the body with the updated data
+        const updateData = { ...this.selectedRow };
+        delete updateData[idField]; // Remove the ID field from the body
+        
+        this.http.put(url, updateData).subscribe({
+          next: (response) => {
+            console.log('Updated:', response);
+            this.fetchTableData(this.selectedTable); // Refresh the table data
+          },
+          error: (error) => {
+            console.error('Error updating record:', error);
+            alert('Failed to update record. Please try again.');
+          }
+        });
+      } else {
+        alert('Selected row does not have a valid ID.');
+      }
     } else {
       alert('You do not have permission to update records.');
     }
   }
-
+  
+  
   onDelete(): void {
-    if (this.tablePrivileges.canDelete && this.selectedRow && 'id' in this.selectedRow) {
-      this.http.delete(`${this.apiUrl}/table-data/${this.selectedRow.id}`).subscribe({
-        next: (response) => {
-          console.log('Deleted:', response);
-          this.fetchTableData(this.selectedTable);
-        },
-        error: (error) => {
-          console.error('Error deleting record:', error);
-          alert('Failed to delete record. Please try again.');
-        }
-      });
+    if (this.tablePrivileges.canDelete && this.selectedRow) {
+      // Determine the dynamic ID property
+      const idField = this.getIdFieldName(this.selectedRow);
+      if (idField && this.selectedRow[idField] !== undefined) {
+        // Construct the URL with query parameters
+        const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
+        console.log(url);
+        this.http.delete(url).subscribe({
+          next: (response) => {
+            console.log('Deleted:', response);
+            this.fetchTableData(this.selectedTable); // Refresh the table data
+          },
+          error: (error) => {
+            console.error('Error deleting record:', error);
+            alert('Failed to delete record. Please try again.');
+          }
+        });
+      } else {
+        alert('Selected row does not have a valid ID.');
+      }
     } else {
       alert('You do not have permission to delete records.');
     }
   }
+  
+  private getIdFieldName(row: any): string | null {
+    // Define a pattern for identifying ID fields, e.g., ending with "Id"
+    const idFieldPattern = /Id$/;
+  
+    // Find the key in the object that matches the pattern
+    for (const key in row) {
+      if (idFieldPattern.test(key)) {
+        return key;
+      }
+    }
+  
+    // Return null if no ID field is found
+    return null;
+  }
+  
+  
+
 
   addTableData(): void {
     if (this.tablePrivileges.canWrite) {
-      const requestBody = {
-        tableName: this.selectedTable, // Ensure this is correct
-        columns: this.columns.map(col => col.name), // Ensure this matches what backend expects
-        values: this.columns.map(col => this.selectedRow[col.name]) // Ensure this is accurate
-      };
-  
+      // Prepare the request URL with query parameters for tableName and columns
+      const url = `${this.apiUrl}/add?tableName=${encodeURIComponent(this.selectedTable)}&columns=${encodeURIComponent(this.columns.map(col => col.name).join(','))}`;
+
+      // Create the request body with values as a JSON object
+      const requestBody = this.columns.reduce((obj:any, col) => {
+        obj[col.name] = this.selectedRow[col.name];
+        return obj;
+      }, {});
+
+      console.log('Request URL:', url); // Log to inspect the URL
       console.log('Request Body:', requestBody); // Log to inspect the payload
-  
-      this.http.post(`${this.apiUrl}/add`, requestBody).subscribe({
+
+      this.http.post(url, requestBody).subscribe({
         next: (response) => {
           console.log('Added new row:', response);
           this.fetchTableData(this.selectedTable);
@@ -315,7 +360,10 @@ export class TableComponent implements OnInit {
     } else {
       alert('You do not have permission to add new records.');
     }
+
   }
+
+  
   
 
   onCancel(): void {
