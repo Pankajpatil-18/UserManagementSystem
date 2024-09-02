@@ -1,0 +1,18 @@
+<div class="request-actions">
+  <h2>Submit Request</h2>
+  <form (ngSubmit)="submitRequest()">
+    <label for="table">Select Table:</label>
+       <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange($event)"> <!--ngmodel is used for  selectbox to have the current selectedtabel even if we back form some other page strode in local storage -->
+        <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+      </select>
+    <label for="action">Select Permissions:</label>
+    <select id="action" [(ngModel)]="selectedPermission" (change)="onPermissionChange($event)">
+      <option *ngFor="let permission of permissions" [value]="permission">{{ permission }}</option>
+    </select>
+
+    <label for="message">Message:</label>
+    <textarea id="message" [(ngModel)]="newRequest.message" name="message" rows="4" required></textarea>
+
+    <button type="submit" class="btn submit">Submit Request</button>
+  </form>
+</div>

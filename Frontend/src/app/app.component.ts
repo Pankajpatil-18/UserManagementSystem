@@ -45,9 +45,9 @@ import { NavbarComponent } from "../Admin-Dashboard/navbar/navbar.component";
 import { TableComponentAd } from "../Admin-Dashboard/table/table.component";
 import { RouterOutlet } from '@angular/router';
 import { TableContentComponent } from 'src/User-Dashboard/Table/TableContent/tablecontent.component';
-import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/request-status/request-status.component';
+import { RequestStatusComponent } from 'src/User-Dashboard/RequestBox/RequestBox/request-status/request-status.component';
 import { HomeComponent } from "../User-Dashboard/Home/home/home.component";
-import { RequestComponent } from 'src/User-Dashboard/RequestBox/request/request.component';
+import { RequestComponent } from 'src/User-Dashboard/RequestBox/RequestBox/request/request.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
