@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private userId!: number ;
-  private userName!: string ;
+  private userId: string =localStorage.getItem('userId') || '';
+  private userName: string = localStorage.getItem('userName') || '';
   private currentUserTable: string = localStorage.getItem('currentUserTable') || 'Student';
 
   setCurTable(table: string): void {
@@ -19,15 +19,18 @@ export class AuthService {
     return this.currentUserTable;
   }
 
-  setUserId(userId: number): void {
-    this.userId = userId;
+  setUserId(uId: number): void {
+    this.userId = uId.toString();
+    localStorage.setItem('userId', uId.toString());
+    
   }
  
   getUserId(): number  {
-    return this.userId;
+    return Number.parseInt(this.userId);
   }
-  setUserName(userName: string): void {
-    this.userName = userName;
+  setUserName(uName: string): void {
+    this.userName = uName;
+    localStorage.setItem('userName', uName);
   }
 
   getUserName(): string  {
