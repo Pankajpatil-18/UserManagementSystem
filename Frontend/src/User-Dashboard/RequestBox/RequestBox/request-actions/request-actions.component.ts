@@ -89,14 +89,19 @@ export class RequestActionsComponent implements OnInit {
   }
 
   submitRequest(): void {
-    if (this.selectedTable && this.selectedPermission && this.newRequest.message) {
+    if (this.selectedTable && this.selectedPermission && this.newRequest.message && !this.hasPrivilege("can"+this.selectedPermission)) {
       this.newRequest.tableName = this.selectedTable;
       this.newRequest.requestType = this.selectedPermission;
        // Include username in the request
 
       this.postRequestToServer();
     } else {
-      alert('Please fill out all required fields.');
+      if(!(this.selectedTable && this.selectedPermission && this.newRequest.message)){
+        alert('Please fill out all required fields.');
+      }
+      else if(this.hasPrivilege("can"+this.selectedPermission)){
+          alert(`You already have ${this.selectedPermission} permission`);
+      }
     }
   }
 

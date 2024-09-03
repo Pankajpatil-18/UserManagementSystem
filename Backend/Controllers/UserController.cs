@@ -5,6 +5,11 @@ using Backend.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Data;
+using Backend.Dtos;
+
+
 
 namespace Backend.Controllers
 {
@@ -75,5 +80,102 @@ namespace Backend.Controllers
 
             return Ok(privilege);
         }
+
+        [HttpGet("GetUsersPrivileges")]
+        public async Task<IActionResult> GetUsersPrivileges([FromQuery] string tableName)
+        {
+            if (string.IsNullOrEmpty(tableName))
+            {
+                return BadRequest("Table Name is required.");
+            }
+    
+            try
+            {
+                var usersWithPrivileges = new List<object>();
+    
+                var connection = Dbcontext.Database.GetDbConnection();
+                await connection.OpenAsync();
+    
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "GetUsersWithPrivileges";
+                    command.CommandType = CommandType.StoredProcedure;
+    
+                    // Use Microsoft.Data.SqlClient.SqlParameter
+                    var param = new Microsoft.Data.SqlClient.SqlParameter("@tableName", SqlDbType.NVarChar)
+                    {
+                        Value = tableName
+                    };
+                    command.Parameters.Add(param);
+    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var user = new
+                            {
+                                ID = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Email = reader.GetString(2),
+                                CanInsert = reader.GetInt32(3),   // Assuming these are BIT fields in SQL Server
+                                CanUpdate = reader.GetInt32(4),
+                                CanDelete = reader.GetInt32(5)
+                            };
+    
+                            usersWithPrivileges.Add(user);
+                        }
+                    }
+                }
+    
+                await connection.CloseAsync();
+    
+                return Ok(usersWithPrivileges);
+            }
+            catch (Exception ex)
+            {
+                // Log exception details
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+
+        [HttpPost("UpdatePermissions")]
+        public async Task<IActionResult> UpdatePermissions([FromBody] List<UserPermissionDto> userPermissions)
+        {
+            if (userPermissions == null || userPermissions.Count == 0)
+            {
+                return BadRequest("No data provided.");
+            }
+
+            try
+            {
+                foreach (var permission in userPermissions)
+                {
+                    var user = await Dbcontext.UserEdits.FindAsync(permission.Id);
+                    if (user == null)
+                    {
+                        return NotFound($"User with ID {permission.Id} not found.");
+                    }
+
+                    user.CanInsert = permission.CanInsert;
+                    user.CanUpdate = permission.CanUpdate;
+                    user.CanDelete = permission.CanDelete;
+                }
+
+                await Dbcontext.SaveChangesAsync();
+
+                return Ok(new { message = "Permissions updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an error response
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
+
+    
+
+  

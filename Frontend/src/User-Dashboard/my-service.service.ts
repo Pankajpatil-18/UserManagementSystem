@@ -1,7 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
 
+
+interface Request {
+  id: number;
+  userId: number;
+  userName: string;
+  tableName: string;
+  canRead: boolean;
+  canWrite: boolean;
+  canUpdate: boolean;
+  canDelete: boolean;
+  requestType: string;
+  date: string;
+  status: string;
+}
+
+interface UserPermissions {
+  userId: number;
+  canRead: boolean;
+  canWrite: boolean;
+  canUpdate: boolean;
+  canDelete: boolean;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +48,25 @@ export class MyService {
       params: { tableName }
     });
   }
+
+  // data.service.ts
+getRequests(table: string): Observable<Request[]> {
+  return this.http.get<Request[]>(`/api/requests?table=${table}`);
+}
+
+// Assuming this is in your service file
+// Service method to fetch permissions for a single userId
+getPrivilegesForUser(userId: number, tableName: string): Observable<UserPermissions> {
+  const params = new HttpParams()
+    .set('userId', userId.toString())
+    .set('tableName', tableName);
+
+  return this.http.get<UserPermissions>(`${this.apiUrl}/UserControllers/table-privileges`, { params });
+}
+
+
+
+
 
   
   getTablePrivileges(userId: number, tableName: string): Observable<any> {

@@ -2,14 +2,12 @@
 <div class="request-box">
   <!-- Dropdown for selecting table -->
   <div class="table-selector">
-    <div>
     <label id="label" for="tableSelect">Select Table:</label>
-    </div>
     <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange()">
       <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
     </select>
   </div>
-
+ 
   <!-- Table displaying requests -->
   <table class="request-table">
     <thead>
@@ -20,26 +18,29 @@
         <th>Request Type</th>
         <th>Date</th>
         <th>Status</th>
+        <th>Message</th> <!-- Added Message column -->
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let request of filteredRequests">
-        <td>{{ request.id }}</td>
-        <td>{{ request.user }}</td>
+        <td>{{ request.requestId }}</td>
+        <td>{{ request.userName }}</td>
         <td>
-          <span [ngClass]="request.permissions.read ? 'icon-right' : 'icon-wrong'">Read</span>
-          <span [ngClass]="request.permissions.update ? 'icon-right' : 'icon-wrong'">Update</span>
-          <span [ngClass]="request.permissions.delete ? 'icon-right' : 'icon-wrong'">Delete</span>
-          <span [ngClass]="request.permissions.write ? 'icon-right' : 'icon-wrong'">Write</span>
+          <span [ngClass]="request.canRead ? 'icon-right' : 'icon-wrong'">Read</span>
+          <span [ngClass]="request.canUpdate ? 'icon-right' : 'icon-wrong'">Update</span>
+          <span [ngClass]="request.canDelete ? 'icon-right' : 'icon-wrong'">Delete</span>
+          <span [ngClass]="request.canWrite ? 'icon-right' : 'icon-wrong'">Write</span>
         </td>
+        
         <td>{{ request.requestType }}</td>
         <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
         <td>{{ request.status }}</td>
+        <td>{{ request.message }}</td> <!-- Display message -->
         <td>
           <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request)">Approve</button>
           <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request)">Deny</button>
-          <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequest(request.id)">Remove</button>
+          <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequest(request.requestId)">Remove</button>
         </td>
       </tr>
     </tbody>

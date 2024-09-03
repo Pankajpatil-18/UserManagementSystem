@@ -2,23 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../navbar/navbar.component";
-// import { HttpClient } from '@angular/common/http';  // Uncomment this when ready for backend integration
-// import { Observable } from 'rxjs';  // Uncomment this when ready for backend integration
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-
-interface Request {
-  id: number;
-  user: string;
-  permissions: {
-    read: boolean;
-    update: boolean;
-    delete: boolean;
-    write: boolean;
-  };
+export interface Request {
+  requestId: number;
+  userName: string;
+  canRead: boolean;
+  canUpdate: boolean;
+  canDelete: boolean;
+  canWrite: boolean;
   requestType: string;
   status: string;
   date: string;
-  table: string; // Add table field to identify which table the request belongs to
+  tableName: string;
+  message?: string;
 }
 
 @Component({
@@ -29,96 +26,151 @@ interface Request {
   styleUrls: ['./requests-table.component.css']
 })
 export class RequestsTableComponent implements OnInit {
-  selectedTable: string = 'Table1'; // Default selection
-  tables: string[] = []; // Will be populated with data from backend
-
-  // Static data for requests with 'Read' permission set to true by default
-  requests: Request[] = [
-    { id: 1, user: 'John Doe', permissions: { read: true, update: false, delete: false, write: false }, requestType: 'Update', status: 'Pending', date: new Date().toISOString(), table: 'Table1' },
-    { id: 2, user: 'Emily Davis', permissions: { read: true, update: false, delete: false, write: false }, requestType: 'Delete', status: 'Pending', date: new Date().toISOString(), table: 'Table1' },
-    { id: 3, user: 'Jane Smith', permissions: { read: true, update: true, delete: true, write: true }, requestType: 'Read', status: 'Approved', date: new Date().toISOString(), table: 'Table2' }
-  ];
-
+  selectedTable: string = 'Employee'; // Set default or first table name
+  tables: string[] = [];
+  requests: Request[] = [];
   filteredRequests: Request[] = [];
+  message: string | null = null;
 
-  // Uncomment this when ready for backend integration
-  // constructor(private http: HttpClient) {
-  //   this.loadTables();
-  //   this.loadRequests();
-  // }
-
-  // Uncomment and implement this method to load table data from the backend
-  // loadTables(): void {
-  //   this.http.get<string[]>('your-backend-api-endpoint/tables')
-  //     .subscribe(data => {
-  //       this.tables = data;
-  //       this.filterRequests();
-  //     });
-  // }
-
-  // Uncomment and implement this method to load requests data from the backend
-  // loadRequests(): void {
-  //   this.http.get<Request[]>('your-backend-api-endpoint/requests')
-  //     .subscribe(data => {
-  //       this.requests = data;
-  //       this.filterRequests();
-  //     });
-  // }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Initialize tables with static data for now
-    this.tables = ['Table1', 'Table2', 'Table3']; // Static data for tables
-    this.filterRequests();
+    this.loadTables();
+    this.loadRequests();
   }
 
+  loadTables(): void {
+    this.http.get<string[]>('http://localhost:5245/api/Table/table-names')
+      .subscribe({
+        next: (data) => {
+          console.log('Tables loaded:', data);
+          if (data) {
+            this.tables = data;
+            this.loadRequests(); // Load requests after tables are loaded
+          } else {
+            this.message = 'No tables found.';
+          }
+        },
+        error: (error) => {
+          console.error('Error loading tables:', error);
+          this.message = 'Failed to load tables';
+        }
+      });
+  }
+  loadRequests(): void {
+    if (this.selectedTable) {
+      this.http.get<Request[]>(`http://localhost:5245/api/Request/requestsWithPrivileges?tableName=${this.selectedTable}`)
+        .subscribe({
+          next: (data) => {
+            console.log('Requests loaded:', data);
+            if (data && data.length > 0) {
+              this.requests = data;
+              this.filterRequests(); // Filter requests after they are loaded
+            } else {
+              this.message = `No requests found for the table: ${this.selectedTable}.`;
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            console.error('Error loading requests:', error);
+            if (error.status === 404) {
+              this.message = `No requests found for the table: ${this.selectedTable}.`;
+            } else {
+              this.message = 'Failed to load requests.';
+            }
+          }
+        });
+    } else {
+      this.message = 'No table selected';
+    }
+  }
+  
+
   onTableChange(): void {
-    this.filterRequests();
+    this.loadRequests(); // Reload requests when table selection changes
   }
 
   filterRequests(): void {
-    this.filteredRequests = this.requests.filter(request => request.table === this.selectedTable);
+    this.filteredRequests = this.requests.filter(request => request.tableName === this.selectedTable);
+    console.log('Filtered requests:', this.filteredRequests);
   }
 
   approveRequest(request: Request): void {
-    request.status = 'Approved';
-    this.updatePermissions(request, true);
-    this.filterRequests(); // Update the filtered requests after approval
-    // Send the updated status to the backend
-    // this.saveRequestChanges(request);
+    this.http.put(`http://localhost:5245/api/Request/approve/${request.requestId}`, null)
+      .subscribe({
+        next: (data) => {
+          console.log('Request approved:', data);
+          request.status = 'Approved';
+          this.updatePermissions(request, true);
+          this.filterRequests();
+          this.message = `Request ID ${request.requestId} approved.`;
+        },
+        error: (error) => {
+          console.error('Error approving request:', error);
+          this.message = 'Failed to approve request.';
+        }
+      });
   }
+  
 
   denyRequest(request: Request): void {
-    request.status = 'Denied';
-    this.updatePermissions(request, false);
-    this.filterRequests(); // Update the filtered requests after denial
-    // Send the updated status to the backend
-    // this.saveRequestChanges(request);
+    this.http.put(`http://localhost:5245/api/Request/deny/${request.requestId}`, null)
+      .subscribe({
+        next: (data) => {
+          console.log('Request denied:', data);
+          request.status = 'Denied';
+          this.filterRequests();
+          this.message = `Request ID ${request.requestId} denied.`;
+        },
+        error: (error) => {
+          console.error('Error denying request:', error);
+          this.message = 'Failed to deny request.';
+        }
+      });
   }
-
   removeRequest(requestId: number): void {
-    this.requests = this.requests.filter(request => request.id !== requestId);
-    this.filterRequests(); // Update the filtered requests after removal
-    // Optionally, send a request to the backend to remove the request
-    // this.http.delete(`your-backend-api-endpoint/requests/${requestId}`).subscribe();
+    console.log(`Removing request with ID: ${requestId}`);
+    this.http.delete(`http://localhost:5245/api/Request/delete/${requestId}`).subscribe({
+      next: () => {
+        console.log(`Request with ID ${requestId} removed successfully.`);
+        // Remove the request from the local list
+        this.requests = this.requests.filter(request => request.requestId !== requestId);
+        this.filterRequests(); // Update filtered requests
+        this.message = `Request ID ${requestId} removed.`;
+      },
+      error: (error) => {
+        console.error('Error removing request:', error);
+        this.message = 'Failed to remove request';
+      }
+    });
   }
+  
 
   updatePermissions(request: Request, approve: boolean): void {
     if (approve) {
       switch (request.requestType) {
-        case 'Read':
-          request.permissions.read = true;
+        case 'canRead':
+          request.canRead = true;
           break;
-        case 'Update':
-          request.permissions.update = true;
+        case 'canUpdate':
+          request.canUpdate = true;
           break;
-        case 'Delete':
-          request.permissions.delete = true;
+        case 'canDelete':
+          request.canDelete = true;
           break;
-        case 'Write':
-          request.permissions.write = true;
+        case 'canWrite':
+          request.canWrite = true;
           break;
       }
     }
   }
-}
 
+  saveRequestChanges(request: Request): void {
+    this.http.put(`http://localhost:5245/api/Request/${request.requestId}`, request)
+      .subscribe({
+        error: (error) => {
+          console.error('Error saving request changes:', error);
+          this.message = 'Failed to save request changes';
+        }
+      });
+  }
+}
