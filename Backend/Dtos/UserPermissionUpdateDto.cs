@@ -1,8 +1,10 @@
 namespace Backend.Dtos
 {
-public class UserPermissionDto
+public class UserPermissionUpdateDto
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
+
+        public string TableName {get; set;}
         public bool CanInsert { get; set; }
         public bool CanUpdate { get; set; }
         public bool CanDelete { get; set; }

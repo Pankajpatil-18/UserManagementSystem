@@ -59,7 +59,7 @@ export class RequestsTableComponent implements OnInit {
   }
   loadRequests(): void {
     if (this.selectedTable) {
-      this.http.get<Request[]>(`http://localhost:5245/api/Request/requestsWithPrivileges?tableName=${this.selectedTable}`)
+      this.http.get<Request[]>(`http://localhost:5245/api/Request/requestsWithPermission?tableName=${this.selectedTable}`)
         .subscribe({
           next: (data) => {
             console.log('Requests loaded:', data);

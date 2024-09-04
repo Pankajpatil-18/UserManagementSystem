@@ -140,36 +140,35 @@ namespace Backend.Controllers
 
 
 
-        [HttpPost("UpdatePermissions")]
-        public async Task<IActionResult> UpdatePermissions([FromBody] List<UserPermissionDto> userPermissions)
+        [HttpPost("UpdateUserPermissions")]
+        public async Task<IActionResult> UpdateUserPermissions([FromBody] UserPermissionUpdateDto updateDto)
         {
-            if (userPermissions == null || userPermissions.Count == 0)
-            {
-                return BadRequest("No data provided.");
-            }
-
             try
             {
-                foreach (var permission in userPermissions)
-                {
-                    var user = await Dbcontext.UserEdits.FindAsync(permission.Id);
-                    if (user == null)
-                    {
-                        return NotFound($"User with ID {permission.Id} not found.");
-                    }
+                var connection = Dbcontext.Database.GetDbConnection();
+                await connection.OpenAsync();
 
-                    user.CanInsert = permission.CanInsert;
-                    user.CanUpdate = permission.CanUpdate;
-                    user.CanDelete = permission.CanDelete;
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "UpdateUserPermissions";
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters
+                    command.Parameters.Add(new Microsoft.Data.SqlClient.SqlParameter("@UserId", SqlDbType.Int) { Value = updateDto.UserId });
+                    command.Parameters.Add(new Microsoft.Data.SqlClient.SqlParameter("@TableName", SqlDbType.NVarChar) { Value = updateDto.TableName });
+                    command.Parameters.Add(new Microsoft.Data.SqlClient.SqlParameter("@CanInsert", SqlDbType.Bit) { Value = updateDto.CanInsert });
+                    command.Parameters.Add(new Microsoft.Data.SqlClient.SqlParameter("@CanUpdate", SqlDbType.Bit) { Value = updateDto.CanUpdate });
+                    command.Parameters.Add(new Microsoft.Data.SqlClient.SqlParameter("@CanDelete", SqlDbType.Bit) { Value = updateDto.CanDelete });
+
+                    await command.ExecuteNonQueryAsync();
                 }
 
-                await Dbcontext.SaveChangesAsync();
-
-                return Ok(new { message = "Permissions updated successfully." });
+                await connection.CloseAsync();
+                return Ok("User permissions updated successfully.");
             }
             catch (Exception ex)
             {
-                // Log the exception and return an error response
+                // Log exception details
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

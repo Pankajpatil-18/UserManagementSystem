@@ -26,7 +26,7 @@ public class DataContext : DbContext
      public DbSet<RequestWithPrivileges> RequestWithPrivileges { get; set; } // Add this line
 
 
-    public DbSet<UserPermissionDto> UserEdits { get; set; } // Add this line
+    public DbSet<UserPermissionUpdateDto> UserEdits { get; set; } // Add this line
 
     
 
@@ -111,7 +111,7 @@ public class DataContext : DbContext
             // Remove the line `entity.ToTable(null);`
         });
 
-        modelBuilder.Entity<UserPermissionDto>(entity =>
+        modelBuilder.Entity<UserPermissionUpdateDto>(entity =>
         {
             entity.HasNoKey();
         });

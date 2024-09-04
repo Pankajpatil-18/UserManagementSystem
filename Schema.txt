@@ -91,3 +91,24 @@ BEGIN
     EXEC sp_executesql @Sql, N'@Id INT', @Id
 END
 
+ALTER PROCEDURE [dbo].[GetUsersWithPrivileges]
+    @tableName NVARCHAR(255)
+AS
+BEGIN
+    SELECT 
+        u.UserId AS ID,
+        CONCAT(u.FirstName, ' ', u.LastName) AS Name,
+        u.Email,
+        COALESCE(up.CanWrite, 0) AS CanInsert,  -- BIT should map to boolean
+        COALESCE(up.CanUpdate, 0) AS CanUpdate,  -- BIT should map to boolean
+        COALESCE(up.CanDelete, 0) AS CanDelete  -- BIT should map to boolean
+    FROM 
+        [User] u
+    LEFT JOIN 
+        [UserPermissions] up
+    ON 
+        u.UserId = up.UserId
+    AND 
+        up.TableName = @tableName
+    
+END

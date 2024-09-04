@@ -1,9 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+
+// src/app/table/table.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from "../navbar/navbar.component";
-// Import HttpClient if you're planning to use backend logic
-// import { HttpClient } from '@angular/common/http';
+import { MyService } from 'src/User-Dashboard/my-service.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 interface ColumnMetadata {
   name: string;
@@ -12,76 +15,92 @@ interface ColumnMetadata {
 
 @Component({
   selector: 'app-table',
-  standalone:true,
-  imports: [FormsModule, CommonModule, NavbarComponent],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
 export class TableComponentAd implements OnInit {
-  tables: string[] = ['users', 'products', 'orders'];
-  selectedTable: string = 'user';
+  selectedTable: string = 'Student'; 
   columns: ColumnMetadata[] = [];
   tableData: any[] = [];
   selectedRow: any = {};
-  
-  constructor(
-    // private http: HttpClient // Uncomment this when using backend
-  ) {}
+  tablePrivileges: any = {}; // Object to hold privileges
+  apiUrl = 'http://localhost:5245/api/Table'; // API base URL
+  curUserId = this.authService.getUserId(); // Get the current user ID
+  tablesName:any=[];
+
+  constructor(private route: ActivatedRoute, private http: HttpClient, private myService: MyService, private authService: AuthService) {}
+
   ngOnInit(): void {
-    // Select the first table by default
-    this.selectedTable=this.tables[0];
+    this.loadTableName();
     this.fetchTableData(this.selectedTable);
+
+    // this.route.queryParams.subscribe(params => {
+    //   this.selectedTable = 'Student'; // Default to 'Student' if not provided
+    //   this.fetchTableData(this.selectedTable);
+    //   this.fetchUserPrivileges(); // Fetch user privileges
+    // });
+  }
+  loadTableName(){
+    this.myService.getTableNames().subscribe({
+      next: (tables: string[]) => {
+        console.log('Received table names:', tables); // Log received tables
+        this.tablesName = tables;
+      },
+      error: (error) => {
+        console.error('Error fetching table names:', error); // Log full error object
+        // Additional handling, if needed
+      },
+      complete: () => {
+        console.log('Completed fetching table names.');
+      }
+    });
+    console.log(this.tablesName);
+  }
+
+  onTableChange(event: any) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedTable = target.value;
+    this.fetchTableData(this.selectedTable);
+    
   }
 
   fetchTableData(tableName: string): void {
-    // Uncomment and modify this part for backend integration
-    /*
-    this.http.get<any>(`/api/tables/${tableName}`).subscribe(response => {
-      this.columns = response.columns;
-      this.tableData = response.data;
-      this.initializeEmptyRow();
+    this.http.get<any[]>(`${this.apiUrl}/table-data?tableName=${tableName}`).subscribe(data => {
+      if (data.length > 0) {
+        this.columns = Object.keys(data[0]).map(key => ({
+          name: key,
+          type: this.getColumnType(data[0][key]),
+        }));
+        this.tableData = data;
+        this.initializeEmptyRow();
+      }
     });
-    */
+  }
 
-    // Static data setup based on selected table
-    if (tableName === 'users') {
-      this.columns = [
-        { name: 'id', type: 'number' },
-        { name: 'username', type: 'text' },
-        { name: 'email', type: 'text' }
-      ];
-      this.tableData = [
-        { id: 1, username: 'Alice', email: 'alice@example.com' },
-        { id: 2, username: 'Bob', email: 'bob@example.com' }
-      ];
-    } else if (tableName === 'products') {
-      this.columns = [
-        { name: 'id', type: 'number' },
-        { name: 'name', type: 'text' },
-        { name: 'price', type: 'number' }
-      ];
-      this.tableData = [
-        { id: 1, name: 'Product A', price: 100 },
-        { id: 2, name: 'Product B', price: 200 }
-      ];
-    } else if (tableName === 'orders') {
-      this.columns = [
-        { name: 'order_id', type: 'number' },
-        { name: 'customer_name', type: 'text' },
-        { name: 'order_date', type: 'date' }
-      ];
-      this.tableData = [
-        { order_id: 101, customer_name: 'John Doe', order_date: '2024-08-01' },
-        { order_id: 102, customer_name: 'Jane Smith', order_date: '2024-08-15' }
-      ];
+  fetchUserPrivileges(): void {
+    this.myService.getTablePrivileges(this.curUserId, this.selectedTable).subscribe({
+      next: (privileges) => {
+        this.tablePrivileges = privileges;
+      },
+      error: (error) => {
+        console.error('Failed to fetch user privileges:', error);
+        alert('Failed to load user privileges. Some actions may be restricted.');
+      }
+    });
+  }
+
+  getColumnType(value: any): string {
+    if (!isNaN(Date.parse(value)) && typeof value === 'string' && value.includes('-')) {
+      return 'date';
     }
-
-    // Initialize the edit form with empty fields
-    this.initializeEmptyRow();
+    if (typeof value === 'number') return 'number';
+    return 'text';
   }
 
   initializeEmptyRow(): void {
-    this.selectedRow = this.columns.reduce((acc:any, column) => {
+    this.selectedRow = this.columns.reduce((acc: any, column) => {
       acc[column.name] = this.getDefaultValueForType(column.type);
       return acc;
     }, {});
@@ -94,15 +113,10 @@ export class TableComponentAd implements OnInit {
       case 'text':
         return '';
       case 'date':
-        return new Date().toISOString().substring(0, 10); // YYYY-MM-DD format
+        return new Date().toISOString().substring(0, 10);
       default:
         return '';
     }
-  }
-
-  onTableSelect(event: Event): void {
-    this.selectedTable = (event.target as HTMLSelectElement).value;
-    this.fetchTableData(this.selectedTable);
   }
 
   onRowSelect(row: any): void {
@@ -110,77 +124,125 @@ export class TableComponentAd implements OnInit {
   }
 
   onSave(): void {
-    // Uncomment and modify this part for backend integration
-    /*
-    this.http.post(`/api/tables/${this.selectedTable}`, this.selectedRow).subscribe(response => {
-      console.log('Saved:', response);
-      this.fetchTableData(this.selectedTable); // Refresh data
-    });
-    */
-
-    // Static save logic
-    console.log('Save:', this.selectedRow);
+    if (this.tablePrivileges.canWrite) {
+      this.http.post(`${this.apiUrl}/table-data`, this.selectedRow).subscribe({
+        next: (response) => {
+          console.log('Saved:', response);
+          this.fetchTableData(this.selectedTable);
+        },
+        error: (error) => {
+          console.error('Error saving record:', error);
+          alert('Failed to save record. Please try again.');
+        }
+      });
+    } else {
+      alert('You do not have permission to save records.');
+    }
   }
-
   onUpdate(): void {
-    // Uncomment and modify this part for backend integration
-    /*
-    this.http.put(`/api/tables/${this.selectedTable}/${this.selectedRow.id}`, this.selectedRow).subscribe(response => {
-      console.log('Updated:', response);
-      this.fetchTableData(this.selectedTable); // Refresh data
-    });
-    */
-
-    // Static update logic(TO DELETE)
-    if (this.selectedRow && 'id' in this.selectedRow) {
-      const index = this.tableData.findIndex(row => row.id === this.selectedRow.id);
-  
-      if (index !== -1) {
-        // Update the row with the new data
-        this.tableData[index] = { ...this.selectedRow };
-        console.log('Updated:', this.selectedRow);
-      } else {
-        console.log('Row not found for update.');
+    if (!this.hasPrivilege('canUpdate')) {
+      alert('You do not have permission to update records.');
+    } else {
+        if (this.tablePrivileges.canUpdate && this.selectedRow) {
+          // Determine the dynamic ID property
+          const idField = this.myService.getIdFieldName(this.selectedRow);
+          if (idField && this.selectedRow[idField] !== undefined) {
+            // Construct the URL with query parameters
+            const url = `${this.apiUrl}/update?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
+            
+            // Prepare the body with the updated data
+            const updateData = { ...this.selectedRow };
+            delete updateData[idField]; // Remove the ID field from the body
+            
+            this.http.put(url, updateData).subscribe({
+              next: (response) => {
+                console.log('Updated:', response);
+                this.fetchTableData(this.selectedTable); // Refresh the table data
+              },
+              error: (error) => {
+                console.error('Error updating record:', error);
+                alert('Failed to update record. Please try again.');
+              }
+            });
+          } else {
+            alert('Selected row does not have a valid ID.');
+          }
+        } else {
+          alert('You do not have permission to update records.');
+        }
       }
-    } else {
-      console.log('Selected row does not have a unique identifier.');
-    }
+    
   }
-
-  //(TO DELETE)
-  isEqual(row1: any, row2: any): boolean {
-    // Adjust the comparison logic based on your unique key(s)
-    return JSON.stringify(row1) === JSON.stringify(row2);
-  }
-
+  
   onDelete(): void {
-    // Uncomment and modify this part for backend integration
-    /*
-    this.http.delete(`/api/tables/${this.selectedTable}/${this.selectedRow.id}`).subscribe(response => {
-      console.log('Deleted:', response);
-      this.fetchTableData(this.selectedTable); // Refresh data
-    });
-    */
-
-    // Static delete logic(To DELETE)
-    console.log('Delete:', this.selectedRow);
-    const index = this.tableData.findIndex(row => this.isEqual(row, this.selectedRow));
-
-    if (index !== -1) {
-      // Remove the row from the table data
-      this.tableData.splice(index, 1);
-      console.log('Deleted:', this.selectedRow);
-      this.initializeEmptyRow(); // Clear the form after deletion
+    if (!this.hasPrivilege('canDelete')) {
+      alert('You do not have permission to delete records.');
     } else {
-      console.log('Row not found for deletion.');
+      if (this.tablePrivileges.canDelete && this.selectedRow) {
+        // Determine the dynamic ID property
+        const idField = this.myService.getIdFieldName(this.selectedRow);
+        if (idField && this.selectedRow[idField] !== undefined) {
+          // Construct the URL with query parameters
+          const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
+          console.log(url);
+          this.http.delete(url).subscribe({
+            next: (response) => {
+              console.log('Deleted:', response);
+              this.fetchTableData(this.selectedTable); // Refresh the table data
+            },
+            error: (error) => {
+              console.error('Error deleting record:', error);
+              alert('Failed to delete record. Please try again.');
+            }
+          });
+        } else {
+          alert('Selected row does not have a valid ID.');
+        }
+      } else {
+        alert('You do not have permission to delete records.');
+      }
+    }
+  }
+  
+  addTableData(): void {
+    if (!this.hasPrivilege('canWrite')) {
+      alert('You do not have permission to add new records.');
+    } else {
+      if (this.tablePrivileges.canWrite) {
+        // Prepare the request URL with query parameters for tableName and columns
+        const url = `${this.apiUrl}/add?tableName=${encodeURIComponent(this.selectedTable)}&columns=${encodeURIComponent(this.columns.map(col => col.name).join(','))}`;
+    
+        // Create the request body with values as a JSON object
+        const requestBody = this.columns.reduce((obj:any, col) => {
+          obj[col.name] = this.selectedRow[col.name];
+          return obj;
+        }, {});
+    
+        console.log('Request URL:', url); // Log to inspect the URL
+        console.log('Request Body:', requestBody); // Log to inspect the payload
+    
+        this.http.post(url, requestBody).subscribe({
+          next: (response) => {
+            console.log('Added new row:', response);
+            this.fetchTableData(this.selectedTable);
+          },
+          error: (error) => {
+            console.error('Error adding new row:', error);
+            alert('Failed to add new row. Please check the console for more details.');
+          }
+        });
+      } else {
+        alert('You do not have permission to add new records.');
+      }
     }
   }
 
-  addNew(): void {
-    // Static add new logic
-    this.tableData.push({ ...this.selectedRow });
-    this.initializeEmptyRow(); // Clear the form after adding
-  }
+  
+
+  
+
+  
+  
 
   onCancel(): void {
     this.initializeEmptyRow(); // Clear the form on cancel
@@ -197,5 +259,9 @@ export class TableComponentAd implements OnInit {
       default:
         return 'text';
     }
+  }
+
+  hasPrivilege(action: string): boolean {
+    return this.tablePrivileges && this.tablePrivileges[action];
   }
 }

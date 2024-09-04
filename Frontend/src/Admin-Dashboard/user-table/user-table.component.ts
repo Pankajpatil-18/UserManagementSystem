@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from "../navbar/navbar.component";
+import { MyService } from 'src/User-Dashboard/my-service.service';
 
 @Component({
   selector: 'app-user-table',
@@ -16,16 +17,35 @@ export class UserTableComponent implements OnInit {
   isEditing: boolean = false;
   backupTableData: any[] = []; // To store a backup copy of the current data
   tables: any = {}; // Initialize tables as an empty object
-  apiUrl: string = 'http://localhost:5245/api/UserControllers/GetUsersPrivileges'; // Base API URL
+  apiUrl: string = 'http://localhost:5245/api'; // Base API URL
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
+  constructor(private http: HttpClient,private myService :MyService) {
     this.loadTableData(this.selectedTable);
   }
 
+  ngOnInit() {
+    this.loadTableName();
+    this.loadTableData(this.selectedTable);
+  }
+
+  loadTableName(){
+    this.myService.getTableNames().subscribe({
+      next: (tables: string[]) => {
+        console.log('Received table names:', tables); // Log received tables
+        this.tables = tables;
+      },
+      error: (error) => {
+        console.error('Error fetching table names:', error); // Log full error object
+        // Additional handling, if needed
+      },
+      complete: () => {
+        console.log('Completed fetching table names.');
+      }
+    });
+  }
+
   loadTableData(tableName: string) {
-    this.http.get<any[]>(`${this.apiUrl}?tableName=${tableName}`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/UserControllers/GetUsersPrivileges?tableName=${tableName}`).subscribe({
       next: (data) => {
         // Map the API response to the format you need
         this.tables[tableName] = data.map(user => ({
@@ -41,6 +61,11 @@ export class UserTableComponent implements OnInit {
         console.error('Error loading table data:', error);
       }
     });
+  }
+  onTableChange(event: any) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedTable = target.value;
+    this.loadTableData(this.selectedTable);
   }
 
   get currentTableData() {
