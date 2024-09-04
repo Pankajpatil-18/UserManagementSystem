@@ -61,22 +61,41 @@ export class TableComponentAd implements OnInit {
   onTableChange(event: any) {
     const target = event.target as HTMLSelectElement;
     this.selectedTable = target.value;
-    this.fetchTableData(this.selectedTable);
-    
+    this.columns = []; // Clear columns before fetching new data
+    this.fetchTableData(this.selectedTable); // Fetch data for the new table
   }
+  
 
   fetchTableData(tableName: string): void {
-    this.http.get<any[]>(`${this.apiUrl}/table-data?tableName=${tableName}`).subscribe(data => {
-      if (data.length > 0) {
-        this.columns = Object.keys(data[0]).map(key => ({
-          name: key,
-          type: this.getColumnType(data[0][key]),
-        }));
-        this.tableData = data;
+    this.http.get<any[]>(`${this.apiUrl}/table-data?tableName=${tableName}`).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          // Set columns based on the first data row
+          this.columns = Object.keys(data[0]).map(key => ({
+            name: key,
+            type: this.getColumnType(data[0][key]),
+          }));
+          this.tableData = data;
+        } else {
+          // Clear table data and set empty columns
+          this.tableData = [];
+          this.columns = this.columns.length ? [] : this.columns; // Reset columns
+        }
+  
+        // Ensure the form is initialized with empty values
+        this.initializeEmptyRow();
+      },
+      error: (error) => {
+        console.error('Error fetching table data:', error);
+        this.columns = [];
+        this.tableData = [];
         this.initializeEmptyRow();
       }
     });
   }
+  
+  
+  
 
   // fetchUserPrivileges(): void {
   //   this.myService.getTablePrivileges(this.curUserId, this.selectedTable).subscribe({
@@ -104,6 +123,8 @@ export class TableComponentAd implements OnInit {
       return acc;
     }, {});
   }
+ 
+  
 
   getDefaultValueForType(type: string): any {
     switch (type) {
