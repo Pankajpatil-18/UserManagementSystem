@@ -24,6 +24,14 @@ interface UserPermissions {
   canUpdate: boolean;
   canDelete: boolean;
 }
+interface userEditDto {
+  UserId: number;
+  TableName: string;
+  CanInsert: boolean;
+  CanUpdate: boolean;
+  CanDelete: boolean;
+ 
+}
 interface ColumnMetadata {
   name: string;
   type: string;
@@ -68,6 +76,10 @@ getPrivilegesForUser(userId: number, tableName: string): Observable<UserPermissi
   return this.http.get<UserPermissions>(`${this.apiUrl}/UserControllers/table-privileges`, { params });
 }
 
+// In my-service.service.ts
+updateUserPermissions(updateDtos: userEditDto[]): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/UpdateUserPermissions`, updateDtos);
+}
 
 
 

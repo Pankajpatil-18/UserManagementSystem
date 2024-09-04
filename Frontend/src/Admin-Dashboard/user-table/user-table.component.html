@@ -4,8 +4,9 @@
   <h2>User Permissions</h2>
   
   <label for="table-select">Select Table:</label>
-  <select id="table-select" [(ngModel)]="selectedTable" (change)="onTableChange($event)"> <!--ngmodel is used for  selectbox to have the current selectedtabel even if we back form some other page strode in local storage -->
-      <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+  
+<select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange($event)"> <!--ngmodel is used for  selectbox to have the current selectedtabel even if we back form some other page strode in local storage -->
+      <option *ngFor="let table in tables" [value]="table">{{ table }}</option>
   </select>
 
   <table>
@@ -22,22 +23,22 @@
     </thead>
     <tbody>
       <tr *ngFor="let user of currentTableData">
-        <td>{{ user.id }}</td>
+        <td>{{ user.UserId }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canInsert')">
-            {{ user.canInsert ? '✔️' : '❌' }}
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'CanInsert')">
+            {{ user.CanInsert ? '✔️' : '❌' }}
           </button>
         </td>
         <td>
-          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canUpdate')">
-            {{ user.canUpdate ? '✔️' : '❌' }}
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'CanUpdate')">
+            {{ user.CanUpdate ? '✔️' : '❌' }}
           </button>
         </td>
         <td>
-          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canDelete')">
-            {{ user.canDelete ? '✔️' : '❌' }}
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'CanDelete')">
+            {{ user.CanDelete ? '✔️' : '❌' }}
           </button>
         </td>
         <td>

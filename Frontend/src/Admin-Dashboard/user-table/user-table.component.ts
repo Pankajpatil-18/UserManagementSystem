@@ -5,6 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { MyService } from 'src/User-Dashboard/my-service.service';
 
+interface userEditDto{
+  UserId:number,
+  TableName:string,
+  CanInsert:boolean,
+  CanUpdate:boolean,
+  CanDelete:boolean
+}
 @Component({
   selector: 'app-user-table',
   standalone: true,
@@ -74,15 +81,34 @@ export class UserTableComponent implements OnInit {
 
   onEdit() {
     this.isEditing = true;
-    this.backupTableData = JSON.parse(JSON.stringify(this.currentTableData));
+    this.backupTableData = JSON.parse(JSON.stringify(this.currentTableData)); 
   }
 
   onSaveChanges() {
+    const updateDtos = this.currentTableData.map((user:userEditDto) => ({
+      UserId: user.UserId,
+      TableName: this.selectedTable,
+      CanInsert: user.CanInsert,
+      CanUpdate: user.CanUpdate,
+      CanDelete: user.CanDelete,
+    }));
+  
     this.isEditing = false;
-    this.showAlert('Your changes are saved!');
-    // Make a POST request to save changes here
-    // this.http.post(this.apiUrl, this.currentTableData).subscribe(/* handle response */);
+    this.myService.updateUserPermissions(updateDtos).subscribe({
+      next: (response) => {
+        this.showAlert('Your changes are saved!');
+        console.log('Permissions updated:', response);
+      },
+      error: (error) => {
+        console.error('Error updating permissions:', error);
+        this.showAlert('Failed to save changes!');
+        this.onCancelEdit();
+      },
+    });
   }
+  
+  
+  
 
   onCancelEdit() {
     this.isEditing = false;
