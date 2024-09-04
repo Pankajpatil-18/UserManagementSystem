@@ -28,6 +28,8 @@ export class TableComponentAd implements OnInit {
   apiUrl = 'http://localhost:5245/api/Table'; // API base URL
   curUserId = this.authService.getUserId(); // Get the current user ID
   tablesName:any=[];
+  
+
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private myService: MyService, private authService: AuthService) {}
 
@@ -171,57 +173,62 @@ export class TableComponentAd implements OnInit {
       });
   }
   onUpdate(): void {
-        if ( this.selectedRow) {
-          // Determine the dynamic ID property
-          const idField = this.myService.getIdFieldName(this.selectedRow);
-          if (idField && this.selectedRow[idField] !== undefined) {
-            // Construct the URL with query parameters
-            const url = `${this.apiUrl}/update?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
-            
-            // Prepare the body with the updated data
-            const updateData = { ...this.selectedRow };
-            delete updateData[idField]; // Remove the ID field from the body
-            
-            this.http.put(url, updateData).subscribe({
-              next: (response) => {
-                console.log('Updated:', response);
-                this.fetchTableData(this.selectedTable); // Refresh the table data
-              },
-              error: (error) => {
-                console.error('Error updating record:', error);
-                alert('Failed to update record. Please try again.');
-              }
-            });
-          } else {
-            alert('Selected row does not have a valid ID.');
-          }
-        }
-      }
-
+    
+    if (this.selectedRow) {
+      const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
+      console.log('ID Field Name:', idField); // Check what this returns
+      console.log('Selected Row:', this.selectedRow);
   
-  onDelete(): void {
-      if (this.selectedRow) {
-        // Determine the dynamic ID property
-        const idField = this.myService.getIdFieldName(this.selectedRow);
-        if (idField && this.selectedRow[idField] !== undefined) {
-          // Construct the URL with query parameters
-          const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
-          console.log(url);
-          this.http.delete(url).subscribe({
-            next: (response) => {
-              console.log('Deleted:', response);
-              this.fetchTableData(this.selectedTable); // Refresh the table data
-            },
-            error: (error) => {
-              console.error('Error deleting record:', error);
-              alert('Failed to delete record. Please try again.');
-            }
-          });
-        } else {
-          alert('Selected row does not have a valid ID.');
-        }
+      if (idField && this.selectedRow[idField] !== undefined) {
+        const url = `${this.apiUrl}/update?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
+        const updateData = { ...this.selectedRow };
+        delete updateData[idField]; // Remove ID field from the body
+  
+        this.http.put(url, updateData).subscribe({
+          next: (response) => {
+            console.log('Updated:', response);
+            this.fetchTableData(this.selectedTable);
+          },
+          error: (error) => {
+            console.error('Error updating record:', error);
+            alert('Failed to update record. Please try again.');
+          }
+        });
+      } else {
+        alert('Selected row does not have a valid ID.');
+      }
     }
   }
+  
+  onDelete(): void {
+    if (this.selectedRow) {
+      const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
+      console.log('ID Field Name:', idField); // Check what this returns
+      console.log('Selected Row:', this.selectedRow);
+  
+      if (idField && this.selectedRow[idField] !== undefined) {
+        const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
+        console.log('Delete URL:', url);
+  
+        this.http.delete(url).subscribe({
+          next: (response) => {
+            console.log('Deleted:', response);
+            this.fetchTableData(this.selectedTable);
+          },
+          error: (error) => {
+            console.error('Error deleting record:', error);
+            alert('Failed to delete record. Please try again.');
+          }
+        });
+      } else {
+        alert('Selected row does not have a valid ID.');
+      }
+    }
+  }
+  
+  
+// Example implementation
+
   
   addTableData(): void {
         // Prepare the request URL with query parameters for tableName and columns

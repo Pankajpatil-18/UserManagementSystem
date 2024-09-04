@@ -81,6 +81,10 @@ updateUserPermissions(updateDtos: userEditDto[]): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}/UpdateUserPermissions`, updateDtos);
 }
 
+getIdFieldNameToValidate(row: any): string | null {
+  // Implement logic to determine the ID field name based on your table structure
+  return row.StudentID ? 'StudentID' : null; // Adjust based on your actual ID field
+}
 
 
 
