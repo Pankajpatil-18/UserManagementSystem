@@ -40,7 +40,7 @@
         <td>
           <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request)">Approve</button>
           <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request)">Deny</button>
-          <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequest(request.requestId)">Remove</button>
+          <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequestFromFrontend(request.requestId)">Remove</button>
         </td>
       </tr>
     </tbody>

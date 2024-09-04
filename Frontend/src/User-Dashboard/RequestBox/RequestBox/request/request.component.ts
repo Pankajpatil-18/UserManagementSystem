@@ -42,6 +42,6 @@ export class RequestComponent {
   }
 
   goBack() {
-    this.router.navigate(['/previous-page']); // Adjust the path as needed
+    this.router.navigate(['/home']); // Adjust the path as needed
   }
 }

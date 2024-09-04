@@ -24,6 +24,10 @@ interface UserPermissions {
   canUpdate: boolean;
   canDelete: boolean;
 }
+interface ColumnMetadata {
+  name: string;
+  type: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -86,6 +90,10 @@ getPrivilegesForUser(userId: number, tableName: string): Observable<UserPermissi
     }
     // Return null if no ID field is found
     return null;
+  }
+
+  getColumns(tableName: string): Observable<ColumnMetadata[]> {
+    return this.http.get<ColumnMetadata[]>(`${this.apiUrl}/columns?tableName=${tableName}`);
   }
   
 }

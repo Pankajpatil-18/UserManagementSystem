@@ -127,14 +127,35 @@ export class RequestsTableComponent implements OnInit {
         }
       });
   }
+
+  // Function to remove the request from the frontend
+removeRequestFromFrontend(requestId: number): void {
+  console.log(`Removing request with ID ${requestId} from frontend.`);
+  
+  // Remove the request from the requests and filteredRequests arrays
+  this.requests = this.requests.filter(request => request.requestId !== requestId);
+  this.filteredRequests = this.filteredRequests.filter(request => request.requestId !== requestId);
+  
+  // Ensure Angular detects the change and updates the DOM
+  this.filteredRequests = [...this.filteredRequests];
+  
+  // After removing from frontend, call the backend deletion method
+  this.removeRequest(requestId);
+}
+
   removeRequest(requestId: number): void {
     console.log(`Removing request with ID: ${requestId}`);
     this.http.delete(`http://localhost:5245/api/Request/delete/${requestId}`).subscribe({
       next: () => {
         console.log(`Request with ID ${requestId} removed successfully.`);
-        // Remove the request from the local list
+        
+        // Remove the request from the requests and filteredRequests arrays
         this.requests = this.requests.filter(request => request.requestId !== requestId);
-        this.filterRequests(); // Update filtered requests
+        this.filteredRequests = this.filteredRequests.filter(request => request.requestId !== requestId);
+        
+        // Ensure Angular detects the change and updates the DOM
+        this.filteredRequests = [...this.filteredRequests];
+        
         this.message = `Request ID ${requestId} removed.`;
       },
       error: (error) => {
@@ -143,7 +164,6 @@ export class RequestsTableComponent implements OnInit {
       }
     });
   }
-  
 
   updatePermissions(request: Request, approve: boolean): void {
     if (approve) {

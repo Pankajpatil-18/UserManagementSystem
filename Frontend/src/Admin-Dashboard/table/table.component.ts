@@ -25,7 +25,6 @@ export class TableComponentAd implements OnInit {
   columns: ColumnMetadata[] = [];
   tableData: any[] = [];
   selectedRow: any = {};
-  tablePrivileges: any = {}; // Object to hold privileges
   apiUrl = 'http://localhost:5245/api/Table'; // API base URL
   curUserId = this.authService.getUserId(); // Get the current user ID
   tablesName:any=[];
@@ -79,17 +78,17 @@ export class TableComponentAd implements OnInit {
     });
   }
 
-  fetchUserPrivileges(): void {
-    this.myService.getTablePrivileges(this.curUserId, this.selectedTable).subscribe({
-      next: (privileges) => {
-        this.tablePrivileges = privileges;
-      },
-      error: (error) => {
-        console.error('Failed to fetch user privileges:', error);
-        alert('Failed to load user privileges. Some actions may be restricted.');
-      }
-    });
-  }
+  // fetchUserPrivileges(): void {
+  //   this.myService.getTablePrivileges(this.curUserId, this.selectedTable).subscribe({
+  //     next: (privileges) => {
+  //       this.tablePrivileges = privileges;
+  //     },
+  //     error: (error) => {
+  //       console.error('Failed to fetch user privileges:', error);
+  //       alert('Failed to load user privileges. Some actions may be restricted.');
+  //     }
+  //   });
+  // }
 
   getColumnType(value: any): string {
     if (!isNaN(Date.parse(value)) && typeof value === 'string' && value.includes('-')) {
@@ -124,7 +123,7 @@ export class TableComponentAd implements OnInit {
   }
 
   onSave(): void {
-    if (this.tablePrivileges.canWrite) {
+   
       this.http.post(`${this.apiUrl}/table-data`, this.selectedRow).subscribe({
         next: (response) => {
           console.log('Saved:', response);
@@ -135,15 +134,9 @@ export class TableComponentAd implements OnInit {
           alert('Failed to save record. Please try again.');
         }
       });
-    } else {
-      alert('You do not have permission to save records.');
-    }
   }
   onUpdate(): void {
-    if (!this.hasPrivilege('canUpdate')) {
-      alert('You do not have permission to update records.');
-    } else {
-        if (this.tablePrivileges.canUpdate && this.selectedRow) {
+        if ( this.selectedRow) {
           // Determine the dynamic ID property
           const idField = this.myService.getIdFieldName(this.selectedRow);
           if (idField && this.selectedRow[idField] !== undefined) {
@@ -167,18 +160,12 @@ export class TableComponentAd implements OnInit {
           } else {
             alert('Selected row does not have a valid ID.');
           }
-        } else {
-          alert('You do not have permission to update records.');
         }
       }
-    
-  }
+
   
   onDelete(): void {
-    if (!this.hasPrivilege('canDelete')) {
-      alert('You do not have permission to delete records.');
-    } else {
-      if (this.tablePrivileges.canDelete && this.selectedRow) {
+      if (this.selectedRow) {
         // Determine the dynamic ID property
         const idField = this.myService.getIdFieldName(this.selectedRow);
         if (idField && this.selectedRow[idField] !== undefined) {
@@ -198,17 +185,10 @@ export class TableComponentAd implements OnInit {
         } else {
           alert('Selected row does not have a valid ID.');
         }
-      } else {
-        alert('You do not have permission to delete records.');
-      }
     }
   }
   
   addTableData(): void {
-    if (!this.hasPrivilege('canWrite')) {
-      alert('You do not have permission to add new records.');
-    } else {
-      if (this.tablePrivileges.canWrite) {
         // Prepare the request URL with query parameters for tableName and columns
         const url = `${this.apiUrl}/add?tableName=${encodeURIComponent(this.selectedTable)}&columns=${encodeURIComponent(this.columns.map(col => col.name).join(','))}`;
     
@@ -231,11 +211,8 @@ export class TableComponentAd implements OnInit {
             alert('Failed to add new row. Please check the console for more details.');
           }
         });
-      } else {
-        alert('You do not have permission to add new records.');
-      }
     }
-  }
+  
 
   
 
@@ -261,7 +238,7 @@ export class TableComponentAd implements OnInit {
     }
   }
 
-  hasPrivilege(action: string): boolean {
-    return this.tablePrivileges && this.tablePrivileges[action];
-  }
+//   hasPrivilege(action: string): boolean {
+//     return this.tablePrivileges && this.tablePrivileges[action];
+//   }
 }

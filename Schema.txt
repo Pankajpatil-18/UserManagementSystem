@@ -112,3 +112,20 @@ BEGIN
         up.TableName = @tableName
     
 END
+
+
+
+
+CREATE PROCEDURE GetColumns
+    @TableName NVARCHAR(128)
+AS
+BEGIN
+    SELECT
+        COLUMN_NAME AS Name,
+        DATA_TYPE AS Type
+    FROM
+        INFORMATION_SCHEMA.COLUMNS
+    WHERE
+        TABLE_NAME = @TableName;
+END
+

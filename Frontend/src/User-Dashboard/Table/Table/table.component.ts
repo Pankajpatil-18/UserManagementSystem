@@ -346,7 +346,6 @@ export class TableComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error adding new row:', error);
-            alert('Failed to add new row. Please check the console for more details.');
           }
         });
       } else {
