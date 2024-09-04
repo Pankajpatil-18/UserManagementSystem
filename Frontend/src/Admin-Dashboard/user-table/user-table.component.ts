@@ -3,16 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from "../navbar/navbar.component";
-import { MyService } from 'src/User-Dashboard/my-service.service';
+import { MyService } from 'src/my-service.service';
+import { User } from 'src/Models/User.Model';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  canInsert: boolean;
-  canUpdate: boolean;
-  canDelete: boolean;
-}
 
 
 @Component({

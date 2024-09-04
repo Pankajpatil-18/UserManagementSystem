@@ -1,11 +1,9 @@
-
-// src/app/table/table.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MyService } from 'src/User-Dashboard/my-service.service';
+import { MyService } from 'src/my-service.service';
 import { AuthService } from 'src/app/auth/auth.service';
 
 interface ColumnMetadata {

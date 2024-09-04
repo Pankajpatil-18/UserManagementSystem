@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MyService } from 'src/User-Dashboard/my-service.service';
+import { MyService } from 'src/my-service.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 

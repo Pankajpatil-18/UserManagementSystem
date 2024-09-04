@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
-import { MyService } from 'src/User-Dashboard/my-service.service';
+import { MyService } from 'src/my-service.service';
 
 @Component({
   selector: 'app-home',

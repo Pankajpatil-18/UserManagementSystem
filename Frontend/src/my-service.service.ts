@@ -1,48 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
+import { ColumnMetadata } from './Models/ColumnMetadata.Model';
+import { userEditDto } from './Models/userEditDto.Model';
+import { UserPermissions } from './Models/UserPermissions.Model';
 
 
-interface Request {
-  id: number;
-  userId: number;
-  userName: string;
-  tableName: string;
-  canRead: boolean;
-  canWrite: boolean;
-  canUpdate: boolean;
-  canDelete: boolean;
-  requestType: string;
-  date: string;
-  status: string;
-}
-
-interface UserPermissions {
-  userId: number;
-  canRead: boolean;
-  canWrite: boolean;
-  canUpdate: boolean;
-  canDelete: boolean;
-}
-interface userEditDto {
-  UserId: number;
-  TableName: string;
-  CanInsert: boolean;
-  CanUpdate: boolean;
-  CanDelete: boolean;
- 
-}
-interface ColumnMetadata {
-  name: string;
-  type: string;
-}
 @Injectable({
   providedIn: 'root'
 })
-export class MyService {
+export class MyService  {
   private apiUrl = 'http://localhost:5245/api'; // Update with your API URL
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    
+  }
 
   getTableNames(): Observable<string[]> {
     console.log('Fetching table names...');

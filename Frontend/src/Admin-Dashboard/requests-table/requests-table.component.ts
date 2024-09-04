@@ -3,20 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Request } from 'src/Models/Request.model';
 
-export interface Request {
-  requestId: number;
-  userName: string;
-  canRead: boolean;
-  canUpdate: boolean;
-  canDelete: boolean;
-  canWrite: boolean;
-  requestType: string;
-  status: string;
-  date: string;
-  tableName: string;
-  message?: string;
-}
 
 @Component({
   selector: 'app-requests-table',
