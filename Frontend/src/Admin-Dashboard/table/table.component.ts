@@ -61,22 +61,55 @@ export class TableComponentAd implements OnInit {
   onTableChange(event: any) {
     const target = event.target as HTMLSelectElement;
     this.selectedTable = target.value;
-    this.fetchTableData(this.selectedTable);
-    
+    this.columns = []; // Clear columns before fetching new data
+    this.fetchTableData(this.selectedTable); // Fetch data for the new table
   }
+  
 
   fetchTableData(tableName: string): void {
-    this.http.get<any[]>(`${this.apiUrl}/table-data?tableName=${tableName}`).subscribe(data => {
-      if (data.length > 0) {
-        this.columns = Object.keys(data[0]).map(key => ({
-          name: key,
-          type: this.getColumnType(data[0][key]),
-        }));
+    this.http.get<any[]>(`${this.apiUrl}/table-data?tableName=${tableName}`).subscribe({
+      next: (data) => {
+        if (data.length > 0) {
+          // Set columns based on the first data row
+          this.columns = Object.keys(data[0]).map(key => ({
+            name: key,
+            type: this.getColumnType(data[0][key]),
+          }));
+        } else {
+          // No data, set columns based on the table schema
+          this.fetchTableSchema(tableName);
+        }
         this.tableData = data;
+        this.initializeEmptyRow();
+      },
+      error: (error) => {
+        console.error('Error fetching table data:', error);
+        this.columns = [];
+        this.tableData = [];
         this.initializeEmptyRow();
       }
     });
   }
+
+  fetchTableSchema(tableName: string): void {
+    this.http.get<any[]>(`${this.apiUrl}/table-schema?tableName=${tableName}`).subscribe({
+      next: (schema) => {
+        this.columns = schema.map((column: any) => ({
+          name: column.name,
+          type: column.type,
+        }));
+        this.initializeEmptyRow();
+      },
+      error: (error) => {
+        console.error('Error fetching table schema:', error);
+        this.columns = [];
+      }
+    });
+  }
+  
+  
+  
+  
 
   // fetchUserPrivileges(): void {
   //   this.myService.getTablePrivileges(this.curUserId, this.selectedTable).subscribe({
@@ -104,6 +137,8 @@ export class TableComponentAd implements OnInit {
       return acc;
     }, {});
   }
+ 
+  
 
   getDefaultValueForType(type: string): any {
     switch (type) {

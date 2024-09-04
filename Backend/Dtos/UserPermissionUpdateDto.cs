@@ -1,14 +1,17 @@
-namespace Backend.Dtos
-{
 public class UserPermissionUpdateDto
-    {
-        public int UserId { get; set; }
+{
+    [Required]
+    public int UserId { get; set; }
 
-        public string TableName {get; set;}
-        public bool CanInsert { get; set; }
-        public bool CanUpdate { get; set; }
-        public bool CanDelete { get; set; }
-    }
+    [Required]
+    public string TableName { get; set; }
 
-    
+    [Required]
+    public bool CanInsert { get; set; }
+
+    [Required]
+    public bool CanUpdate { get; set; }
+
+    [Required]
+    public bool CanDelete { get; set; }
 }
