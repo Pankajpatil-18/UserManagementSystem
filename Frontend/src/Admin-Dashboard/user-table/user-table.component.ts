@@ -5,6 +5,16 @@ import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { MyService } from 'src/User-Dashboard/my-service.service';
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  canInsert: boolean;
+  canUpdate: boolean;
+  canDelete: boolean;
+}
+
+
 @Component({
   selector: 'app-user-table',
   standalone: true,
@@ -18,6 +28,8 @@ export class UserTableComponent implements OnInit {
   backupTableData: any[] = []; // To store a backup copy of the current data
   tables: any = {}; // Initialize tables as an empty object
   apiUrl: string = 'http://localhost:5245/api'; // Base API URL
+  currentTable: User[] = [];
+
 
   constructor(private http: HttpClient,private myService :MyService) {
     this.loadTableData(this.selectedTable);
@@ -79,10 +91,32 @@ export class UserTableComponent implements OnInit {
 
   onSaveChanges() {
     this.isEditing = false;
-    this.showAlert('Your changes are saved!');
-    // Make a POST request to save changes here
-    // this.http.post(this.apiUrl, this.currentTableData).subscribe(/* handle response */);
+    this.showAlert('Your changes are being saved!');
+  
+    // Iterate over each user and send a POST request for each
+    this.currentTableData.forEach((user: User) => { // Explicitly define type of user
+      if (user.id !== undefined) { // Ensure user ID is defined
+        const payload = {
+          userId: user.id,
+          tableName: this.selectedTable,
+          canInsert: user.canInsert ?? false, // Use nullish coalescing to ensure boolean values
+          canUpdate: user.canUpdate ?? false,
+          canDelete: user.canDelete ?? false
+        };
+  
+        this.http.post(`${this.apiUrl}/UserControllers/UpdateUserPermissions`, payload,{ responseType: 'text' }).subscribe({
+          next: (response) => {
+            console.log(`Successfully updated permissions for user ${user.id}`);
+          },
+          error: (error) => {
+            console.error(`Error updating permissions for user ${user.id}:`, error);
+          }
+        });
+      }
+    });
   }
+  
+  
 
   onCancelEdit() {
     this.isEditing = false;

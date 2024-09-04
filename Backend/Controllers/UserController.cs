@@ -164,7 +164,7 @@ namespace Backend.Controllers
                 }
 
                 await connection.CloseAsync();
-                return Ok("User permissions updated successfully.");
+                return Ok(new { message = "Data updated successfully." });
             }
             catch (Exception ex)
             {
