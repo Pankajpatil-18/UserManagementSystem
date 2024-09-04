@@ -109,6 +109,7 @@ export class RequestsTableComponent implements OnInit {
           this.message = 'Failed to approve request.';
         }
       });
+      this.loadRequests();
   }
   
 

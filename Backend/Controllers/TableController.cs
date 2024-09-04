@@ -79,7 +79,45 @@ namespace Backend.Controllers
                 .Select(row => columns.ToDictionary(column => column.ColumnName, column => row[column]))
                 .ToList();
         }
+        [HttpGet("table-schema")]
+        public async Task<IActionResult> GetTableSchema([FromQuery] string tableName)
+        {
+            if (string.IsNullOrEmpty(tableName))
+            {
+                return BadRequest("Table name is required.");
+            }
 
+            var schema = new List<object>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var command = new SqlCommand($"SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @tableName", connection);
+                command.Parameters.AddWithValue("@tableName", tableName);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        schema.Add(new
+                        {
+                            Name = reader["COLUMN_NAME"],
+                            Type = reader["DATA_TYPE"],
+                            IsNullable = reader["IS_NULLABLE"].ToString() == "YES",
+                            DefaultValue = reader["COLUMN_DEFAULT"]
+                        });
+                    }
+                }
+            }
+
+            if (schema.Count == 0)
+            {
+                return NotFound("Table not found or no columns available.");
+            }
+
+            return Ok(schema);
+        }
         // Add Data
         // Add Data
         [HttpPost("add")]

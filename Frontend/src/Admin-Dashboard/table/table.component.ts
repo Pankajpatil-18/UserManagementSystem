@@ -75,14 +75,11 @@ export class TableComponentAd implements OnInit {
             name: key,
             type: this.getColumnType(data[0][key]),
           }));
-          this.tableData = data;
         } else {
-          // Clear table data and set empty columns
-          this.tableData = [];
-          this.columns = this.columns.length ? [] : this.columns; // Reset columns
+          // No data, set columns based on the table schema
+          this.fetchTableSchema(tableName);
         }
-  
-        // Ensure the form is initialized with empty values
+        this.tableData = data;
         this.initializeEmptyRow();
       },
       error: (error) => {
@@ -93,6 +90,23 @@ export class TableComponentAd implements OnInit {
       }
     });
   }
+
+  fetchTableSchema(tableName: string): void {
+    this.http.get<any[]>(`${this.apiUrl}/table-schema?tableName=${tableName}`).subscribe({
+      next: (schema) => {
+        this.columns = schema.map((column: any) => ({
+          name: column.name,
+          type: column.type,
+        }));
+        this.initializeEmptyRow();
+      },
+      error: (error) => {
+        console.error('Error fetching table schema:', error);
+        this.columns = [];
+      }
+    });
+  }
+  
   
   
   
