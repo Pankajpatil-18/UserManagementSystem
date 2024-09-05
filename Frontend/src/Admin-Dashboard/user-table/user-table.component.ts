@@ -25,7 +25,7 @@ export class UserTableComponent implements OnInit {
 
 
   constructor(private http: HttpClient,private myService :MyService) {
-    this.loadTableData(this.selectedTable);
+    //this.loadTableData(this.selectedTable);
   }
 
   ngOnInit() {

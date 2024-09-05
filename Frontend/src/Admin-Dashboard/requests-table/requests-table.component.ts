@@ -79,17 +79,16 @@ export class RequestsTableComponent implements OnInit {
 
   filterRequests(): void {
     this.filteredRequests = this.requests.filter(request => request.tableName === this.selectedTable);
-    console.log('Filtered requests:', this.filteredRequests);
   }
 
   approveRequest(request: Request): void {
     this.http.put(`http://localhost:5245/api/Request/approve/${request.requestId}`, null)
       .subscribe({
         next: (data) => {
-          console.log('Request approved:', data);
           request.status = 'Approved';
           this.updatePermissions(request, true);
           this.filterRequests();
+          this.loadRequests();
           this.message = `Request ID ${request.requestId} approved.`;
         },
         error: (error) => {
@@ -97,7 +96,7 @@ export class RequestsTableComponent implements OnInit {
           this.message = 'Failed to approve request.';
         }
       });
-      this.loadRequests();
+      
   }
   
 

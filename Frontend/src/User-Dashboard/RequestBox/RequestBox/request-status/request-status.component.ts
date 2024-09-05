@@ -14,14 +14,34 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RequestStatusComponent implements OnChanges {
   @Input() userRequests: any[] = [];
+  userId: number = 0;
 
   constructor(private requestService: RequestService, private authService: AuthService,private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchLoggedInUserRequests();
+  }
+
+  fetchLoggedInUserRequests(): void {
+    const loggedInUserId = this.authService.getUserId(); // Use AuthService to get logged-in user ID
+    if (loggedInUserId) {
+      this.requestService.getUserRequests(loggedInUserId).subscribe(
+        (requests: any[]) => {
+          this.userRequests = requests; // Set the user requests in the table
+        },
+        (error) => {
+          console.error('Error fetching user requests:', error);
+        }
+      );
+    } else {
+      console.error('No logged-in user ID found.');
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userRequests']) {
       this.userRequests = changes['userRequests'].currentValue;
     }
-    console.log(changes);
   }
   trackByRequestId(index: number, request: any): number {
     return request.requestId;
