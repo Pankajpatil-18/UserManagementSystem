@@ -36,7 +36,27 @@ export class AuthService {
   getUserName(): string  {
     return this.userName;
   }
- 
+  
+
+  // Example of a simple login method
+  login(password: string): boolean {
+    // Replace this logic with your actual authentication API call
+   
+      localStorage.setItem('token', password); // Store a token or authentication state
+      console.log(localStorage.getItem('token'));
+      
+    return true;
+  }
+
+  // Example of logout method
+  logout(): void {
+    localStorage.removeItem('token'); // Clear the token when the user logs out
+  }
+
+  // Method to check if the user is logged in
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token'); // Return true if token exists, otherwise false
+  }
  
   
 }

@@ -21,6 +21,7 @@ export class RequestStatusComponent implements OnChanges {
     if (changes['userRequests']) {
       this.userRequests = changes['userRequests'].currentValue;
     }
+    console.log(changes);
   }
   trackByRequestId(index: number, request: any): number {
     return request.requestId;

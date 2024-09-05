@@ -58,8 +58,10 @@ export class LoginComponent implements OnInit {
           // Check if the backend role matches the selected login type
           if (response.role === formValues.loginType.charAt(0).toUpperCase() + formValues.loginType.slice(1)) {
             if (response.role === 'Admin') {
+              this.authService.login(formValues.password)
               this.router.navigate(['/user-management']);
             } else if (response.role === 'User') {
+              this.authService.login(formValues.password)
               this.router.navigate(['/home']);
             }
             this.isLogged.emit();

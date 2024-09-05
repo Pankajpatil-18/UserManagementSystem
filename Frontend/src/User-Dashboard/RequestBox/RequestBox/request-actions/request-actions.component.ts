@@ -51,6 +51,8 @@ export class RequestActionsComponent implements OnInit {
         console.error('Error fetching table names:', error);
       }
     });
+    
+    
   }
 
   onTableChange(event: Event): void {
