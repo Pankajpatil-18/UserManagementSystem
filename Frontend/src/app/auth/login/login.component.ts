@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
       this.http.post<any>('http://localhost:5245/api/Auth/login', {
         email: formValues.email,
         password: formValues.password
-      }).subscribe(
-        response => {
+      }).subscribe({
+        next:(response) => {
           this.isLoading = false;
           console.log('Login successful', response);
           console.log("Hello");
@@ -72,12 +72,12 @@ export class LoginComponent implements OnInit {
             alert('The role returned by the server does not match the selected login type.');
           }
         },
-        (error: HttpErrorResponse) => {
+        error:(error: HttpErrorResponse) => {
           this.isLoading = false;
           console.error('Login failed', error);
           alert('Login failed: ' + (error.error.message || 'An unknown error occurred'));
         }
-      );
+    });
   
     }
   }
