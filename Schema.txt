@@ -1,0 +1,131 @@
+CREATE TABLE Student (
+    StudentID INT IDENTITY(1,1) PRIMARY KEY,  
+    FirstName NVARCHAR(50) NOT NULL,        
+    LastName NVARCHAR(50) NOT NULL,           
+    Class NVARCHAR(20) NOT NULL,              
+    Department NVARCHAR(50) NOT NULL,         
+    DOB DATE NOT NULL,                        
+    CGPA DECIMAL(3, 2) NOT NULL         
+);
+CREATE TABLE Employee(
+    EmployeeId INT IDENTITY(1,1) PRIMARY KEY,  
+    FirstName NVARCHAR(50) NOT NULL,         
+    LastName NVARCHAR(50) NOT NULL,           
+    Email NVARCHAR(100) NOT NULL UNIQUE,     
+    DOJ DATE NOT NULL,                         
+    Salary DECIMAL(10, 2) NOT NULL           
+);
+CREATE TABLE Product (
+    ProductId INT IDENTITY(1,1) PRIMARY KEY,   
+    ProductName NVARCHAR(100) NOT NULL,        
+    Category NVARCHAR(50) NOT NULL,            
+    Price DECIMAL(10, 2) NOT NULL           
+);
+
+CREATE TABLE [User] (
+    UserId INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50),
+    LastName NVARCHAR(50),
+    Email NVARCHAR(100) UNIQUE,
+    Password NVARCHAR(100),
+    Role NVARCHAR(20)
+);
+
+CREATE TABLE Requests (
+    RequestId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT,
+    UserName NVARCHAR(100),
+    TableName NVARCHAR(50),
+    RequestType NVARCHAR(20),
+    Message NVARCHAR(255),
+    Status NVARCHAR(20),
+    Date DATETIME,
+    FOREIGN KEY (UserId) REFERENCES [User](UserId)
+);
+
+CREATE TABLE UserPermissions (
+    PermissionId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT,
+    TableName NVARCHAR(50),
+    CanRead BIT,
+    CanWrite BIT,
+    CanUpdate BIT,
+    CanDelete BIT,
+    FOREIGN KEY (UserId) REFERENCES [User](UserId)
+);
+
+
+
+CREATE PROCEDURE AddTableData
+    @TableName NVARCHAR(100),
+    @Columns NVARCHAR(MAX),
+    @Values NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @Sql NVARCHAR(MAX)
+    SET @Sql = 'INSERT INTO ' + @TableName + ' (' + @Columns + ') VALUES (' + @Values + ')'
+    EXEC sp_executesql @Sql
+END
+
+
+CREATE PROCEDURE UpdateTableData
+    @TableName NVARCHAR(100),
+    @SetClause NVARCHAR(MAX),
+    @WhereClause NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @Sql NVARCHAR(MAX)
+    SET @Sql = 'UPDATE ' + @TableName + ' SET ' + @SetClause + ' WHERE ' + @WhereClause
+    EXEC sp_executesql @Sql
+END
+
+
+CREATE PROCEDURE DeleteTableData
+    @TableName NVARCHAR(100),
+    @PrimaryKeyColumn NVARCHAR(100),
+    @Id INT
+AS
+BEGIN
+    DECLARE @Sql NVARCHAR(MAX)
+    SET @Sql = 'DELETE FROM ' + @TableName + ' WHERE ' + @PrimaryKeyColumn + ' = @Id'
+    EXEC sp_executesql @Sql, N'@Id INT', @Id
+END
+
+ALTER PROCEDURE [dbo].[GetUsersWithPrivileges]
+    @tableName NVARCHAR(255)
+AS
+BEGIN
+    SELECT 
+        u.UserId AS ID,
+        CONCAT(u.FirstName, ' ', u.LastName) AS Name,
+        u.Email,
+        COALESCE(up.CanWrite, 0) AS CanInsert,  -- BIT should map to boolean
+        COALESCE(up.CanUpdate, 0) AS CanUpdate,  -- BIT should map to boolean
+        COALESCE(up.CanDelete, 0) AS CanDelete  -- BIT should map to boolean
+    FROM 
+        [User] u
+    LEFT JOIN 
+        [UserPermissions] up
+    ON 
+        u.UserId = up.UserId
+    AND 
+        up.TableName = @tableName
+    
+END
+
+
+
+
+CREATE PROCEDURE GetColumns
+    @TableName NVARCHAR(128)
+AS
+BEGIN
+    SELECT
+        COLUMN_NAME AS Name,
+        DATA_TYPE AS Type
+    FROM
+        INFORMATION_SCHEMA.COLUMNS
+    WHERE
+        TABLE_NAME = @TableName;
+END
+

@@ -1,39 +1,84 @@
-import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
+import { MyService } from 'src/my-service.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, CommonModule], // Include RouterModule and CommonModule as imports
+  imports: [RouterModule, HttpClientModule, CommonModule,FormsModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-  userName = 'Gayatri';
-  selectedTable: string = 'users'; // Default selection
-  userPrivileges :any= {
-        users: ['Read', 'Write'],
-        products: ['Read'],
-        orders:['Read']
-      };
+export class HomeComponent implements OnInit {
+  userName: string | null = null; // User's name
+  selectedTable: string = ''; // Default selection
+  tables: any = []; // Tables to be fetched from API
+  tablePrivileges!: { [key: string]: boolean; };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private myService: MyService, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.userName=this.authService.getUserName();
+    this.selectedTable = this.authService.getCurTable() || 'Student';
+    this.myService.getTableNames().subscribe({
+      next: (tables: string[]) => {
+        console.log('Received table names:', tables); // Log received tables
+        this.tables = tables;
+        this.fetchTablePrivileges();
+      },
+      error: (error) => {
+        console.error('Error fetching table names:', error); // Log full error object
+        // Additional handling, if needed
+      },
+      complete: () => {
+        console.log('Completed fetching table names.');
+      }
+    });
+    
+    
+    
+  }
+  onTableChange(event: any) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedTable = target.value;
+    console.log('Selected table:', this.selectedTable);
+    this.authService.setCurTable(this.selectedTable); // Save to AuthService
+    this.fetchTablePrivileges();
+  }
+
+  fetchTablePrivileges() {
+    const userId = this.authService.getUserId();
+  
+      if (userId) {
+      this.myService.getTablePrivileges(userId, this.selectedTable).subscribe({
+        next: (privileges) => {
+          this.tablePrivileges = privileges;
+        },
+        error: (error) => console.error('Error fetching table privileges:', error)
+      });
+    } else {
+      console.error('User ID not found.');
+    }
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.tablePrivileges[`can${privilege}`] ?? false;
+  }
+  
 
   logout() {
     console.log('Logout clicked');
     this.router.navigate(['/login']);
   }
 
-  onTableChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    this.selectedTable = target.value;
-    console.log('Selected table:', this.selectedTable);
-  }
 
   manageRecords() {
     console.log('Record Management clicked');
-    // Navigate to TableComponent with selectedTable as a query parameter
     this.router.navigate(['/table'], { queryParams: { selectedTable: this.selectedTable } });
   }
 
@@ -41,8 +86,9 @@ export class HomeComponent {
     console.log('Request Management clicked');
     this.router.navigate(['/request']);
   }
-  hasPrivilege(privilege: string): boolean {
-        return this.userPrivileges[this.selectedTable].includes(privilege);
-    }
+  // hasPrivilege(privilege: string): boolean {
+  //   return this.userPrivileges[this.selectedTable]?.includes(privilege) ?? false;
+  // }
 }
+
 

@@ -1,46 +1,57 @@
 <app-navbar></app-navbar>
 <div class="container">
-    <!-- Dropdown to select table -->
     <div>
         <label id="label" for="tableSelect">Select Table:</label>
     </div>
-    <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableSelect($event)">
-        <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+    <select id="tableSelect" [(ngModel)]="selectedTable" (change)="onTableChange($event)">
+        <option *ngFor="let table of tablesName" [value]="table">{{ table }}</option>
     </select>
 
-    <!-- Table display -->
-    <table class="styled-table" > <!-- Ensuring table is shown if there are columns -->
-        <thead>
-            <tr>
-                <th *ngFor="let column of columns">{{ column.name }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let row of tableData" (click)="onRowSelect(row)" class="table-row">
-                <td *ngFor="let column of columns">{{ row[column.name] }}</td>
-            </tr>
-        </tbody>
-    </table>
+  
+  <table *ngIf="selectedTable" class="styled-table">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns">{{ column.name }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableData" (click)="onRowSelect(row)" class="table-row">
+        <td *ngFor="let column of columns">{{ row[column.name] }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-    <!-- Row Edit Form -->
-    <div class="edit-form" *ngIf="columns.length > 0">
-        <h3>Edit Row</h3>
-        <form (ngSubmit)="onSave()">
-            <div *ngFor="let column of columns">
-                <label [for]="column.name">{{ column.name }}</label>
-                <input 
-                    [id]="column.name" 
-                    [(ngModel)]="selectedRow[column.name]" 
-                    [name]="column.name"
-                    [type]="getInputType(column.type)"
-                />
-            </div>
-            <div class="buttons">
-                <button type="button" (click)="onUpdate()">Update</button>
-                <button type="button" (click)="onDelete()">Delete</button>
-                <button class="add-button" type="button" (click)="addNew()">Add New</button>
-                <button type="button" (click)="onCancel()">Cancel</button>
-            </div>
-        </form>
-    </div>
+  <div class="edit-form" *ngIf="columns.length > 0">
+    <h3>Edit Row</h3>
+    <form (ngSubmit)="onSave()">
+      <div *ngFor="let column of columns">
+        <label [for]="column.name">{{ column.name }}</label>
+        <input 
+          [id]="column.name" 
+          [(ngModel)]="selectedRow[column.name]" 
+          [name]="column.name"
+          [type]="getInputType(column.type)"
+        />
+      </div>
+      <div class="buttons">
+        <button 
+          type="button" 
+          (click)="onUpdate()">
+          Update
+        </button>
+        <button 
+          type="button" 
+          (click)="onDelete()">
+          Delete
+        </button>
+        <button 
+          class="add-button" 
+          type="button" 
+          (click)="addTableData()" >
+          Add New
+        </button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
 </div>

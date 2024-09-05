@@ -1,0 +1,187 @@
+1)user.component.html
+<app-navbar></app-navbar>
+<div class="user-table-container">
+  <h2>User Permissions</h2>
+  
+  <label for="table-select">Select Table:</label>
+  <select id="table-select" [(ngModel)]="selectedTable">
+    <option value="Student">Student</option>
+    <option value="Employee">Employee</option>
+  </select>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Insert</th>
+        <th>Update</th>
+        <th>Delete</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of currentTableData">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canInsert')">
+            {{ user.canInsert ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canUpdate')">
+            {{ user.canUpdate ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canDelete')">
+            {{ user.canDelete ? '✔️' : '❌' }}
+          </button>
+        </td>
+        <td>
+          <!-- Display the "Save" button if in editing mode, otherwise display "Edit" -->
+          <button *ngIf="isEditing" (click)="onSaveChanges()">Save</button>
+          <button *ngIf="!isEditing" (click)="onEdit()">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Single Cancel button at the bottom right -->
+  <div class="actions">
+    <button *ngIf="isEditing" (click)="onCancelEdit()">Cancel</button>
+  </div>
+
+  <div class="alert">Your changes are saved!</div>
+</div>
+1)user.component.ts
+
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from "../navbar/navbar.component";
+
+@Component({
+  selector: 'app-user-table',
+  standalone: true,
+  templateUrl: './user-table.component.html',
+  styleUrls: ['./user-table.component.css'],
+  imports: [CommonModule, FormsModule, NavbarComponent],
+})
+export class UserTableComponent {
+  selectedTable: string = 'Student'; // Default to 'Student' table
+  isEditing: boolean = false;
+  backupTableData: any[] = []; // To store a backup copy of the current data
+
+  // Sample data
+  tables = {
+    Student: [
+      { id: 1, name: 'Aditi', email: 'aditi@example.com', canInsert: false, canUpdate: false, canDelete: false },
+      { id: 2, name: 'Gayatri', email: 'gayatri@example.com', canInsert: false, canUpdate: false, canDelete: false },
+    ],
+    Employee: [
+      { id: 3, name: 'Shekhar', email: 'shekhar@example.com', canInsert: false, canUpdate: false, canDelete: false },
+      { id: 4, name: 'Pankaj', email: 'pankaj@example.com', canInsert: false, canUpdate: false, canDelete: false },
+    ],
+  };
+
+  get currentTableData() {
+    return this.tables[this.selectedTable as keyof typeof this.tables];
+  }
+
+  onEdit() {
+    this.isEditing = true;
+    // Make a deep copy of the current table data for backup
+    this.backupTableData = JSON.parse(JSON.stringify(this.currentTableData));
+  }
+
+  onSaveChanges() {
+    this.isEditing = false;
+    this.showAlert('Your changes are saved!');
+  }
+
+  onCancelEdit() {
+    this.isEditing = false;
+    // Restore the backup data
+    this.tables[this.selectedTable as keyof typeof this.tables] = JSON.parse(JSON.stringify(this.backupTableData));
+    // Hide the alert box if it's shown
+    const alertBox = document.querySelector('.alert');
+    if (alertBox) {
+      alertBox.classList.remove('show');
+    }
+  }
+
+  togglePermission(row: any, permission: keyof typeof row) {
+    if (this.isEditing) {
+      row[permission] = !row[permission];
+    }
+  }
+
+  private showAlert(message: string) {
+    const alertBox = document.querySelector('.alert');
+    if (alertBox) {
+      alertBox.textContent = message;
+      alertBox.classList.add('show');
+      setTimeout(() => {
+        alertBox.classList.remove('show');
+      }, 2000); // Hide after 2 seconds
+    }
+  }
+}
+now make it use data by calling api from both user table and  USer Permision table
+
+you can use api such as
+
+[HttpGet("table-names")]
+        public async Task<IActionResult> GetTableNames()
+        {
+            try
+            {
+                var tableNames = await _dataContext.GetTableNamesAsync();
+                return Ok(tableNames);
+            }
+            catch (Exception ex)
+            {
+                // Log exception details here
+                return StatusCode(500, "An error occurred while fetching table names.");
+            }
+        }
+
+[HttpGet("GetUsers")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _repository.GetUsersAsync();
+            return Ok(users);
+        }
+
+[HttpGet("table-privileges")]
+        public async Task<IActionResult> GetTablePrivileges([FromQuery] int userId, [FromQuery] string tableName)
+        {
+            if (userId <= 0 || string.IsNullOrEmpty(tableName))
+            {
+                return BadRequest("User ID and Table Name are required.");
+            }
+
+            var privilege = await Dbcontext.UserPermissions
+                .Where(p => p.UserId == userId && p.TableName == tableName)
+                .Select(p => new
+                {
+                    p.CanRead,
+                    p.CanWrite,
+                    p.CanUpdate,
+                    p.CanDelete
+                })
+                .FirstOrDefaultAsync();
+
+            if (privilege == null)
+            {
+                return NotFound("Privileges not found.");
+            }
+
+            return Ok(privilege);
+        }
+
