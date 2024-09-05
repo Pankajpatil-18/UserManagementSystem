@@ -224,8 +224,6 @@ export class TableComponentAd implements OnInit {
     }
   }
   
-  
-// Example implementation
 
   
   addTableData(): void {
