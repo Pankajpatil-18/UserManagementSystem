@@ -62,7 +62,10 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/user-management']);
             } else if (response.role === 'User') {
               this.authService.login(formValues.password)
-              this.router.navigate(['/home']);
+              this.router.navigate(['/home']).then(() => {
+                // Replace the history state so that the login page is removed from the history
+                window.history.replaceState({}, '', '/home');
+              });
             }
             this.isLogged.emit();
           } else {

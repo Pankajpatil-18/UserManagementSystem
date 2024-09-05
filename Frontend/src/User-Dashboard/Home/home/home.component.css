@@ -131,4 +131,24 @@ select {
 
 .btn-center:hover {
   background-color: #2e7d32; /* Darker green on hover */
+  
 }
+
+.logout-button:hover {
+  background-color: darkred;
+  transform: scale(1.1);
+}
+
+.logout-button {
+  background-color: red;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-family: 'Arial', sans-serif; /* Added font-family */
+}
+

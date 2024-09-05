@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MyService } from 'src/my-service.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 interface ColumnMetadata {
   name: string;
@@ -14,7 +15,7 @@ interface ColumnMetadata {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NavbarComponent],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
@@ -26,20 +27,12 @@ export class TableComponentAd implements OnInit {
   apiUrl = 'http://localhost:5245/api/Table'; // API base URL
   curUserId = this.authService.getUserId(); // Get the current user ID
   tablesName:any=[];
-  
-
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private myService: MyService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadTableName();
     this.fetchTableData(this.selectedTable);
-
-    // this.route.queryParams.subscribe(params => {
-    //   this.selectedTable = 'Student'; // Default to 'Student' if not provided
-    //   this.fetchTableData(this.selectedTable);
-    //   this.fetchUserPrivileges(); // Fetch user privileges
-    // });
   }
   loadTableName(){
     this.myService.getTableNames().subscribe({
@@ -64,7 +57,6 @@ export class TableComponentAd implements OnInit {
     this.columns = []; // Clear columns before fetching new data
     this.fetchTableData(this.selectedTable); // Fetch data for the new table
   }
-  
 
   fetchTableData(tableName: string): void {
     this.http.get<any[]>(`${this.apiUrl}/table-data?tableName=${tableName}`).subscribe({
@@ -106,22 +98,6 @@ export class TableComponentAd implements OnInit {
       }
     });
   }
-  
-  
-  
-  
-
-  // fetchUserPrivileges(): void {
-  //   this.myService.getTablePrivileges(this.curUserId, this.selectedTable).subscribe({
-  //     next: (privileges) => {
-  //       this.tablePrivileges = privileges;
-  //     },
-  //     error: (error) => {
-  //       console.error('Failed to fetch user privileges:', error);
-  //       alert('Failed to load user privileges. Some actions may be restricted.');
-  //     }
-  //   });
-  // }
 
   getColumnType(value: any): string {
     if (!isNaN(Date.parse(value)) && typeof value === 'string' && value.includes('-')) {
@@ -138,8 +114,6 @@ export class TableComponentAd implements OnInit {
     }, {});
   }
  
-  
-
   getDefaultValueForType(type: string): any {
     switch (type) {
       case 'number':
@@ -224,8 +198,6 @@ export class TableComponentAd implements OnInit {
     }
   }
   
-
-  
   addTableData(): void {
         // Prepare the request URL with query parameters for tableName and columns
         const url = `${this.apiUrl}/add?tableName=${encodeURIComponent(this.selectedTable)}&columns=${encodeURIComponent(this.columns.map(col => col.name).join(','))}`;
@@ -251,14 +223,6 @@ export class TableComponentAd implements OnInit {
         });
     }
   
-
-  
-
-  
-
-  
-  
-
   onCancel(): void {
     this.initializeEmptyRow(); // Clear the form on cancel
   }
@@ -275,8 +239,4 @@ export class TableComponentAd implements OnInit {
         return 'text';
     }
   }
-
-//   hasPrivilege(action: string): boolean {
-//     return this.tablePrivileges && this.tablePrivileges[action];
-//   }
 }
