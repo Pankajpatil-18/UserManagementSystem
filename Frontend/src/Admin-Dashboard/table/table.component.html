@@ -16,7 +16,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of tableData" (click)="onRowSelect(row)" class="table-row">
-        <td *ngFor="let column of columns">{{ row[column.name] }}</td>
+        <td *ngFor="let column of columns"> {{ column.type === 'date' ? (row[column.name] | date: 'yyyy-MM-dd') : row[column.name] }}
+        </td>
       </tr>
     </tbody>
   </table>

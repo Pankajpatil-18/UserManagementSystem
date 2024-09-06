@@ -20,11 +20,12 @@ export class HomeComponent implements OnInit {
   tables: any = []; // Tables to be fetched from API
   tablePrivileges!: { [key: string]: boolean; };
 
-  constructor(private router: Router, private myService: MyService, private authService: AuthService) {}
+  constructor(private router: Router, private myService: MyService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.userName=this.authService.getUserName();
     this.selectedTable = this.authService.getCurTable() || 'Student';
+    console.log("Selected Tqabe:"+this.selectedTable);
     this.myService.getTableNames().subscribe({
       next: (tables: string[]) => {
         console.log('Received table names:', tables); // Log received tables

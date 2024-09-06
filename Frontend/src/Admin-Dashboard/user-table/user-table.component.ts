@@ -5,9 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { MyService } from 'src/my-service.service';
 import { User } from 'src/Models/User.Model';
-
-
-
+ 
 @Component({
   selector: 'app-user-table',
   standalone: true,
@@ -17,42 +15,35 @@ import { User } from 'src/Models/User.Model';
 })
 export class UserTableComponent implements OnInit {
   selectedTable: string = 'Student'; // Default to 'Student' table
-  isEditing: boolean = false;
   backupTableData: any[] = []; // To store a backup copy of the current data
   tables: any = {}; // Initialize tables as an empty object
   apiUrl: string = 'http://localhost:5245/api'; // Base API URL
-  currentTable: User[] = [];
-
-
-  constructor(private http: HttpClient,private myService :MyService) {
-    //this.loadTableData(this.selectedTable);
+  editingUserId: number | null = null; // Track the ID of the user currently being edited
+ 
+  constructor(private http: HttpClient, private myService: MyService) {
+    this.loadTableData(this.selectedTable);
   }
-
+ 
   ngOnInit() {
     this.loadTableName();
     this.loadTableData(this.selectedTable);
   }
-
-  loadTableName(){
+ 
+  loadTableName() {
     this.myService.getTableNames().subscribe({
       next: (tables: string[]) => {
-        console.log('Received table names:', tables); // Log received tables
+        console.log('Received table names:', tables);
         this.tables = tables;
       },
       error: (error) => {
-        console.error('Error fetching table names:', error); // Log full error object
-        // Additional handling, if needed
-      },
-      complete: () => {
-        console.log('Completed fetching table names.');
+        console.error('Error fetching table names:', error);
       }
     });
   }
-
+ 
   loadTableData(tableName: string) {
     this.http.get<any[]>(`${this.apiUrl}/UserControllers/GetUsersPrivileges?tableName=${tableName}`).subscribe({
       next: (data) => {
-        // Map the API response to the format you need
         this.tables[tableName] = data.map(user => ({
           id: user.id,
           name: user.name,
@@ -60,6 +51,7 @@ export class UserTableComponent implements OnInit {
           canInsert: !!user.canInsert,
           canUpdate: !!user.canUpdate,
           canDelete: !!user.canDelete,
+          isEditing: false // Add an 'isEditing' flag for each user
         }));
       },
       error: (error) => {
@@ -67,65 +59,67 @@ export class UserTableComponent implements OnInit {
       }
     });
   }
+ 
   onTableChange(event: any) {
     const target = event.target as HTMLSelectElement;
     this.selectedTable = target.value;
     this.loadTableData(this.selectedTable);
   }
-
+ 
   get currentTableData() {
     return this.tables[this.selectedTable as keyof typeof this.tables] || [];
   }
-
-  onEdit() {
-    this.isEditing = true;
+ 
+  onEdit(user: any) {
+    // Set the selected user as being edited
+    this.editingUserId = user.id;
     this.backupTableData = JSON.parse(JSON.stringify(this.currentTableData));
+   
+    // Enable editing mode for the selected user only
+    this.currentTableData.forEach((u: { isEditing: boolean; id: any; }) => u.isEditing = u.id === user.id);
   }
-
-  onSaveChanges() {
-    this.isEditing = false;
+ 
+  onSaveChanges(user: any) {
+    if (this.editingUserId !== user.id) return; // Only save if this is the currently edited user
+ 
+    user.isEditing = false; // Turn off editing mode for this user
     this.showAlert('Your changes are being saved!');
-  
-    // Iterate over each user and send a POST request for each
-    this.currentTableData.forEach((user: User) => { // Explicitly define type of user
-      if (user.id !== undefined) { // Ensure user ID is defined
-        const payload = {
-          userId: user.id,
-          tableName: this.selectedTable,
-          canInsert: user.canInsert ?? false, // Use nullish coalescing to ensure boolean values
-          canUpdate: user.canUpdate ?? false,
-          canDelete: user.canDelete ?? false
-        };
-  
-        this.http.post(`${this.apiUrl}/UserControllers/UpdateUserPermissions`, payload,{ responseType: 'text' }).subscribe({
-          next: (response) => {
-            console.log(`Successfully updated permissions for user ${user.id}`);
-          },
-          error: (error) => {
-            console.error(`Error updating permissions for user ${user.id}:`, error);
-          }
-        });
+ 
+    const payload = {
+      userId: user.id,
+      tableName: this.selectedTable,
+      canInsert: user.canInsert ?? false,
+      canUpdate: user.canUpdate ?? false,
+      canDelete: user.canDelete ?? false
+    };
+ 
+    this.http.post(`${this.apiUrl}/UserControllers/UpdateUserPermissions`, payload, { responseType: 'text' }).subscribe({
+      next: () => {
+        console.log(`Successfully updated permissions for user ${user.id}`);
+        this.editingUserId = null; // Clear the editing state after saving
+      },
+      error: (error) => {
+        console.error(`Error updating permissions for user ${user.id}:`, error);
       }
     });
   }
-  
-  
-
-  onCancelEdit() {
-    this.isEditing = false;
-    this.tables[this.selectedTable as keyof typeof this.tables] = JSON.parse(JSON.stringify(this.backupTableData));
-    const alertBox = document.querySelector('.alert');
-    if (alertBox) {
-      alertBox.classList.remove('show');
-    }
+ 
+  onCancelEdit(user: any) {
+    if (this.editingUserId !== user.id) return; // Only cancel if this is the currently edited user
+ 
+    user.isEditing = false; // Cancel editing for the specific user
+    // Restore original data for the canceled user
+    const index = this.currentTableData.findIndex((u: { id: any; }) => u.id === user.id);
+    this.currentTableData[index] = this.backupTableData[index];
+    this.editingUserId = null; // Clear the editing state
   }
-
+ 
   togglePermission(row: any, permission: keyof typeof row) {
-    if (this.isEditing) {
+    if (row.isEditing) {
       row[permission] = !row[permission];
     }
   }
-
+ 
   private showAlert(message: string) {
     const alertBox = document.querySelector('.alert');
     if (alertBox) {
@@ -137,3 +131,4 @@ export class UserTableComponent implements OnInit {
     }
   }
 }
+ 

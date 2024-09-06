@@ -24,7 +24,7 @@ import { AuthGuard } from './auth.guard';// Ensure you have this guard implement
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
 
   { path: 'signup', component: SignupComponent },
   

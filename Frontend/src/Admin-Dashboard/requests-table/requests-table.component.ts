@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Request } from 'src/Models/Request.model';
-
-
+ 
+ 
 @Component({
   selector: 'app-requests-table',
   standalone: true,
@@ -19,14 +19,14 @@ export class RequestsTableComponent implements OnInit {
   requests: Request[] = [];
   filteredRequests: Request[] = [];
   message: string | null = null;
-
+ 
   constructor(private http: HttpClient) {}
-
+ 
   ngOnInit(): void {
     this.loadTables();
     this.loadRequests();
   }
-
+ 
   loadTables(): void {
     this.http.get<string[]>('http://localhost:5245/api/Table/table-names')
       .subscribe({
@@ -37,11 +37,13 @@ export class RequestsTableComponent implements OnInit {
             this.loadRequests(); // Load requests after tables are loaded
           } else {
             this.message = 'No tables found.';
+            this.filteredRequests = [];
           }
         },
         error: (error) => {
           console.error('Error loading tables:', error);
           this.message = 'Failed to load tables';
+          this.filteredRequests = [];
         }
       });
   }
@@ -71,16 +73,18 @@ export class RequestsTableComponent implements OnInit {
       this.message = 'No table selected';
     }
   }
-  
-
+ 
+ 
   onTableChange(): void {
+    // Clear current requests before fetching new data
+    this.filteredRequests = [];
     this.loadRequests(); // Reload requests when table selection changes
   }
-
+ 
   filterRequests(): void {
     this.filteredRequests = this.requests.filter(request => request.tableName === this.selectedTable);
   }
-
+ 
   approveRequest(request: Request): void {
     this.http.put(`http://localhost:5245/api/Request/approve/${request.requestId}`, null)
       .subscribe({
@@ -96,10 +100,10 @@ export class RequestsTableComponent implements OnInit {
           this.message = 'Failed to approve request.';
         }
       });
-      
+     
   }
-  
-
+ 
+ 
   denyRequest(request: Request): void {
     this.http.put(`http://localhost:5245/api/Request/deny/${request.requestId}`, null)
       .subscribe({
@@ -115,35 +119,35 @@ export class RequestsTableComponent implements OnInit {
         }
       });
   }
-
+ 
   // Function to remove the request from the frontend
 removeRequestFromFrontend(requestId: number): void {
   console.log(`Removing request with ID ${requestId} from frontend.`);
-  
+ 
   // Remove the request from the requests and filteredRequests arrays
   this.requests = this.requests.filter(request => request.requestId !== requestId);
   this.filteredRequests = this.filteredRequests.filter(request => request.requestId !== requestId);
-  
+ 
   // Ensure Angular detects the change and updates the DOM
   this.filteredRequests = [...this.filteredRequests];
-  
+ 
   // After removing from frontend, call the backend deletion method
   this.removeRequest(requestId);
 }
-
+ 
   removeRequest(requestId: number): void {
     console.log(`Removing request with ID: ${requestId}`);
     this.http.delete(`http://localhost:5245/api/Request/delete/${requestId}`).subscribe({
       next: () => {
         console.log(`Request with ID ${requestId} removed successfully.`);
-        
+       
         // Remove the request from the requests and filteredRequests arrays
         this.requests = this.requests.filter(request => request.requestId !== requestId);
         this.filteredRequests = this.filteredRequests.filter(request => request.requestId !== requestId);
-        
+       
         // Ensure Angular detects the change and updates the DOM
         this.filteredRequests = [...this.filteredRequests];
-        
+       
         this.message = `Request ID ${requestId} removed.`;
       },
       error: (error) => {
@@ -152,7 +156,7 @@ removeRequestFromFrontend(requestId: number): void {
       }
     });
   }
-
+ 
   updatePermissions(request: Request, approve: boolean): void {
     if (approve) {
       switch (request.requestType) {
@@ -171,7 +175,7 @@ removeRequestFromFrontend(requestId: number): void {
       }
     }
   }
-
+ 
   saveRequestChanges(request: Request): void {
     this.http.put(`http://localhost:5245/api/Request/${request.requestId}`, request)
       .subscribe({

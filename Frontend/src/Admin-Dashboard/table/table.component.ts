@@ -147,7 +147,7 @@ export class TableComponentAd implements OnInit {
   onUpdate(): void {
     
     if (this.selectedRow) {
-      const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
+      const idField = this.myService.getIdFieldName(this.selectedRow);
       console.log('ID Field Name:', idField); // Check what this returns
       console.log('Selected Row:', this.selectedRow);
   
@@ -174,7 +174,7 @@ export class TableComponentAd implements OnInit {
   
   onDelete(): void {
     if (this.selectedRow) {
-      const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
+      const idField = this.myService.getIdFieldName(this.selectedRow);
       console.log('ID Field Name:', idField); // Check what this returns
       console.log('Selected Row:', this.selectedRow);
   
