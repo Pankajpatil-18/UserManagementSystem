@@ -1,16 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, RadioControlValueAccessor, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { AuthService } from "../auth.service";
+import { emailValidator } from "./email-validator";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Router, RouterLink } from "@angular/router";
+import { HeaderComponent } from "src/app/header/header.component";
+import { FooterComponent } from "src/app/footer/footer.component";
 
-import { RouterLink } from '@angular/router';
-
-import { Router } from '@angular/router';
-import { HeaderComponent } from "../../header/header.component";
-import { FooterComponent } from "../../footer/footer.component";
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { tap } from 'rxjs';
-import { emailValidator } from './email-validator';
-import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,20 +15,27 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  showPassword = false; // Control password visibility
   @Output() signIn = new EventEmitter<void>();
-  @Output() isLogged=new EventEmitter<void>();
+  @Output() isLogged = new EventEmitter<void>();
   isLoading = false; // Loading state
+
 
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      loginType: ['user', Validators.required], // Default value 'user'
-      email: ['', [Validators.required, Validators.email,emailValidator()]],
+      loginType: ['user', Validators.required],
+      email: ['', [Validators.required, Validators.email, emailValidator()]],
       password: ['', Validators.required]
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword; // Toggle password visibility
   }
 
   onLogin() {
@@ -42,7 +46,6 @@ export class LoginComponent implements OnInit {
       console.log('Email:', formValues.email);
       console.log('Password:', formValues.password);
 
-      // API call to backend
       this.http.post<any>('http://localhost:5245/api/Auth/login', {
         email: formValues.email,
         password: formValues.password
@@ -50,20 +53,16 @@ export class LoginComponent implements OnInit {
         response => {
           this.isLoading = false;
           console.log('Login successful', response);
-          console.log("Hello");
-          console.log("Here is the"+response.userName);
           this.authService.setUserId(response.userId);
           this.authService.setUserName(response.userName);
 
-          // Check if the backend role matches the selected login type
           if (response.role === formValues.loginType.charAt(0).toUpperCase() + formValues.loginType.slice(1)) {
             if (response.role === 'Admin') {
-              this.authService.login(formValues.password)
+              this.authService.login(formValues.password);
               this.router.navigate(['/user-management']);
             } else if (response.role === 'User') {
-              this.authService.login(formValues.password)
+              this.authService.login(formValues.password);
               this.router.navigate(['/home']).then(() => {
-                // Replace the history state so that the login page is removed from the history
                 window.history.replaceState({}, '', '/home');
               });
             }
@@ -78,14 +77,11 @@ export class LoginComponent implements OnInit {
           alert('Login failed: ' + (error.error.message || 'An unknown error occurred'));
         }
       );
-  
     }
   }
-    
 
   onSignIn() {
     this.signIn.emit();
     this.router.navigate(['/signup']);
   }
 }
-

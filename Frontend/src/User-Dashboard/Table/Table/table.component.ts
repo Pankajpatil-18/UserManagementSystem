@@ -148,7 +148,7 @@ export class TableComponent implements OnInit {
     } else {
         if (this.tablePrivileges.canUpdate && this.selectedRow) {
           // Determine the dynamic ID property
-          const idField = this.myService.getIdFieldName(this.selectedRow);
+          const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
           if (idField && this.selectedRow[idField] !== undefined) {
             // Construct the URL with query parameters
             const url = `${this.apiUrl}/update?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
@@ -183,8 +183,9 @@ export class TableComponent implements OnInit {
     } else {
       if (this.tablePrivileges.canDelete && this.selectedRow) {
         // Determine the dynamic ID property
-        const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
-        if (idField && this.selectedRow[idField] !== undefined) {
+        
+        const idField = this.myService.getIdFieldName(this.selectedRow);
+        if (idField && this.selectedRow[idField] !== undefined && this.selectedRow[idField] !== '0') {
           // Construct the URL with query parameters
           const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
           console.log(url);

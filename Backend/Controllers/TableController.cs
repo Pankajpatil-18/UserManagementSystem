@@ -162,7 +162,7 @@ namespace Backend.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateTableData([FromQuery] string tableName, [FromQuery] string primaryKeyColumn, [FromBody] Dictionary<string, object> values, [FromQuery] int id)
         {
-            if (string.IsNullOrEmpty(tableName) || values == null || values.Count == 0 || id <= 0 || string.IsNullOrEmpty(primaryKeyColumn))
+            if (string.IsNullOrEmpty(tableName) || values == null || values.Count == 0 || id < 0 || string.IsNullOrEmpty(primaryKeyColumn))
             {
                 return BadRequest(new { message = "Table name, values, ID, and primary key column are required." });
             }
