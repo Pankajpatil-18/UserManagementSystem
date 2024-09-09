@@ -148,7 +148,7 @@ export class TableComponent implements OnInit {
     } else {
         if (this.tablePrivileges.canUpdate && this.selectedRow) {
           // Determine the dynamic ID property
-          const idField = this.myService.getIdFieldName(this.selectedRow);
+          const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
           if (idField && this.selectedRow[idField] !== undefined) {
             // Construct the URL with query parameters
             const url = `${this.apiUrl}/update?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
@@ -176,18 +176,19 @@ export class TableComponent implements OnInit {
       }
     
   }
-  
   onDelete(): void {
     if (!this.hasPrivilege('canDelete')) {
       alert('You do not have permission to delete records.');
     } else {
       if (this.tablePrivileges.canDelete && this.selectedRow) {
         // Determine the dynamic ID property
-        const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
-        if (idField && this.selectedRow[idField] !== undefined) {
+        const idField = this.myService.getIdFieldName(this.selectedRow);
+  
+        // Check if the ID is valid (not 0)
+        if (idField && this.selectedRow[idField] !== undefined && this.selectedRow[idField] !== '0') {
           // Construct the URL with query parameters
           const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
-          console.log(url);
+          
           this.http.delete(url).subscribe({
             next: (response) => {
               console.log('Deleted:', response);
@@ -199,7 +200,7 @@ export class TableComponent implements OnInit {
             }
           });
         } else {
-          alert('Selected row does not have a valid ID.');
+          alert('Invalid ID. Cannot delete a record with ID 0.');
         }
       } else {
         alert('You do not have permission to delete records.');
@@ -207,23 +208,33 @@ export class TableComponent implements OnInit {
     }
   }
   
+
   addTableData(): void {
     if (!this.hasPrivilege('canWrite')) {
       alert('You do not have permission to add new records.');
     } else {
       if (this.tablePrivileges.canWrite) {
+        // Identify the ID field dynamically (assuming the ID field is named or derived properly)
+        const idField = this.myService.getIdFieldName(this.selectedRow);
+  
+        // Validate that the ID field is not 0
+        if (idField && this.selectedRow[idField] === '0') {
+          alert('The ID cannot be 0. Please enter a valid ID.');
+          return; // Stop the submission if the ID is invalid
+        }
+  
         // Prepare the request URL with query parameters for tableName and columns
         const url = `${this.apiUrl}/add?tableName=${encodeURIComponent(this.selectedTable)}&columns=${encodeURIComponent(this.columns.map(col => col.name).join(','))}`;
-    
+        
         // Create the request body with values as a JSON object
-        const requestBody = this.columns.reduce((obj:any, col) => {
+        const requestBody = this.columns.reduce((obj: any, col) => {
           obj[col.name] = this.selectedRow[col.name];
           return obj;
         }, {});
-    
+  
         console.log('Request URL:', url); // Log to inspect the URL
         console.log('Request Body:', requestBody); // Log to inspect the payload
-    
+  
         this.http.post(url, requestBody).subscribe({
           next: (response) => {
             console.log('Added new row:', response);
@@ -238,12 +249,6 @@ export class TableComponent implements OnInit {
       }
     }
   }
-
-  
-
-  
-
-  
   
 
   onCancel(): void {

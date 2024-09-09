@@ -6,11 +6,8 @@ import { CommonModule } from '@angular/common';
 import { MyService } from 'src/my-service.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { NavbarComponent } from "../navbar/navbar.component";
+import { ColumnMetadata } from 'src/Models/ColumnMetadata.Model';
 
-interface ColumnMetadata {
-  name: string;
-  type: string;
-}
 
 @Component({
   selector: 'app-table',
@@ -147,7 +144,7 @@ export class TableComponentAd implements OnInit {
   onUpdate(): void {
     
     if (this.selectedRow) {
-      const idField = this.myService.getIdFieldName(this.selectedRow);
+      const idField = this.myService.getIdFieldNameToValidate(this.selectedRow);
       console.log('ID Field Name:', idField); // Check what this returns
       console.log('Selected Row:', this.selectedRow);
   
@@ -176,9 +173,9 @@ export class TableComponentAd implements OnInit {
     if (this.selectedRow) {
       const idField = this.myService.getIdFieldName(this.selectedRow);
       console.log('ID Field Name:', idField); // Check what this returns
-      console.log('Selected Row:', this.selectedRow);
-  
-      if (idField && this.selectedRow[idField] !== undefined) {
+      
+      if (idField && this.selectedRow[idField] !== undefined && this.selectedRow[idField] !== '0') {
+        console.log('Selected Row:', this.selectedRow[idField]);
         const url = `${this.apiUrl}/delete?tableName=${encodeURIComponent(this.selectedTable)}&primaryKeyColumn=${encodeURIComponent(idField)}&id=${encodeURIComponent(this.selectedRow[idField])}`;
         console.log('Delete URL:', url);
   

@@ -24,7 +24,7 @@
 
   <div class="edit-form" *ngIf="columns.length > 0">
     <h3>Edit Row</h3>
-    <form (ngSubmit)="onSave()">
+    <form (ngSubmit)="onSave()" #form="ngForm">
       <div *ngFor="let column of columns">
         <label [for]="column.name">{{ column.name }}</label>
         <input 
@@ -32,7 +32,19 @@
           [(ngModel)]="selectedRow[column.name]" 
           [name]="column.name"
           [type]="getInputType(column.type)"
+          #inputField="ngModel"  
+          [required]="column.type !== 'date'" 
+          [minlength]="column.type === 'text' ? 3 : null" 
+          [maxlength]="column.type === 'text' ? 50 : null" 
+          [attr.pattern]="column.type === 'number' ? '^[0-9]*$' : null" 
         />
+        <!-- Show validation error messages -->
+        <div *ngIf="inputField.invalid && inputField.touched">
+          <small *ngIf="inputField.errors?.['required']">This field is required</small>
+          <small *ngIf="inputField.errors?.['minlength']">Minimum length is 3 characters</small>
+          <small *ngIf="inputField.errors?.['maxlength']">Maximum length is 50 characters</small>
+          <small *ngIf="inputField.errors?.['attr.pattern']">Please enter a valid number</small>
+        </div>
       </div>
       <div class="buttons">
         <button 

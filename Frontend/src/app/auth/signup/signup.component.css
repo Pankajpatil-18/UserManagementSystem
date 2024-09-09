@@ -94,3 +94,10 @@ button:focus {
   font-size: 1rem;
   color: #9bafaf;
 }
+.form-actions{
+  display: flex;
+  justify-content: start; /* Align buttons to the start */
+  gap: 0.5rem; /* Small gap between buttons, ensuring max 1cm separation */
+  align-items: center;
+  margin-top: 1.5rem; /* Ensure spacing above the button group */
+}
