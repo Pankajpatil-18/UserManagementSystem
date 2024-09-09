@@ -6,7 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), provideAnimations()]
+  providers: [provideRouter(routes), provideHttpClient(), provideAnimations(), provideAnimations()]
 };
 
 export { routes };

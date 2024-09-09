@@ -23,7 +23,6 @@
   </table>
 
   <div class="edit-form" *ngIf="columns.length > 0">
-    <h3>Edit Row</h3>
     <form (ngSubmit)="onSave()" #form="ngForm">
       <div *ngFor="let column of columns">
         <label [for]="column.name">{{ column.name }}</label>

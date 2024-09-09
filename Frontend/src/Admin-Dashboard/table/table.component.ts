@@ -196,18 +196,27 @@ export class TableComponentAd implements OnInit {
   }
   
   addTableData(): void {
+   
+        // Identify the ID field dynamically (assuming the ID field is named or derived properly)
+        const idField = this.myService.getIdFieldName(this.selectedRow);
+   
+        // Validate that the ID field is not 0
+        if (idField && this.selectedRow[idField] === '0') {
+          alert('The ID cannot be 0. Please enter a valid ID.');
+          return; // Stop the submission if the ID is invalid
+        }
+   
         // Prepare the request URL with query parameters for tableName and columns
         const url = `${this.apiUrl}/add?tableName=${encodeURIComponent(this.selectedTable)}&columns=${encodeURIComponent(this.columns.map(col => col.name).join(','))}`;
-    
         // Create the request body with values as a JSON object
-        const requestBody = this.columns.reduce((obj:any, col) => {
+        const requestBody = this.columns.reduce((obj: any, col) => {
           obj[col.name] = this.selectedRow[col.name];
           return obj;
         }, {});
-    
+   
         console.log('Request URL:', url); // Log to inspect the URL
         console.log('Request Body:', requestBody); // Log to inspect the payload
-    
+   
         this.http.post(url, requestBody).subscribe({
           next: (response) => {
             console.log('Added new row:', response);
@@ -215,11 +224,12 @@ export class TableComponentAd implements OnInit {
           },
           error: (error) => {
             console.error('Error adding new row:', error);
-            alert('Failed to add new row. Please check the console for more details.');
           }
         });
-    }
+      
+  }
   
+
   onCancel(): void {
     this.initializeEmptyRow(); // Clear the form on cancel
   }
