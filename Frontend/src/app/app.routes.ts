@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 
+
 // User Dashboard Components
 import { TableComponent } from 'src/User-Dashboard/Table/Table/table.component';
 import { TableContentComponent } from 'src/User-Dashboard/Table/TableContent/tablecontent.component';
@@ -24,7 +25,7 @@ import { AuthGuard } from './auth.guard';// Ensure you have this guard implement
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
 
   { path: 'signup', component: SignupComponent },
   
@@ -44,4 +45,5 @@ export const routes: Routes = [
 
   // Wildcard route for handling undefined routes
   { path: '**', redirectTo: 'login' }
+
 ];

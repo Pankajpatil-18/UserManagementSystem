@@ -1,13 +1,12 @@
-
 <app-navbar></app-navbar>
 <div class="user-table-container">
   <h2>User Permissions</h2>
-  
+ 
   <label for="table-select">Select Table:</label>
-  <select id="table-select" [(ngModel)]="selectedTable" (change)="onTableChange($event)"> <!--ngmodel is used for  selectbox to have the current selectedtabel even if we back form some other page strode in local storage -->
-      <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
+  <select id="table-select" [(ngModel)]="selectedTable" (change)="onTableChange($event)">
+    <option *ngFor="let table of tables" [value]="table">{{ table }}</option>
   </select>
-
+ 
   <table>
     <thead>
       <tr>
@@ -26,33 +25,30 @@
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canInsert')">
+          <button [disabled]="!user.isEditing" (click)="togglePermission(user, 'canInsert')">
             {{ user.canInsert ? '✔️' : '❌' }}
           </button>
         </td>
         <td>
-          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canUpdate')">
+          <button [disabled]="!user.isEditing" (click)="togglePermission(user, 'canUpdate')">
             {{ user.canUpdate ? '✔️' : '❌' }}
           </button>
         </td>
         <td>
-          <button [disabled]="!isEditing" (click)="togglePermission(user, 'canDelete')">
+          <button [disabled]="!user.isEditing" (click)="togglePermission(user, 'canDelete')">
             {{ user.canDelete ? '✔️' : '❌' }}
           </button>
         </td>
         <td>
-          <!-- Display the "Save" button if in editing mode, otherwise display "Edit" -->
-          <button *ngIf="isEditing" (click)="onSaveChanges()">Save</button>
-          <button *ngIf="!isEditing" (click)="onEdit()">Edit</button>
+          <!-- Show "Save" and "Cancel" buttons if in editing mode, otherwise show "Edit" -->
+          <button *ngIf="user.isEditing" (click)="onSaveChanges(user)">Save</button>
+          <button *ngIf="user.isEditing" (click)="onCancelEdit(user)">Cancel</button>
+          <button *ngIf="!user.isEditing" (click)="onEdit(user)">Edit</button>
         </td>
       </tr>
     </tbody>
   </table>
-
-  <!-- Single Cancel button at the bottom right -->
-  <div class="actions">
-    <button *ngIf="isEditing" (click)="onCancelEdit()">Cancel</button>
-  </div>
-
+ 
   <div class="alert">Your changes are saved!</div>
 </div>
+ 

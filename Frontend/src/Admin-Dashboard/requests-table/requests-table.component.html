@@ -9,40 +9,47 @@
   </div>
  
   <!-- Table displaying requests -->
-  <table class="request-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>User</th>
-        <th>Permissions</th>
-        <th>Request Type</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Message</th> <!-- Added Message column -->
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let request of filteredRequests">
-        <td>{{ request.requestId }}</td>
-        <td>{{ request.userName }}</td>
-        <td>
-          <span [ngClass]="request.canRead ? 'icon-right' : 'icon-wrong'">Read</span>
-          <span [ngClass]="request.canUpdate ? 'icon-right' : 'icon-wrong'">Update</span>
-          <span [ngClass]="request.canDelete ? 'icon-right' : 'icon-wrong'">Delete</span>
-          <span [ngClass]="request.canWrite ? 'icon-right' : 'icon-wrong'">Write</span>
-        </td>
-        
-        <td>{{ request.requestType }}</td>
-        <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
-        <td>{{ request.status }}</td>
-        <td>{{ request.message }}</td> <!-- Display message -->
-        <td>
-          <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request)">Approve</button>
-          <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request)">Deny</button>
-          <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequestFromFrontend(request.requestId)">Remove</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="filteredRequests && filteredRequests.length > 0; else noRequests">
+    <table class="request-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Permissions</th>
+          <th>Request Type</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Message</th> <!-- Added Message column -->
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of filteredRequests">
+          <td>{{ request.requestId }}</td>
+          <td>{{ request.userName }}</td>
+          <td>
+            <span [ngClass]="request.canRead ? 'icon-right' : 'icon-wrong'">Read</span>
+            <span [ngClass]="request.canUpdate ? 'icon-right' : 'icon-wrong'">Update</span>
+            <span [ngClass]="request.canDelete ? 'icon-right' : 'icon-wrong'">Delete</span>
+            <span [ngClass]="request.canWrite ? 'icon-right' : 'icon-wrong'">Write</span>
+          </td>
+          <td>{{ request.requestType }}</td>
+          <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ request.status }}</td>
+          <td>{{ request.message }}</td> <!-- Display message -->
+          <td>
+            <button *ngIf="request.status === 'Pending'" class="btn approve" (click)="approveRequest(request)">Approve</button>
+            <button *ngIf="request.status === 'Pending'" class="btn deny" (click)="denyRequest(request)">Deny</button>
+            <button *ngIf="request.status !== 'Pending'" class="btn remove" (click)="removeRequestFromFrontend(request.requestId)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ 
+  <!-- Fallback message when no requests -->
+  <ng-template #noRequests>
+    <p class="no-requests-message">No requests available.</p>
+  </ng-template>
 </div>
+ 
