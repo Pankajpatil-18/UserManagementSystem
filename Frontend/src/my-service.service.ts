@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { ColumnMetadata } from './Models/ColumnMetadata.Model';
@@ -15,10 +15,11 @@ export class MyService  {
   constructor(private http: HttpClient) {
     
   }
+ 
 
   getTableNames(): Observable<string[]> {
     console.log('Fetching table names...');
-    return this.http.get<string[]>('http://localhost:5245/api/Table/table-names').pipe(
+    return this.http.get<string[]>(`${this.apiUrl}/Table/table-names`).pipe(
       tap((tables) => console.log('Fetched tables:', tables)), // Log fetched tables
       catchError((error) => {
         console.error('Error fetching table names:', error); // Log full error object
@@ -59,29 +60,27 @@ getIdFieldNameToValidate(row: any): string | null {
 }
 
 
+getTablePrivileges(userId: number, tableName: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/UserControllers/table-privileges?userId=${userId}&tableName=${tableName}`);
+ 
+}
 
-  
-  getTablePrivileges(userId: number, tableName: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/UserControllers/table-privileges?userId=${userId}&tableName=${tableName}`);
-    
-  }
+getIdFieldName(row: any): string | null {
+  // Define a pattern for identifying ID fields, e.g., ending with "Id"
+  const idFieldPattern = /Id$/;
 
-  getIdFieldName(row: any): string | null {
-    // Define a pattern for identifying ID fields, e.g., ending with "Id"
-    const idFieldPattern = /Id$/;
-  
-    // Find the key in the object that matches the pattern
-    for (const key in row) {
-      if (idFieldPattern.test(key)) {
-        return key;
-      }
+  // Find the key in the object that matches the pattern
+  for (const key in row) {
+    if (idFieldPattern.test(key)) {
+      return key;
     }
-    // Return null if no ID field is found
-    return null;
   }
+  // Return null if no ID field is found
+  return null;
+}
 
-  getColumns(tableName: string): Observable<ColumnMetadata[]> {
-    return this.http.get<ColumnMetadata[]>(`${this.apiUrl}/columns?tableName=${tableName}`);
-  }
-  
+getColumns(tableName: string): Observable<ColumnMetadata[]> {
+  return this.http.get<ColumnMetadata[]>(`${this.apiUrl}/columns?tableName=${tableName}`);
+}
+
 }
