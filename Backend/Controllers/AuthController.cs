@@ -107,9 +107,6 @@ namespace Backend.Controllers
                     await _Repository.AddUserPermissionAsync(userPermission);
                 }
             }
-}
-
-
-        
+        }   
     }
 }
