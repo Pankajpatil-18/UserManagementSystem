@@ -1,0 +1,27 @@
+<div class="request-status">
+  <h3>Request Status</h3>
+  <table class="request-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Table Name</th>
+        <th>Request Type</th>
+        <th>Message</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of userRequests">
+        <td>{{ request.id }}</td>
+        <td>{{ request.user }}</td>
+        <td>{{ request.tableName }}</td>
+        <td>{{ request.requestType }}</td>
+        <td>{{ request.message }}</td>
+        <td>{{ request.status }}</td>
+        <td>{{ request.date | date: 'yyyy-MM-dd' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

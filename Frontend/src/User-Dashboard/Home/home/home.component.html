@@ -1,0 +1,33 @@
+<div class="navbar">
+    <h1>Hello {{ userName }}</h1>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
+  
+  <div class="content">
+    <div class="container">
+      <div class="dropdown-container">
+        <label for="tableSelect">Select Table:</label>
+        <select id="tableSelect" (change)="onTableChange($event)">
+          <option *ngFor="let table of ['Student', 'Employee']" [value]="table">{{ table }}</option>
+        </select>
+      </div>
+  
+      <div class="privileges-box">
+        <h3>Privileges for {{ selectedTable }} Table:</h3>
+        <div class="privileges-grid">
+          <div *ngFor="let privilege of ['Read', 'Write', 'Update', 'Delete']" class="privilege-item">
+            <span>{{ privilege }}</span>
+            <span class="icon" [ngClass]="{'check-icon': hasPrivilege(privilege), 'cross-icon': !hasPrivilege(privilege)}">
+              {{ hasPrivilege(privilege) ? '✔️' : '❌' }}
+            </span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="center-buttons">
+        <button class="btn-center" (click)="manageRecords()">Record Management</button>
+        <button class="btn-center" (click)="manageRequests()">Request Management</button>
+      </div>
+    </div>
+  </div>
+  

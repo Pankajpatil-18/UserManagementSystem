@@ -1,0 +1,80 @@
+/* request-actions.component.css */
+
+.request-actions {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #eaf7ea;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #2f6b2f;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #3c803c;
+    font-weight: bold;
+  }
+  
+  select,
+  textarea,
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #a1dca1;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+  select:focus,
+  textarea:focus,
+  input[type="text"]:focus {
+    border-color: #4caf50;
+    outline: none;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  .btn.submit {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn.submit:hover {
+    background-color: #388e3c;
+  }
+  
+  @media (max-width: 600px) {
+    .request-actions {
+      padding: 15px;
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  
+    .btn.submit {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+  
