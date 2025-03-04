@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj": {}
+    "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj": {
+    "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "D:\\New folder\\UserManagementSystem\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\ppatil\\.nuget\\packages\\",
-        "outputPath": "D:\\New folder\\UserManagementSystem\\Backend\\obj\\",
+        "projectPath": "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\sgite\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sgite\\Desktop\\Angular+.net Demo Project\\UserManagementSystem\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ppatil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sgite\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -48,6 +48,20 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
